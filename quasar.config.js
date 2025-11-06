@@ -1,7 +1,9 @@
+/* eslint-env node */
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers'
+import { configure } from 'quasar/wrappers'
 
 export default defineConfig((/* ctx */) => {
   return {
@@ -12,7 +14,8 @@ export default defineConfig((/* ctx */) => {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-      'axios'
+      'axios',
+      'auth-guard'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
@@ -91,7 +94,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Notify']
     },
 
     // animations: 'all', // --- includes all animations
@@ -210,3 +213,9 @@ export default defineConfig((/* ctx */) => {
     }
   }
 })
+
+configure(() => ({
+  framework: {
+    plugins: ['Notify'],
+  },
+}))
