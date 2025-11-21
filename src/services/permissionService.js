@@ -1,10 +1,16 @@
 import { api } from 'boot/axios'
 
-const base = '/api/v1/permissions' // ajusta si tu endpoint es otro
+const base = '/api/v1/permisos' // ← ajustado a español
+
+function normalize(payload) {
+  if (Array.isArray(payload)) return payload
+  if (Array.isArray(payload?.data)) return payload.data
+  return []
+}
 
 export const permissionService = {
   async getAll(params = {}) {
     const res = await api.get(base, { params })
-    return res.data
+    return normalize(res.data)
   },
 }

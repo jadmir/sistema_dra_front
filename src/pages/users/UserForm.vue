@@ -1,8 +1,9 @@
 <template>
   <q-dialog v-model="open" persistent transition-show="scale" transition-hide="scale">
     <q-card style="min-width: 400px; max-width: 700px">
-      <q-card-section class="bg-primary text-white">
+      <q-card-section class="bg-gradient-green text-white">
         <div class="text-h6">
+          <q-icon name="person_add" size="sm" class="q-mr-sm" />
           {{ isEdit ? 'Editar Usuario' : 'Nuevo Usuario' }}
         </div>
       </q-card-section>
@@ -24,7 +25,11 @@
                 maxlength="8"
                 lazy-rules
                 :rules="[requiredDigits8]"
-              />
+              >
+                <template #prepend>
+                  <q-icon name="badge" color="green-7" />
+                </template>
+              </q-input>
             </div>
 
             <!-- Celular -->
@@ -39,7 +44,11 @@
                 maxlength="9"
                 lazy-rules
                 :rules="[requiredDigits9]"
-              />
+              >
+                <template #prepend>
+                  <q-icon name="phone" color="green-7" />
+                </template>
+              </q-input>
             </div>
 
             <!-- Nombre -->
@@ -51,7 +60,11 @@
                 dense
                 lazy-rules
                 :rules="[(v) => !!v || 'El nombre es requerido']"
-              />
+              >
+                <template #prepend>
+                  <q-icon name="person" color="green-7" />
+                </template>
+              </q-input>
             </div>
 
             <!-- Apellido -->
@@ -63,7 +76,11 @@
                 dense
                 lazy-rules
                 :rules="[(v) => !!v || 'El apellido es requerido']"
-              />
+              >
+                <template #prepend>
+                  <q-icon name="person" color="green-7" />
+                </template>
+              </q-input>
             </div>
 
             <!-- Email -->
@@ -80,12 +97,20 @@
                   (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim()) || 'Email inválido',
                 ]"
                 autocomplete="email"
-              />
+              >
+                <template #prepend>
+                  <q-icon name="email" color="green-7" />
+                </template>
+              </q-input>
             </div>
 
             <!-- Dirección -->
             <div class="col-12 col-md-6">
-              <q-input v-model="form.direccion" label="Dirección" outlined dense />
+              <q-input v-model="form.direccion" label="Dirección" outlined dense>
+                <template #prepend>
+                  <q-icon name="home" color="green-7" />
+                </template>
+              </q-input>
             </div>
 
             <!-- Contraseña (solo en crear) -->
@@ -102,7 +127,11 @@
                   (v) => !!v || 'La contraseña es requerida',
                   (v) => String(v).length >= 6 || 'Mínimo 6 caracteres',
                 ]"
-              />
+              >
+                <template #prepend>
+                  <q-icon name="lock" color="green-7" />
+                </template>
+              </q-input>
             </div>
 
             <!-- Rol -->
@@ -119,6 +148,9 @@
                 :loading="loadingRoles"
                 :disable="loadingRoles"
               >
+                <template #prepend>
+                  <q-icon name="admin_panel_settings" color="green-7" />
+                </template>
                 <template #no-option>
                   <q-item><q-item-section>No hay roles disponibles</q-item-section></q-item>
                 </template>
@@ -128,8 +160,14 @@
 
           <!-- Botones -->
           <div class="row justify-end q-gutter-sm q-mt-md">
-            <q-btn flat label="Cancelar" color="grey" v-close-popup @click="$emit('close')" />
-            <q-btn color="primary" :label="isEdit ? 'Actualizar' : 'Guardar'" type="submit" :loading="loading" />
+            <q-btn flat label="Cancelar" color="grey-7" v-close-popup @click="$emit('close')" />
+            <q-btn
+              class="btn-green"
+              :label="isEdit ? 'Actualizar' : 'Guardar'"
+              :icon="isEdit ? 'save' : 'add'"
+              type="submit"
+              :loading="loading"
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -180,21 +218,31 @@ const isEdit = computed(() => !!props.user)
 const digits = (v) => String(v ?? '').replace(/\D/g, '')
 const requiredDigits8 = (v) => {
   const d = digits(v)
-  return (d.length > 0 && d.length === 8) || (d.length === 0 ? 'El DNI es requerido' : 'DNI debe tener 8 dígitos')
+  return (
+    (d.length > 0 && d.length === 8) ||
+    (d.length === 0 ? 'El DNI es requerido' : 'DNI debe tener 8 dígitos')
+  )
 }
 const requiredDigits9 = (v) => {
   const d = digits(v)
-  return (d.length > 0 && d.length === 9) || (d.length === 0 ? 'El celular es requerido' : 'Celular debe tener 9 dígitos')
+  return (
+    (d.length > 0 && d.length === 9) ||
+    (d.length === 0 ? 'El celular es requerido' : 'Celular debe tener 9 dígitos')
+  )
 }
 
 // Modelos saneados (siempre solo dígitos y con límite)
 const dniModel = computed({
   get: () => String(form.value.dni ?? ''),
-  set: (v) => { form.value.dni = digits(v).slice(0, 8) },
+  set: (v) => {
+    form.value.dni = digits(v).slice(0, 8)
+  },
 })
 const celularModel = computed({
   get: () => String(form.value.celular ?? ''),
-  set: (v) => { form.value.celular = digits(v).slice(0, 9) },
+  set: (v) => {
+    form.value.celular = digits(v).slice(0, 9)
+  },
 })
 
 // Cargar datos al editar y resetear validaciones
@@ -213,19 +261,30 @@ watch(
         rol_id: val.rol_id ?? val.rol?.id ?? null,
       }
     } else {
-      form.value = { email: '', dni: '', nombre: '', apellido: '', direccion: '', celular: '', password: '', rol_id: null }
+      form.value = {
+        email: '',
+        dni: '',
+        nombre: '',
+        apellido: '',
+        direccion: '',
+        celular: '',
+        password: '',
+        rol_id: null,
+      }
     }
     await nextTick()
     formRef.value?.resetValidation()
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 // Cargar roles del backend
 onMounted(async () => {
   loadingRoles.value = true
   try {
-    const list = await roleService.getAll()
+    const response = await roleService.getAll()
+    // roleService.getAll() ahora retorna { data: [...], total: ... }
+    const list = response.data || response || []
     roles.value = list.map((r) => ({ label: r.nombre, value: r.id }))
   } catch (err) {
     console.error('Error cargando roles', err?.response || err)
@@ -266,14 +325,31 @@ const onSubmit = async () => {
   loading.value = false
 
   if (success) {
-    $q.notify({ type: 'positive', message: isEdit.value ? 'Usuario actualizado' : 'Usuario creado' })
+    $q.notify({
+      type: 'positive',
+      message: isEdit.value ? 'Usuario actualizado' : 'Usuario creado',
+    })
     emit('saved')
     open.value = false
   } else {
-    const msg =
-      userStore.error ||
-      'Error al guardar usuario'
+    const msg = userStore.error || 'Error al guardar usuario'
     $q.notify({ type: 'negative', message: msg })
   }
 }
 </script>
+
+<style scoped>
+.bg-gradient-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-green:hover {
+  background: linear-gradient(135deg, #4a7f59 0%, #2d5f3d 100%);
+}
+</style>

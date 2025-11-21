@@ -1,28 +1,55 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-gradient-green">
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> Sistema Dra </q-toolbar-title>
+        <q-toolbar-title class="text-weight-bold system-title">
+          <q-icon name="agriculture" size="sm" class="q-mr-xs" />
+          <span class="title-text">Dirección de Estadística e Información Agraria</span>
+        </q-toolbar-title>
 
-        <div class="text-subtitle2 q-mr-md">
+        <q-space />
+
+        <!-- Texto de bienvenida - Oculto en móvil, visible en desktop -->
+        <div class="text-subtitle2 q-mr-md gt-xs">
           {{ welcomeText }}
         </div>
 
-        <q-space />
+        <!-- En móvil, mostrar solo el nombre del usuario -->
+        <div class="text-caption q-mr-sm lt-sm">
+          {{ fullName }}
+        </div>
 
         <q-btn flat round dense icon="account_circle">
           <q-menu>
             <q-list style="min-width: 220px">
-              <!-- Nuevo: Cambiar contraseña -->
+              <!-- Información del usuario (solo en móvil) -->
+              <q-item class="lt-sm">
+                <q-item-section>
+                  <q-item-label class="text-weight-bold">{{ fullName }}</q-item-label>
+                  <q-item-label caption>{{ roleName }}</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-separator class="lt-sm" />
+
+              <!-- Perfil -->
+              <q-item clickable v-ripple @click="goToProfile">
+                <q-item-section avatar><q-icon name="person" color="green-7" /></q-item-section>
+                <q-item-section>Mi Perfil</q-item-section>
+              </q-item>
+              <q-separator />
+
+              <!-- Cambiar contraseña -->
               <q-item clickable v-ripple @click="openChangePassword">
-                <q-item-section avatar><q-icon name="lock_reset" /></q-item-section>
+                <q-item-section avatar><q-icon name="lock_reset" color="green-7" /></q-item-section>
                 <q-item-section>Cambiar contraseña</q-item-section>
               </q-item>
               <q-separator />
+
+              <!-- Cerrar sesión -->
               <q-item clickable v-ripple @click="onLogout">
-                <q-item-section avatar><q-icon name="logout" /></q-item-section>
+                <q-item-section avatar><q-icon name="logout" color="red-6" /></q-item-section>
                 <q-item-section>Cerrar sesión</q-item-section>
               </q-item>
             </q-list>
@@ -31,11 +58,28 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header>Sistema Dra</q-item-label>
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered :width="280" :breakpoint="500">
+      <q-scroll-area class="fit">
+        <q-list padding>
+          <!-- Header del drawer con info del usuario -->
+          <q-item class="q-mb-sm drawer-header">
+            <q-item-section avatar>
+              <q-avatar color="white" text-color="green-8" size="48px" class="text-weight-bold">
+                {{ userInitials }}
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-bold text-white">{{ fullName }}</q-item-label>
+              <q-item-label caption class="text-white opacity-90">{{ roleName }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-separator class="q-mb-md" />
+
+          <!-- Enlaces del menú -->
+          <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
@@ -109,8 +153,9 @@
         <q-card-actions align="right">
           <q-btn flat label="Cancelar" :disable="loadingChangePwd" @click="closeChangePassword" />
           <q-btn
-            color="primary"
+            unelevated
             label="Guardar"
+            class="btn-green"
             :loading="loadingChangePwd"
             :disable="loadingChangePwd"
             @click="submitChangePassword"
@@ -141,6 +186,16 @@ const fullName = computed(
     'Usuario',
 )
 const roleName = computed(() => auth.roleName || auth.user?.rol?.nombre || '')
+
+// Iniciales del usuario para el avatar
+const userInitials = computed(() => {
+  const nombre = auth.user?.nombre || ''
+  const apellido = auth.user?.apellido || ''
+  const inicialNombre = nombre.charAt(0).toUpperCase()
+  const inicialApellido = apellido.charAt(0).toUpperCase()
+  return inicialNombre + inicialApellido || 'U'
+})
+
 const welcomeText = computed(() =>
   roleName.value
     ? `Bienvenido: ${fullName.value}, su rol es ${roleName.value}`
@@ -150,6 +205,10 @@ const welcomeText = computed(() =>
 function onLogout() {
   auth.logout()
   router.replace('/login')
+}
+
+function goToProfile() {
+  router.push('/perfil')
 }
 
 const leftDrawerOpen = ref(false)
@@ -227,13 +286,168 @@ async function submitChangePassword() {
 }
 // ========= fin cambio de contraseña =========
 
+import { PERMISSIONS, hasPermission } from 'src/utils/permissions'
+
 // Grupo único "Admin Sistema"
 const adminGroup = {
   title: 'Admin Sistema',
   icon: 'admin_panel_settings',
+  permission: PERMISSIONS.USERS_VIEW, // Se muestra si tiene algún permiso de usuarios o roles
   children: [
-    { title: 'Usuarios', caption: 'Gestión de usuarios', icon: 'group', to: '/usuarios' },
-    { title: 'Roles', caption: 'Gestión de roles', icon: 'security', to: '/roles' },
+    {
+      title: 'Usuarios',
+      caption: 'Gestión de usuarios',
+      icon: 'group',
+      to: '/usuarios',
+      permission: PERMISSIONS.USERS_VIEW,
+    },
+    {
+      title: 'Roles',
+      caption: 'Gestión de roles',
+      icon: 'security',
+      to: '/roles',
+      permission: PERMISSIONS.ROLES_VIEW,
+    },
+    {
+      title: 'Permisos',
+      caption: 'Gestión de permisos',
+      icon: 'verified_user',
+      to: '/permisos',
+      permission: PERMISSIONS.ROLES_VIEW,
+    },
+  ],
+}
+
+// NUEVO: Grupo "Pecuario"
+const pecuarioGroup = {
+  title: 'Pecuario',
+  icon: 'agriculture',
+  permission: PERMISSIONS.DATA_VIEW, // Se muestra si tiene permiso de ver datos
+  children: [
+    {
+      title: 'Saca Clases',
+      caption: 'Gestión de saca clases',
+      icon: 'category',
+      to: '/pecuario/saca-clases',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Variedades',
+      caption: 'Gestión de variedades',
+      icon: 'spa',
+      to: '/pecuario/variedades',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+  ],
+}
+
+// NUEVO: Grupo "Agricultura"
+const agriculturaGroup = {
+  title: 'Agricola',
+  icon: 'eco',
+  permission: PERMISSIONS.DATA_VIEW,
+  children: [
+    {
+      title: 'Agricultura',
+      caption: 'Gestión de cultivos agrícolas',
+      icon: 'agriculture',
+      permission: PERMISSIONS.DATA_VIEW,
+      children: [
+        {
+          title: 'Subsectores',
+          caption: 'Gestión de subsectores',
+          icon: 'category',
+          to: '/agricultura/subsectores',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Grupos',
+          caption: 'Gestión de grupos',
+          icon: 'workspaces',
+          to: '/agricultura/grupos',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Subgrupos',
+          caption: 'Gestión de subgrupos',
+          icon: 'account_tree',
+          to: '/agricultura/subgrupos',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Cultivos',
+          caption: 'Gestión de cultivos',
+          icon: 'grass',
+          to: '/agricultura/cultivos',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+      ],
+    },
+  ],
+}
+
+// NUEVO: Grupo "Precios en Mercados"
+const preciosGroup = {
+  title: 'Precios en Mercados',
+  icon: 'local_offer',
+  permission: PERMISSIONS.DATA_VIEW,
+  children: [
+    {
+      title: 'Registro de Muestras',
+      caption: 'Registrar precios de mercados',
+      icon: 'edit_note',
+      to: '/precios/registro',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Validación',
+      caption: 'Validar muestras pendientes',
+      icon: 'verified',
+      to: '/precios/validacion',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Reportes',
+      caption: 'Ver reportes comparativos',
+      icon: 'analytics',
+      to: '/precios/reportes',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Productos',
+      caption: 'Gestión de productos',
+      icon: 'inventory_2',
+      to: '/precios/productos',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Categorías',
+      caption: 'Gestión de categorías',
+      icon: 'category',
+      to: '/precios/categorias',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Mercados',
+      caption: 'Gestión de mercados',
+      icon: 'store',
+      to: '/precios/mercados',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Encuestadores',
+      caption: 'Gestión de encuestadores',
+      icon: 'badge',
+      to: '/precios/encuestadores',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Productividad',
+      caption: 'Reportes de encuestadores',
+      icon: 'assessment',
+      to: '/precios/productividad-encuestadores',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
   ],
 }
 
@@ -242,11 +456,105 @@ const baseLinks = [
   // { title: 'Inicio', caption: 'Dashboard', icon: 'home', to: '/' },
 ]
 
-// Lista final sin duplicados
+// Lista final filtrada por permisos
 const linksList = computed(() => {
-  const list = [adminGroup, ...baseLinks]
-  const byTitle = new Map()
-  for (const l of list) if (!byTitle.has(l.title)) byTitle.set(l.title, l)
-  return Array.from(byTitle.values())
+  const list = [adminGroup, pecuarioGroup, agriculturaGroup, preciosGroup, ...baseLinks]
+
+  // Si es Administrador (rol_id = 1 O nombre = 'Administrador'), mostrar todo sin filtrar
+  const isAdmin = auth.user?.rol?.nombre === 'Administrador' || auth.user?.rol_id === 1
+  if (isAdmin) {
+    return list
+  }
+
+  // Filtrar grupos y sus hijos según permisos
+  return list
+    .map((group) => {
+      // Si el grupo tiene children, filtrarlos por permiso
+      if (group.children) {
+        const filteredChildren = group.children.filter((child) => {
+          if (!child.permission) return true // Sin permiso requerido, mostrar siempre
+          return hasPermission(auth.user, child.permission)
+        })
+
+        // Si no hay children visibles, no mostrar el grupo
+        if (filteredChildren.length === 0) return null
+
+        return { ...group, children: filteredChildren }
+      }
+
+      // Si es un enlace simple, verificar su permiso
+      if (group.permission && !hasPermission(auth.user, group.permission)) return null
+
+      return group
+    })
+    .filter(Boolean) // Remover nulls
 })
 </script>
+
+<style lang="scss" scoped>
+// Header con gradiente verde
+.bg-gradient-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+}
+
+// Título del sistema - sin truncar
+.system-title {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  .title-text {
+    font-size: 0.95rem;
+    line-height: 1.2;
+    white-space: nowrap;
+
+    @media (max-width: 1200px) {
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+// Header del drawer con gradiente
+.drawer-header {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  border-radius: 8px;
+  padding: 16px 12px;
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+// Botón verde personalizado
+.btn-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  color: white;
+  transition: all 0.3s ease;
+
+  &:hover:not(.q-btn--disable) {
+    background: linear-gradient(135deg, #6aa77a 0%, #4a8060 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(90, 143, 105, 0.4);
+  }
+}
+
+// Efecto hover en items del menú de usuario
+:deep(.q-item) {
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(90, 143, 105, 0.08);
+  }
+}
+</style>

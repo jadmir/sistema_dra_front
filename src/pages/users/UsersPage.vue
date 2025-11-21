@@ -1,121 +1,185 @@
 <template>
   <q-page padding>
-    <!-- Título centrado -->
-    <div class="row justify-center q-mb-sm">
-      <div class="text-h5 text-weight-bold text-center">Gestión de Usuarios</div>
-    </div>
-
-    <!-- Barra de búsqueda + botón (responsive) -->
-    <div class="row q-col-gutter-sm items-center justify-center justify-sm-between q-mb-md">
-      <div class="col-12 col-sm-6">
-        <q-input
-          dense
-          outlined
-          debounce="500"
-          placeholder="Buscar usuario..."
-          v-model="userStore.search"
-          @update:model-value="onSearch"
-        >
-          <template #append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-      <div class="col-12 col-sm-auto">
-        <q-btn color="primary" label="Nuevo usuario" class="full-width" @click="openForm()" />
-      </div>
-    </div>
-
-    <!-- usa isMobile para activar vista grid/dense en móvil -->
-    <q-table
-      :rows="userStore.users"
-      :columns="columns"
-      row-key="id"
-      :loading="userStore.loading"
-      v-model:pagination="userStore.pagination"
-      @request="onRequest"
-      :rows-per-page-options="[5, 10, 20]"
-      :grid="isMobile"
-      :dense="isMobile"
-      flat
-      bordered
-    >
-      <!-- Desktop: chip de rol -->
-      <template #body-cell-rol_id="props">
-        <q-td align="center">
-          <q-chip
-            :color="roleName(props.row) === 'Administrador' ? 'primary' : 'secondary'"
-            text-color="white"
-            size="sm"
-          >
-            {{ roleName(props.row) }}
-          </q-chip>
-        </q-td>
-      </template>
-
-      <!-- Desktop: acciones -->
-      <template #body-cell-actions="props">
-        <q-td align="center">
-          <q-btn dense flat icon="edit" color="primary" @click="openForm(props.row)" />
-          <q-btn dense flat icon="delete" color="negative" @click="confirmDelete(props.row.id)" />
-        </q-td>
-      </template>
-
-      <!-- Móvil: tarjetas -->
-      <template #item="props">
-        <div class="q-pa-xs col-12">
-          <!-- Abre detalle al tocar la tarjeta -->
-          <q-card bordered class="cursor-pointer" @click="openDetail(props.row)">
-            <q-card-section class="q-pb-none">
-              <div class="text-subtitle1">{{ props.row.nombre }} {{ props.row.apellido }}</div>
-              <div class="text-caption text-grey-7">{{ props.row.email }}</div>
-            </q-card-section>
-
-            <q-separator inset />
-
-            <q-list dense>
-              <q-item>
-                <q-item-section>ID</q-item-section>
-                <q-item-section side>{{ props.row.id }}</q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>DNI</q-item-section>
-                <q-item-section side>{{ props.row.dni }}</q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>Celular</q-item-section>
-                <q-item-section side>{{ props.row.celular }}</q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>Rol</q-item-section>
-                <q-item-section side>
-                  <q-chip :color="roleName(props.row) === 'Administrador' ? 'primary' : 'secondary'" text-color="white" size="sm">
-                    {{ roleName(props.row) }}
-                  </q-chip>
-                </q-item-section>
-              </q-item>
-            </q-list>
-
-            <q-card-actions align="right">
-              <!-- Evita abrir el modal al hacer click en estos botones -->
-              <q-btn dense flat icon="edit" color="primary" @click.stop="openForm(props.row)" />
-              <q-btn dense flat icon="delete" color="negative" @click.stop="confirmDelete(props.row.id)" />
-            </q-card-actions>
-          </q-card>
+    <div class="q-pa-md">
+      <!-- Header -->
+      <div class="row items-center q-mb-md">
+        <div class="col">
+          <div class="text-h5 text-weight-medium text-grey-8">
+            <q-icon name="group" color="green-7" size="sm" class="q-mr-sm" />
+            Gestión de Usuarios
+          </div>
+          <div class="text-caption text-grey-6">Administra los usuarios del sistema</div>
         </div>
-      </template>
-    </q-table>
+        <div class="col-auto">
+          <q-btn
+            v-can="PERMISSIONS.USERS_CREATE"
+            unelevated
+            color="green-7"
+            icon="add"
+            label="Nuevo Usuario"
+            @click="openForm()"
+          />
+        </div>
+      </div>
+
+      <!-- Barra de búsqueda -->
+      <q-card class="q-mb-md">
+        <q-card-section class="q-pa-md">
+          <q-input
+            v-model="userStore.search"
+            placeholder="Buscar usuario..."
+            outlined
+            dense
+            clearable
+            debounce="500"
+            @update:model-value="onSearch"
+          >
+            <template #prepend>
+              <q-icon name="search" color="green-7" />
+            </template>
+          </q-input>
+        </q-card-section>
+      </q-card>
+
+      <!-- Tabla -->
+      <q-card>
+        <q-table
+          :rows="userStore.users"
+          :columns="columns"
+          row-key="id"
+          :loading="userStore.loading"
+          v-model:pagination="userStore.pagination"
+          @request="onRequest"
+          :rows-per-page-options="[5, 10, 20]"
+          :grid="isMobile"
+          :dense="isMobile"
+          flat
+          bordered
+        >
+          <!-- Desktop: chip de rol -->
+          <template #body-cell-rol_id="props">
+            <q-td align="center">
+              <q-chip
+                :color="roleName(props.row) === 'Administrador' ? 'green-7' : 'green-3'"
+                :text-color="roleName(props.row) === 'Administrador' ? 'white' : 'green-9'"
+                size="sm"
+              >
+                {{ roleName(props.row) }}
+              </q-chip>
+            </q-td>
+          </template>
+
+          <!-- Desktop: acciones -->
+          <template #body-cell-actions="props">
+            <q-td align="center">
+              <q-btn
+                v-can="PERMISSIONS.USERS_EDIT"
+                flat
+                dense
+                round
+                icon="edit"
+                color="green-7"
+                size="sm"
+                @click="openForm(props.row)"
+              >
+                <q-tooltip>Editar</q-tooltip>
+              </q-btn>
+              <q-btn
+                v-can="PERMISSIONS.USERS_DELETE"
+                flat
+                dense
+                round
+                icon="delete"
+                color="red-6"
+                size="sm"
+                @click="confirmDelete(props.row.id)"
+              >
+                <q-tooltip>Eliminar</q-tooltip>
+              </q-btn>
+            </q-td>
+          </template>
+
+          <!-- Móvil: tarjetas -->
+          <template #item="props">
+            <div class="q-pa-xs col-12">
+              <!-- Abre detalle al tocar la tarjeta -->
+              <q-card bordered class="cursor-pointer" @click="openDetail(props.row)">
+                <q-card-section class="q-pb-none">
+                  <div class="text-subtitle1">{{ props.row.nombre }} {{ props.row.apellido }}</div>
+                  <div class="text-caption text-grey-7">{{ props.row.email }}</div>
+                </q-card-section>
+
+                <q-separator inset />
+
+                <q-list dense>
+                  <q-item>
+                    <q-item-section>ID</q-item-section>
+                    <q-item-section side>{{ props.row.id }}</q-item-section>
+                  </q-item>
+                  <q-item>
+                    <q-item-section>DNI</q-item-section>
+                    <q-item-section side>{{ props.row.dni }}</q-item-section>
+                  </q-item>
+                  <q-item>
+                    <q-item-section>Celular</q-item-section>
+                    <q-item-section side>{{ props.row.celular }}</q-item-section>
+                  </q-item>
+                  <q-item>
+                    <q-item-section>Rol</q-item-section>
+                    <q-item-section side>
+                      <q-chip
+                        :color="roleName(props.row) === 'Administrador' ? 'primary' : 'secondary'"
+                        text-color="white"
+                        size="sm"
+                      >
+                        {{ roleName(props.row) }}
+                      </q-chip>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+
+                <q-card-actions align="right">
+                  <!-- Evita abrir el modal al hacer click en estos botones -->
+                  <q-btn
+                    dense
+                    flat
+                    round
+                    icon="edit"
+                    color="green-7"
+                    size="sm"
+                    @click.stop="openForm(props.row)"
+                  >
+                    <q-tooltip>Editar</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    dense
+                    flat
+                    round
+                    icon="delete"
+                    color="red-6"
+                    size="sm"
+                    @click.stop="confirmDelete(props.row.id)"
+                  >
+                    <q-tooltip>Eliminar</q-tooltip>
+                  </q-btn>
+                </q-card-actions>
+              </q-card>
+            </div>
+          </template>
+        </q-table>
+      </q-card>
+    </div>
 
     <!-- Modal de detalle -->
     <q-dialog v-model="detailOpen">
       <q-card style="max-width: 520px; width: 100%">
-        <q-card-section class="row items-center q-gutter-sm">
-          <q-avatar color="primary" text-color="white">{{ initials(detailUser) }}</q-avatar>
-          <div class="text-h6">
-            {{ detailUser?.nombre }} {{ detailUser?.apellido }}
-          </div>
+        <q-card-section class="row items-center q-gutter-sm bg-gradient-green text-white">
+          <q-avatar color="white" text-color="green-8" class="text-weight-bold">{{
+            initials(detailUser)
+          }}</q-avatar>
+          <div class="text-h6">{{ detailUser?.nombre }} {{ detailUser?.apellido }}</div>
           <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
+          <q-btn icon="close" flat round dense color="white" v-close-popup />
         </q-card-section>
 
         <q-separator />
@@ -144,8 +208,14 @@
         </q-list>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cerrar" v-close-popup />
-          <q-btn color="primary" label="Editar" @click="openFormFromDetail" />
+          <q-btn flat label="Cerrar" color="grey-7" v-close-popup />
+          <q-btn
+            v-can="PERMISSIONS.USERS_EDIT"
+            class="btn-green"
+            label="Editar"
+            icon="edit"
+            @click="openFormFromDetail"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -161,6 +231,7 @@ import { useUserStore } from 'stores/users'
 import Swal from 'sweetalert2'
 import UserForm from './UserForm.vue'
 import { useQuasar } from 'quasar'
+import { PERMISSIONS } from 'src/utils/permissions'
 
 const $q = useQuasar()
 const isMobile = computed(() => $q.screen.lt.md) // ahora se usa en q-table
@@ -221,8 +292,8 @@ const confirmDelete = (id) => {
     confirmButtonText: 'Eliminar',
     cancelButtonText: 'Cancelar',
     reverseButtons: true,
-    confirmButtonColor: '#c10015',
-    cancelButtonColor: '#1976d2',
+    confirmButtonColor: '#e53935',
+    cancelButtonColor: '#5a8f69',
   }).then(async (r) => {
     if (!r.isConfirmed) return
     const ok = await userStore.deleteUser(id)
@@ -255,6 +326,27 @@ function openFormFromDetail() {
 function initials(u) {
   if (!u) return ''
   const str = [u.nombre, u.apellido].filter(Boolean).join(' ').trim()
-  return str.split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase()
+  return str
+    .split(/\s+/)
+    .map((s) => s[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
 }
 </script>
+
+<style scoped>
+.bg-gradient-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-green:hover {
+  background: linear-gradient(135deg, #4a7f59 0%, #2d5f3d 100%);
+}
+</style>
