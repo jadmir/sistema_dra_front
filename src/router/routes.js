@@ -65,6 +65,27 @@ const routes = [
           requiresPermission: PERMISSIONS.DATA_VIEW,
         },
       },
+      {
+        path: '/variedadAnimal',
+        component: () => import('pages/variedadAnimal/VariedadPage.vue'),
+        meta: { requiresAuth: true, requiresPermission: PERMISSIONS.DATA_VIEW },
+      },
+      {
+        path: '/destinos',
+        component: () => import('pages/destinos/DestinoPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/natalidad-mortalidad',
+        component: () => import('pages/natalidadMortalidad/NatalidadMortalidadPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/registro-pecuario',
+        name: 'registro-pecuario',
+        component: () => import('pages/registroPecuario/RegistroPecuarioPage.vue'),
+        meta: { requiresAuth: true },
+      },
     ],
   },
   {
@@ -184,27 +205,6 @@ const routes = [
           requiresAuth: true,
           requiresPermission: PERMISSIONS.DATA_VIEW,
         },
-      },
-      {
-        path: '/variedadAnimal',
-        component: () => import('pages/variedadAnimal/VariedadPage.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: '/destinos',
-        component: () => import('pages/destinos/DestinoPage.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: '/natalidad-mortalidad',
-        component: () => import('pages/natalidadMortalidad/NatalidadMortalidadPage.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: '/registro-pecuario',
-        name: 'registro-pecuario',
-        component: () => import('pages/registroPecuario/RegistroPecuarioPage.vue'),
-        meta: { requiresAuth: true },
       },
     ],
   },

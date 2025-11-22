@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Reproductores -->
     <div class="q-mb-md">
       <div class="text-subtitle2 q-mb-sm">Saca Reproductores</div>
       <div class="row q-col-gutter-md items-end">

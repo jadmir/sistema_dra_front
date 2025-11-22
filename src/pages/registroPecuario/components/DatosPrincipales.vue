@@ -59,7 +59,6 @@
 import { computed } from 'vue'
 const props = defineProps({ modelValue: { type: Object, default: () => ({}) } })
 const emit = defineEmits(['update:modelValue'])
-// Use v-model from parent:
 const model = computed({
   get: () => props.modelValue,
   set: (v) => emit('update:modelValue', v),

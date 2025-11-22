@@ -117,33 +117,28 @@ import { ref, reactive, watch, computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { useRegistroPecuarioStore } from 'src/stores/registroPecuario'
 
-/* Tabs */
 import AnimalesTab from './components/AnimalesTab.vue'
 import LecheTab from './components/LecheTab.vue'
 import SacaTab from './components/SacaTab.vue'
 import NatalidadMortalidadTab from './components/NatalidadMortalidadTab.vue'
 import InformeTecnicoTab from './components/InformeTecnicoTab.vue'
 
-/* Props / Emits */
 const props = defineProps({
-  modelValue: { type: Boolean, default: false }, // para v-model en el dialog
-  registro: { type: [Object, null], default: null }, // registro para editar
+  modelValue: { type: Boolean, default: false },
+  registro: { type: [Object, null], default: null },
 })
 const emit = defineEmits(['update:modelValue', 'saved', 'close'])
 
 const $q = useQuasar()
 const store = useRegistroPecuarioStore()
 
-/* local state */
 const isOpen = ref(false)
 const tab = ref('animales')
 const saving = ref(false)
 
-/* computed */
 const editing = computed(() => !!props.registro)
 const registroId = computed(() => props.registro?.id ?? null)
 
-/* Form structure acorde a tu backend */
 const form = reactive({
   codigo_establo: '',
   ubigeo: '',
@@ -156,13 +151,13 @@ const form = reactive({
   producto_razon_social: '',
   direccion: '',
   ruc: '',
-  animales: [], // AgriAnimales[]
-  producto_leches: [], // AgriProductoLeche[] (campo backend: producto_leches)
+  animales: [], // AgriAnimales
+  producto_leches: [], // AgriProductoLeche
   leche_fresca: {}, // LecheFresca
-  saca_reproduccion: [], // SacaReproduccion[]
-  saca_vacuno_descarte: [], // SacaVacunoDescarte[]
-  natalidad: [], // AgriNatalidad[]
-  mortalidad: [], // AgriMortalidad[]
+  saca_reproduccion: [], // SacaReproduccion
+  saca_vacuno_descarte: [], // SacaVacunoDescarte
+  natalidad: [], // AgriNatalidad
+  mortalidad: [], // AgriMortalidad
   informe_tecnico: {
     informante: '',
     email: '',
@@ -174,7 +169,6 @@ const form = reactive({
   },
 })
 
-/* Sincronizar apertura del dialog con el prop modelValue */
 watch(
   () => props.modelValue,
   (val) => {
@@ -193,12 +187,10 @@ watch(
   { immediate: true },
 )
 
-/* Cuando el usuario cierre/abra el dialog desde dentro (isOpen cambia), avisar al padre */
 watch(isOpen, (val) => {
   emit('update:modelValue', val)
 })
 
-/* Si llega un registro para editar, llenamos el form */
 watch(
   () => props.registro,
   (val) => {
@@ -210,7 +202,6 @@ watch(
   },
   { immediate: true, deep: true },
 )
-/* Helpers */
 function resetLocalForm() {
   form.codigo_establo = ''
   form.ubigeo = ''
@@ -242,7 +233,6 @@ function resetLocalForm() {
   }
 }
 
-/* llena el form con la estructura que retorna tu backend en show() */
 function fillFormFromRegistro(reg) {
   form.codigo_establo = reg.codigo_establo ?? ''
   form.ubigeo = reg.ubigeo ?? ''
@@ -275,7 +265,6 @@ function fillFormFromRegistro(reg) {
   }
 }
 
-/* Cerrar dialog (emitir al padre) */
 function close() {
   isOpen.value = false
   resetLocalForm()
@@ -284,7 +273,6 @@ function close() {
 
 /* Validaciones sencillas antes de guardar */
 function validateBeforeSave() {
-  // Campos obligatorios según tu CONTROLLER
   const requiredFields = [
     { v: form.mes_de_referencia, label: 'Mes de referencia' },
     { v: form.anio, label: 'Año' },
@@ -303,7 +291,7 @@ function validateBeforeSave() {
     }
   }
 
-  // Validación especial para año
+  // Validación para año
   if (String(form.anio).length !== 4) {
     $q.notify({ type: 'negative', message: 'Ingrese un año válido (4 dígitos).' })
     tab.value = 'animales'
@@ -313,7 +301,6 @@ function validateBeforeSave() {
   return true
 }
 
-/* Construir payload final tal como lo espera tu backend */
 function buildPayload() {
   return {
     codigo_establo: form.codigo_establo || null,
@@ -342,7 +329,6 @@ function buildPayload() {
   }
 }
 
-/* Guardar (create o update) */
 async function guardarRegistro() {
   if (!validateBeforeSave()) return
 

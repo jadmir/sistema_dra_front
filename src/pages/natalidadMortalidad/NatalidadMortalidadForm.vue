@@ -135,6 +135,4 @@ function close() {
 }
 </script>
 
-<style scoped>
-/* opcionales */
-</style>
+<style scoped></style>

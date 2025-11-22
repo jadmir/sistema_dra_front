@@ -1,8 +1,7 @@
-<!-- src/pages/variedadAnimal/VariedadForm.vue -->
 <template>
   <q-dialog v-model="open" persistent transition-show="scale" transition-hide="scale">
     <q-card style="min-width: 360px; max-width: 700px">
-      <q-card-section class="bg-primary text-white">
+      <q-card-section class="bg-gradient-green text-white">
         <div class="text-h6">{{ isEdit ? 'Editar Variedad Animal' : 'Nueva Variedad Animal' }}</div>
       </q-card-section>
 
@@ -39,11 +38,10 @@
             </div>
           </div>
 
-          <!-- botones -->
           <div class="row justify-end q-gutter-sm q-mt-md">
             <q-btn flat label="Cancelar" color="grey" v-close-popup @click="close" />
             <q-btn
-              color="primary"
+              class="btn-green"
               :label="isEdit ? 'Actualizar' : 'Guardar'"
               type="submit"
               :loading="loading"
@@ -152,3 +150,18 @@ function close() {
   open.value = false
 }
 </script>
+<style scoped>
+.bg-gradient-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-green:hover {
+  background: linear-gradient(135deg, #4a7f59 0%, #2d5f3d 100%);
+}
+</style>

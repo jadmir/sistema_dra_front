@@ -103,7 +103,6 @@
             </q-td>
           </template>
 
-          <!-- Mobile item card -->
           <template #item="props">
             <div class="q-pa-xs col-12">
               <q-card bordered>
@@ -201,7 +200,6 @@ async function onExport() {
   }
 }
 
-// --------- CONFIRMAR ESTADO CON Swal ---------
 async function toggleEstado(row) {
   const nuevo = !row.estado
   const accion = nuevo ? 'activar' : 'desactivar'

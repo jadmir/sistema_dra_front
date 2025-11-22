@@ -103,7 +103,6 @@
             </q-td>
           </template>
 
-          <!-- Mobile card -->
           <template #item="props">
             <div class="q-pa-xs col-12">
               <q-card bordered>
@@ -167,7 +166,6 @@ const columns = [
   { name: 'actions', label: 'Acciones', align: 'center' },
 ]
 
-// --------- FUNCIONES ---------
 function openForm(registro = null) {
   selected.value = registro ? { ...registro } : null
   showForm.value = true

@@ -5,13 +5,13 @@
         class="q-pa-md q-mx-auto shadow-2 rounded-borders"
         style="max-width: 1000px; width: 100%"
       >
-        <div class="text-h5 text-center text-primary text-weight-bold q-mb-md">
+        <div class="text-h5 text-center text-grey-8 text-weight-bold q-mb-md">
           Gestión de Variedades de Animal
         </div>
 
         <div class="row justify-center q-mb-md">
           <q-btn
-            color="primary"
+            color="green-7"
             icon="add"
             label="Nueva variedad"
             class="q-mx-sm"
@@ -47,7 +47,6 @@
               </q-input>
             </div>
 
-            <!--Filtro por estado -->
             <div class="col-12 col-md-4">
               <q-select
                 dense
@@ -107,7 +106,7 @@
 
           <template #item="props">
             <div class="q-pa-xs col-12">
-              <q-card bordered flat class="cursor-pointer">
+              <q-card bordered flat class="cursor-pointer bg-gradient-green">
                 <q-card-section>
                   <div class="text-subtitle1">{{ props.row.nombre }}</div>
                   <div class="text-caption text-grey-7">
@@ -127,7 +126,12 @@
                     {{ props.row.estado ? 'Activo' : 'Inactivo' }}
                   </q-chip>
                   <q-space />
-                  <q-btn dense flat icon="edit" color="primary" @click.stop="openForm(props.row)" />
+                  <q-btn
+                    class="btn-green"
+                    label="Editar"
+                    icon="edit"
+                    @click.stop="openForm(props.row)"
+                  />
                   <q-btn
                     dense
                     flat
@@ -242,5 +246,19 @@ function toggleEstado(row) {
 <style scoped>
 .rounded-borders {
   border-radius: 10px;
+}
+
+.bg-gradient-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-green:hover {
+  background: linear-gradient(135deg, #4a7f59 0%, #2d5f3d 100%);
 }
 </style>

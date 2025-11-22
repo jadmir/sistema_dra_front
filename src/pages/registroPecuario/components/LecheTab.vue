@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Form agregar destino de leche -->
     <div class="row q-col-gutter-md items-end">
       <div class="col-12 col-md-5">
         <q-select
@@ -69,7 +68,7 @@ onMounted(async () => {
   destinoOptions.value = storeDest.destinos || []
 })
 
-// Tabla interna que mantiene el estado
+// Tabla interna
 const rows = ref([])
 
 // Columnas de la tabla
@@ -115,7 +114,6 @@ watch(
   { deep: true },
 )
 
-// Funciones de agregar / eliminar fila
 function addDestino() {
   if (!selectedDestino.value || (cantidad.value === null && precio.value === null)) return
 
@@ -131,7 +129,6 @@ function addDestino() {
 
   rows.value.push(newRow)
 
-  // limpiar inputs
   selectedDestino.value = null
   cantidad.value = null
   precio.value = null

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- FORM AGREGAR -->
     <div class="row q-col-gutter-md items-end">
       <div class="col-12 col-md-6">
         <q-select
@@ -48,13 +47,12 @@
 import { ref, watch, onMounted } from 'vue'
 import { useVariedadAnimalStore } from 'stores/variedadAnimal'
 
-/* PROPS */
 const props = defineProps({
   modelValue: { type: Array, default: () => [] },
 })
 const emit = defineEmits(['update:modelValue'])
 
-/* STORE */
+/* store */
 const storeVar = useVariedadAnimalStore()
 const variedadOptions = ref([])
 
@@ -91,7 +89,7 @@ watch(
   { immediate: true, deep: true },
 )
 
-/* AGREGAR FILA */
+/* AGREGAR */
 function addRow() {
   if (!selectedVariedad.value || !cantidad.value) return
 
@@ -105,7 +103,7 @@ function addRow() {
   const variety = variedadOptions.value.find((v) => v.id === selectedVariedad.value)
 
   const newRow = {
-    id: null, // nuevo registro
+    id: null,
     variedad_id: variety.id,
     variedad_nombre: variety.nombre,
     total: Number(cantidad.value),

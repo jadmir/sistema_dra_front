@@ -332,11 +332,29 @@ const pecuarioGroup = {
       permission: PERMISSIONS.DATA_VIEW,
     },
     {
-      title: 'Variedades',
-      caption: 'Gestión de variedades',
+      title: 'Variedad Animal',
+      caption: 'Gestión de Variedad Animal',
       icon: 'spa',
-      to: '/pecuario/variedades',
+      to: '/variedadAnimal',
       permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Destinos',
+      caption: 'Gestión de Destinos',
+      icon: 'place',
+      to: '/destinos',
+    },
+    {
+      title: 'Natalidad/Mortalidad',
+      caption: 'Gestión de Natalidad y Mortalidad',
+      icon: 'healing',
+      to: '/natalidad-mortalidad',
+    },
+    {
+      title: 'Registro Pecuario',
+      caption: 'Gestión de registros pecuarios',
+      icon: 'agriculture',
+      to: '/registro-pecuario',
     },
   ],
 }
