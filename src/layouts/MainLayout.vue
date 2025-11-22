@@ -234,6 +234,30 @@ const adminGroup = {
   children: [
     { title: 'Usuarios', caption: 'Gestión de usuarios', icon: 'group', to: '/usuarios' },
     { title: 'Roles', caption: 'Gestión de roles', icon: 'security', to: '/roles' },
+    {
+      title: 'Variedad Animal',
+      caption: 'Gestión de Variedad Animal',
+      icon: 'pets',
+      to: '/variedadAnimal',
+    },
+    {
+      title: 'Destinos',
+      caption: 'Gestión de Destinos',
+      icon: 'place',
+      to: '/destinos',
+    },
+    {
+      title: 'Natalidad/Mortalidad',
+      caption: 'Gestión de Natalidad y Mortalidad',
+      icon: 'healing',
+      to: '/natalidad-mortalidad',
+    },
+    {
+      title: 'Registro Pecuario',
+      caption: 'Gestión de registros pecuarios',
+      icon: 'agriculture',
+      to: '/registro-pecuario',
+    },
   ],
 }
 
