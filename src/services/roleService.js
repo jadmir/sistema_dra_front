@@ -1,21 +1,81 @@
 import { api } from 'boot/axios'
 
-const base = '/api/v1/roles' // ajusta si tu endpoint es otro
+const base = '/api/v1/roles'
 
-function normalizeToArray(payload) {
-  if (Array.isArray(payload)) return payload
-  if (Array.isArray(payload?.data)) return payload.data
-  if (Array.isArray(payload?.data?.data)) return payload.data.data
-  if (Array.isArray(payload?.roles)) return payload.roles
-  if (Array.isArray(payload?.items)) return payload.items
-  return []
+function normalizeResponse(payload) {
+  // Si es un array directo, devolverlo como data
+  if (Array.isArray(payload)) {
+    return {
+      data: payload,
+      total: payload.length,
+      current_page: 1,
+      per_page: payload.length,
+    }
+  }
+
+  // Si tiene estructura de paginación de Laravel
+  if (payload?.data && Array.isArray(payload.data)) {
+    return {
+      data: payload.data,
+      total: payload.total || payload.data.length,
+      current_page: payload.current_page || 1,
+      per_page: payload.per_page || 10,
+      last_page: payload.last_page || 1,
+    }
+  }
+
+  // Si tiene estructura alternativa con 'roles'
+  if (payload?.roles && Array.isArray(payload.roles)) {
+    return {
+      data: payload.roles,
+      total: payload.total || payload.roles.length,
+      current_page: payload.current_page || 1,
+      per_page: payload.per_page || 10,
+    }
+  }
+
+  // Si no hay datos, retornar vacío
+  return {
+    data: [],
+    total: 0,
+    current_page: 1,
+    per_page: 10,
+  }
 }
 
 export const roleService = {
-  // listado de roles
+  // listado de roles con paginación
   async getAll(params = {}) {
     const res = await api.get(base, { params })
-    return normalizeToArray(res.data)
+    return normalizeResponse(res.data)
+  },
+
+  // búsqueda de roles (busca por ID o nombre)
+  async search(query = '', params = {}) {
+    const searchParams = { ...params }
+
+    // Si el query está vacío, buscar todos
+    if (!query || !String(query).trim()) {
+      // Sin parámetros de búsqueda
+      const res = await api.get(`${base}/search`, { params: searchParams })
+      return normalizeResponse(res.data)
+    }
+
+    // Detectar si es búsqueda por ID (solo números)
+    const isNumeric = /^\d+$/.test(String(query).trim())
+
+    if (isNumeric) {
+      // Si es número, solo enviar parámetro 'id'
+      searchParams.id = query
+    } else {
+      // Si es texto, solo enviar parámetro 'q'
+      searchParams.q = query
+    }
+
+    const res = await api.get(`${base}/search`, {
+      params: searchParams,
+    })
+    return normalizeResponse(res.data)
   },
 
   // obtener un rol por id
@@ -24,7 +84,25 @@ export const roleService = {
     return res.data
   },
 
-  //crear un rol
+  // (Opcional) si tienes GET /api/v1/roles/{id}/permisos
+  async getPermissions(roleId) {
+    const res = await api.get(`${base}/${roleId}/permisos`)
+    // Para permisos solo necesitamos el array
+    const normalized = normalizeResponse(res.data)
+    return normalized.data
+  },
+
+  // Añade modo (sync o append). Por defecto sync.
+  async assignPermissions(roleId, permissionIds, mode = 'sync') {
+    const payload = {
+      permisos: Array.isArray(permissionIds) ? permissionIds : [],
+      modo: mode, // 'sync' o 'append'
+    }
+    const res = await api.post(`${base}/${roleId}/permisos`, payload)
+    return res.data
+  },
+
+  // crear un rol
   async create(data) {
     const res = await api.post(base, data)
     return res.data
@@ -39,11 +117,6 @@ export const roleService = {
   // eliminar un rol
   async delete(id) {
     const res = await api.delete(`${base}/${id}`)
-    return res.data
-  },
-
-  async assignPermissions(roleId, permissions) {
-    const res = await api.post(`${base}/${roleId}/permissions`, { permissions })
     return res.data
   },
 }

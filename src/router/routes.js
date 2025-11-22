@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'src/utils/permissions'
+
 const routes = [
   {
     path: '/login',
@@ -11,14 +13,177 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue'), meta: { requiresAuth: true } },
       {
+        path: '/perfil',
+        component: () => import('pages/PerfilPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
         path: '/usuarios',
         component: () => import('pages/users/UsersPage.vue'),
-        meta: { requiresAuth: true, requiresRole: 1 }, // Solo admin
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.USERS_VIEW,
+        },
       },
       {
         path: '/roles',
         component: () => import('pages/roles/RolesPage.vue'),
-        meta: { requiresAuth: true, requiresRole: 1 }, // Solo admin
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.ROLES_VIEW,
+        },
+      },
+      {
+        path: '/permisos',
+        component: () => import('pages/Permisos/PermisosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.ROLES_VIEW,
+        },
+      },
+    ],
+  },
+  {
+    path: '/pecuario',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'saca-clases',
+        name: 'PecuarioSacaClases',
+        component: () => import('pages/saca_clases/SacaClasesPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'variedades',
+        name: 'PecuarioVariedades',
+        component: () => import('pages/variedades/VariedadPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+    ],
+  },
+  {
+    path: '/agricultura',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'subsectores',
+        name: 'AgriculturaSubsectores',
+        component: () => import('pages/cultivos/SubsectoresPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'grupos',
+        name: 'AgriculturaGrupos',
+        component: () => import('pages/cultivos/GruposPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'subgrupos',
+        name: 'AgriculturaSubgrupos',
+        component: () => import('pages/cultivos/SubgruposPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'cultivos',
+        name: 'AgriculturaCultivos',
+        component: () => import('pages/cultivos/CultivosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+    ],
+  },
+  {
+    path: '/precios',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'registro',
+        name: 'PreciosRegistro',
+        component: () => import('pages/precios/RegistroMuestrasPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'validacion',
+        name: 'PreciosValidacion',
+        component: () => import('pages/precios/ValidacionMuestrasPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'reportes',
+        name: 'PreciosReportes',
+        component: () => import('pages/precios/ReportesPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'productos',
+        name: 'PreciosProductos',
+        component: () => import('pages/precios/ProductosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'categorias',
+        name: 'PreciosCategorias',
+        component: () => import('pages/precios/CategoriasPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'mercados',
+        name: 'PreciosMercados',
+        component: () => import('pages/precios/MercadosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'encuestadores',
+        name: 'PreciosEncuestadores',
+        component: () => import('pages/precios/EncuestadoresPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'productividad-encuestadores',
+        name: 'PreciosProductividadEncuestadores',
+        component: () => import('pages/precios/ProductividadEncuestadoresPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
       },
       {
         path: '/variedadAnimal',

@@ -48,9 +48,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { permissionService } from 'src/services/permissionService'
-import { roleService } from 'src/services/roleService'
+import { ref, onMounted, watch, computed } from 'vue'
+import { permissionService } from 'src/services/permissionService' // <-- corregido
+import { roleService } from 'src/services/roleService' // <-- corregido
 import { useQuasar } from 'quasar'
 
 const props = defineProps({
@@ -71,26 +71,36 @@ const loading = ref(false)
 const saving = ref(false)
 
 onMounted(async () => {
+  if (open.value) await loadData()
+})
+
+watch(
+  () => open.value,
+  async (v) => {
+    if (v) await loadData()
+  },
+)
+
+async function loadData() {
   loading.value = true
   try {
     const data = await permissionService.getAll()
-    permisos.value = data.map((p) => ({
-      label: p.nombre,
-      value: p.id,
-    }))
-    // carga permisos actuales del rol
+    permisos.value = data.map((p) => ({ label: p.nombre, value: p.id }))
+
     if (props.role?.id) {
       const actuales = await roleService.getPermissions(props.role.id)
-      selected.value = (Array.isArray(actuales) ? actuales : actuales?.data || []).map((p) => p.id)
+      selected.value = actuales.map((p) => p.id)
+    } else {
+      selected.value = []
     }
   } catch (error) {
-    // <-- usar la variable
+    // <-- usar la variable para evitar no-unused-vars
     console.error(error)
     $q.notify({ type: 'negative', message: 'Error al cargar permisos' })
   } finally {
     loading.value = false
   }
-})
+}
 
 const save = async () => {
   saving.value = true

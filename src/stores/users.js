@@ -44,9 +44,12 @@ export const useUserStore = defineStore('users', {
 
     async fetchRoles() {
       try {
-        this.roles = await roleService.getAll()
+        const response = await roleService.getAll()
+        // roleService.getAll() ahora retorna { data: [...], total: ... }
+        this.roles = response.data || response || []
       } catch (error) {
         console.error('Error al cargar roles:', error)
+        this.roles = []
       }
     },
 

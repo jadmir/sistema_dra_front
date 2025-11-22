@@ -15,7 +15,18 @@ export const useAuthStore = defineStore('auth', {
       state.user
         ? `${state.user.nombre || state.user.firstName || ''} ${state.user.apellido || state.user.lastName || ''}`.trim()
         : '',
-    roleName: (state) => state.user?.rol?.nombre || '',
+    roleName: (state) => {
+      // Si tiene el objeto rol con nombre, usarlo
+      if (state.user?.rol?.nombre) return state.user.rol.nombre
+
+      // Si solo tiene rol_id, mapear a nombre (temporal mientras backend no envía rol completo)
+      if (state.user?.rol_id === 1) return 'Administrador'
+      if (state.user?.rol_id === 2) return 'Técnico Editor'
+      if (state.user?.rol_id === 3) return 'Supervisor'
+      if (state.user?.rol_id === 4) return 'Consulta Pública'
+
+      return ''
+    },
   },
   actions: {
     async login(email, password) {
