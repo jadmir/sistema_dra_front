@@ -14,15 +14,20 @@ export const useRegistroPecuarioStore = defineStore('registroPecuario', {
   }),
 
   actions: {
-    async fetchRegistros(page = 1) {
+    async fetchRegistros(page = 1, filters = {}) {
       this.loading = true
       this.error = null
       try {
         const params = {
           page,
           per_page: this.pagination.rowsPerPage,
-          search: this.search || undefined,
+          search: filters.search || undefined,
+          fecha_inicio: filters.fecha_inicio || undefined,
+          fecha_fin: filters.fecha_fin || undefined,
+          variedad: filters.variedad || undefined,
+          tipo: filters.tipo || undefined,
         }
+
         const res = await api.get('/api/v1/agri-registros-pecuarios', { params })
         this.registros = res.data.data || []
         this.pagination.page = res.data.current_page ?? page

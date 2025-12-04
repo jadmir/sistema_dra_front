@@ -1,112 +1,254 @@
 <template>
   <q-dialog v-model="isOpen" persistent maximized>
     <q-card style="min-width: 800px; max-width: 1200px">
-      <q-toolbar class="bg-primary text-white">
-        <q-toolbar-title>
+      <q-card-section class="bg-gradient-green text-white flex justify-between items-center">
+        <div class="text-h6">
           {{ editing ? 'Editar Registro Pecuario' : 'Nuevo Registro Pecuario' }}
-        </q-toolbar-title>
-        <q-btn flat dense round icon="close" @click="close" />
-      </q-toolbar>
+        </div>
+        <q-btn flat dense round icon="close" class="text-white" @click="close" />
+      </q-card-section>
 
       <q-card-section class="q-pt-md">
-        <div class="row q-col-gutter-md">
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.codigo_establo" label="Código Establo" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.ubigeo" label="Ubigeo" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.nombre_establo" label="Nombre Establo" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input
-              dense
-              outlined
-              v-model="form.producto_razon_social"
-              label="Razón social del producto"
-            />
-          </div>
+        <q-form ref="formRef" @submit.prevent="guardarRegistro">
+          <div class="row q-col-gutter-md">
+            <!-- Codigo Establo -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.codigo_establo"
+                label="Código Establo"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'El código de establo es requerido']"
+              />
+            </div>
 
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.mes_de_referencia" label="Mes de referencia" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.anio" label="Año" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.ruc" label="RUC" />
-          </div>
+            <!-- Ubigeo -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.ubigeo"
+                label="Ubigeo"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'El ubigeo es requerido']"
+              >
+                <template #prepend>
+                  <q-icon name="location_on" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.region" label="Región" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.provincia" label="Provincia" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.distrito" label="Distrito" />
-          </div>
-          <div class="col-12 col-md-4">
-            <q-input dense outlined v-model="form.direccion" label="Direccion" />
-          </div>
+            <!-- Nombre Establo -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.nombre_establo"
+                label="Nombre Establo"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'El nombre del establo es requerido']"
+              >
+                <template #prepend>
+                  <q-icon name="store" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-          <div class="col-12">
-            <q-separator spaced />
-          </div>
+            <!-- Razón social -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.producto_razon_social"
+                label="Razón social del producto"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'La razón social es requerida']"
+              >
+                <template #prepend>
+                  <q-icon name="business" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-          <div class="col-12">
-            <q-tabs v-model="tab" class="text-primary" dense>
-              <q-tab name="animales" label="Animales" />
-              <q-tab name="leche" label="Leche" />
-              <q-tab name="saca" label="Saca" />
-              <q-tab name="natalidad" label="Natalidad / Mortalidad" />
-              <q-tab name="informe" label="Informe Técnico" />
-            </q-tabs>
+            <!-- Mes de referencia -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.mes_de_referencia"
+                label="Mes de referencia"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'El mes de referencia es requerido']"
+              >
+                <template #prepend>
+                  <q-icon name="calendar_month" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-            <q-tab-panels v-model="tab" animated>
-              <q-tab-panel name="animales" class="q-pa-md">
-                <AnimalesTab v-model="form.animales" :registro-id="registroId" />
-              </q-tab-panel>
+            <!-- Año -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.anio"
+                label="Año"
+                color="green-7"
+                lazy-rules
+                :rules="[
+                  (v) => !!v || 'El año es requerido',
+                  (v) => String(v).length === 4 || 'Debe ser un año válido (4 dígitos)',
+                ]"
+              >
+                <template #prepend>
+                  <q-icon name="event" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-              <q-tab-panel name="leche" class="q-pa-md">
-                <LecheTab
-                  v-model:producto_leches="form.producto_leches"
-                  v-model:leche_fresca="form.leche_fresca"
-                />
-              </q-tab-panel>
+            <!-- RUC -->
+            <div class="col-12 col-md-4">
+              <q-input dense outlined v-model="form.ruc" label="RUC" type="tel" color="green-7">
+                <template #prepend>
+                  <q-icon name="badge" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-              <q-tab-panel name="saca" class="q-pa-md">
-                <SacaTab
-                  v-model:sacaReproduccion="form.saca_reproduccion"
-                  v-model:sacaVacuno="form.saca_vacuno_descarte"
-                />
-              </q-tab-panel>
+            <!-- Región -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.region"
+                label="Región"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'La región es requerida']"
+              >
+                <template #prepend>
+                  <q-icon name="map" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-              <q-tab-panel name="natalidad" class="q-pa-md">
-                <NatalidadMortalidadTab
-                  v-model:natalidad="form.natalidad"
-                  v-model:mortalidad="form.mortalidad"
-                />
-              </q-tab-panel>
+            <!-- Provincia -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.provincia"
+                label="Provincia"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'La provincia es requerida']"
+              >
+                <template #prepend>
+                  <q-icon name="location_city" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-              <q-tab-panel name="informe" class="q-pa-md">
-                <InformeTecnicoTab v-model="form.informe_tecnico" />
+            <!-- Distrito -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.distrito"
+                label="Distrito"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'El distrito es requerido']"
+              >
+                <template #prepend>
+                  <q-icon name="place" color="green-7" />
+                </template>
+              </q-input>
+            </div>
 
-                <!-- BOTONES SOLO EN ESTA PESTAÑA -->
-                <div class="row justify-end q-gutter-sm q-mt-lg">
-                  <q-btn flat label="Cancelar" @click="close" />
-                  <q-btn
-                    color="primary"
-                    label="Guardar Registro"
-                    :loading="saving"
-                    @click="guardarRegistro"
+            <!-- Dirección -->
+            <div class="col-12 col-md-4">
+              <q-input
+                dense
+                outlined
+                v-model="form.direccion"
+                label="Direccion"
+                color="green-7"
+                lazy-rules
+                :rules="[(v) => !!v || 'La direccion es requerida']"
+              >
+                <template #prepend>
+                  <q-icon name="home" color="green-7" />
+                </template>
+              </q-input>
+            </div>
+
+            <div class="col-12">
+              <q-tabs
+                v-model="tab"
+                class="tabs-verdes"
+                active-color="white"
+                indicator-color="green-8"
+                inline-label
+              >
+                <q-tab name="animales" label="Animales" />
+                <q-tab name="leche" label="Leche" />
+                <q-tab name="saca" label="Saca" />
+                <q-tab name="natalidad" label="Natalidad / Mortalidad" />
+                <q-tab name="informe" label="Informe Técnico" />
+              </q-tabs>
+
+              <q-tab-panels v-model="tab" class="tab-panel-verde">
+                <q-tab-panel name="animales" class="q-pa-md">
+                  <AnimalesTab v-model="form.animales" :registro-id="registroId" />
+                </q-tab-panel>
+
+                <q-tab-panel name="leche" class="q-pa-md">
+                  <LecheTab
+                    v-model:producto_leches="form.producto_leches"
+                    v-model:leche_fresca="form.leche_fresca"
                   />
-                </div>
-              </q-tab-panel>
-            </q-tab-panels>
+                </q-tab-panel>
+
+                <q-tab-panel name="saca" class="q-pa-md">
+                  <SacaTab
+                    v-model:sacaReproduccion="form.saca_reproduccion"
+                    v-model:sacaVacuno="form.saca_vacuno_descarte"
+                  />
+                </q-tab-panel>
+
+                <q-tab-panel name="natalidad" class="q-pa-md">
+                  <NatalidadMortalidadTab
+                    v-model:natalidad="form.natalidad"
+                    v-model:mortalidad="form.mortalidad"
+                  />
+                </q-tab-panel>
+
+                <q-tab-panel name="informe" class="q-pa-md">
+                  <InformeTecnicoTab v-model="form.informe_tecnico" />
+
+                  <!--BOTONES SOLO EN ESTA PESTAÑA -->
+                  <div class="row justify-end q-gutter-sm q-mt-lg">
+                    <q-btn flat label="Cancelar" color="grey-7" @click="close" />
+                    <q-btn
+                      class="btn-green"
+                      :label="editing ? 'Actualizar Registro' : 'Guardar Registro'"
+                      :icon="editing ? 'save' : 'add'"
+                      :loading="saving"
+                      @click="guardarRegistro"
+                    />
+                  </div>
+                </q-tab-panel>
+              </q-tab-panels>
+            </div>
           </div>
-        </div>
+        </q-form>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -361,5 +503,41 @@ async function guardarRegistro() {
 <style scoped>
 .q-dialog__inner {
   max-width: 1200px;
+}
+
+.bg-gradient-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  color: white;
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #5a8f69 0%, #3d6f4d 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-green:hover {
+  background: linear-gradient(135deg, #4a7f59 0%, #2d5f3d 100%);
+}
+
+.tabs-verdes {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  border-radius: 8px;
+}
+
+.tabs-verdes .q-tab {
+  font-weight: 600;
+}
+
+.tabs-verdes .q-tab--active {
+  background-color: #2e7d32 !important;
+  color: white !important;
+}
+
+.tab-panel-verde {
+  background: #f1f8e9;
+  border-radius: 8px;
+  padding: 16px;
 }
 </style>

@@ -14,11 +14,13 @@
           map-options
         />
       </div>
+
       <div class="col-12 col-md-3">
         <q-input v-model.number="natalidadCantidad" type="number" label="Cantidad" dense outlined />
       </div>
+
       <div class="col-12 col-md-auto">
-        <q-btn color="primary" label="Agregar" @click="addNatalidad" dense />
+        <q-btn color="green-7" label="Agregar" @click="addNatalidad" dense />
       </div>
     </div>
 
@@ -39,6 +41,32 @@
             color="negative"
             @click="removeNatalidad(props.row.uid)" /></q-td
       ></template>
+      <template #bottom="scope">
+        <div class="full-width q-pa-sm flex flex-center">
+          <div class="flex items-center q-gutter-sm">
+            <span class="text-weight-medium">Registros por página:</span>
+
+            <q-select
+              dense
+              borderless
+              v-model="scope.pagination.rowsPerPage"
+              :options="scope.pagination.rowsPerPageOptions"
+              style="width: 70px"
+              color="green-7"
+            />
+          </div>
+
+          <q-pagination
+            class="q-ml-xl"
+            v-model="scope.pagination.page"
+            :max="scope.pagesNumber"
+            boundary-links
+            direction-links
+            dense
+            color="green-7"
+          />
+        </div>
+      </template>
     </q-table>
 
     <q-separator class="q-my-md" />
@@ -57,6 +85,7 @@
           map-options
         />
       </div>
+
       <div class="col-12 col-md-3">
         <q-input
           v-model.number="mortalidadCantidad"
@@ -66,8 +95,9 @@
           outlined
         />
       </div>
+
       <div class="col-12 col-md-auto">
-        <q-btn color="primary" label="Agregar" @click="addMortalidad" dense />
+        <q-btn color="green-7" label="Agregar" @click="addMortalidad" dense />
       </div>
     </div>
 
@@ -88,6 +118,33 @@
             color="negative"
             @click="removeMortalidad(props.row.uid)" /></q-td
       ></template>
+
+      <template #bottom="scope">
+        <div class="full-width q-pa-sm flex flex-center">
+          <div class="flex items-center q-gutter-sm">
+            <span class="text-weight-medium">Registros por página:</span>
+
+            <q-select
+              dense
+              borderless
+              v-model="scope.pagination.rowsPerPage"
+              :options="scope.pagination.rowsPerPageOptions"
+              style="width: 70px"
+              color="green-7"
+            />
+          </div>
+
+          <q-pagination
+            class="q-ml-xl"
+            v-model="scope.pagination.page"
+            :max="scope.pagesNumber"
+            boundary-links
+            direction-links
+            dense
+            color="green-7"
+          />
+        </div>
+      </template>
     </q-table>
   </div>
 </template>
@@ -137,14 +194,14 @@ const rowsMortalidad = ref(
 )
 
 const colsNatalidad = [
-  { name: 'concepto', label: 'Concepto', field: 'concepto_text' },
-  { name: 'cantidad', label: 'Cantidad', field: 'cantidad', align: 'center' },
-  { name: 'actions', label: 'Acciones' },
+  { name: 'concepto', label: 'CONCEPTO', field: 'concepto_text', align: 'center' },
+  { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', align: 'center' },
+  { name: 'actions', label: 'ACCIONES', align: 'center' },
 ]
 const colsMortalidad = [
-  { name: 'variedad', label: 'Variedad', field: 'variedad_nombre' },
-  { name: 'cantidad', label: 'Cantidad', field: 'cantidad', align: 'center' },
-  { name: 'actions', label: 'Acciones' },
+  { name: 'variedad', label: 'VARIEDAD', field: 'variedad_nombre', align: 'center' },
+  { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', align: 'center' },
+  { name: 'actions', label: 'ACCIONES', align: 'center' },
 ]
 
 const selectedNatalidad = ref(null)

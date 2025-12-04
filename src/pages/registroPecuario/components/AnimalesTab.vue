@@ -12,22 +12,40 @@
           outlined
           emit-value
           map-options
+          color="green-7"
         />
       </div>
 
       <div class="col-12 col-md-3">
-        <q-input v-model.number="cantidad" type="number" min="1" label="Total" dense outlined />
+        <q-input
+          color="green-7"
+          v-model.number="cantidad"
+          type="number"
+          min="1"
+          label="Total"
+          dense
+          outlined
+        />
       </div>
 
       <div class="col-12 col-md-auto">
-        <q-btn color="primary" label="Agregar" @click="addRow" dense />
+        <q-btn color="green-7" label="Agregar" @click="addRow" dense unelevated />
       </div>
     </div>
 
     <!-- TABLA -->
-    <q-table class="q-mt-md" :rows="rows" :columns="cols" row-key="uid" dense flat>
+    <q-table
+      class="q-mt-md"
+      :rows="rows"
+      :columns="cols"
+      row-key="uid"
+      dense
+      bordered
+      separator="horizontal"
+      :striped="true"
+    >
       <template #body-cell-variedad="props">
-        <q-td>{{ props.row.variedad_nombre }}</q-td>
+        <q-td align="center">{{ props.row.variedad_nombre }}</q-td>
       </template>
 
       <template #body-cell-total="props">
@@ -39,6 +57,33 @@
           <q-btn dense flat icon="delete" color="negative" @click="removeRow(props.row.uid)" />
         </q-td>
       </template>
+
+      <template #bottom="scope">
+        <div class="full-width q-pa-sm flex flex-center">
+          <div class="flex items-center q-gutter-sm">
+            <span class="text-weight-medium">Registros por página:</span>
+
+            <q-select
+              dense
+              borderless
+              v-model="scope.pagination.rowsPerPage"
+              :options="scope.pagination.rowsPerPageOptions"
+              style="width: 70px"
+            />
+          </div>
+
+          <!-- Paginación -->
+          <q-pagination
+            class="q-ml-xl"
+            v-model="scope.pagination.page"
+            :max="scope.pagesNumber"
+            boundary-links
+            direction-links
+            dense
+            color="green-7"
+          />
+        </div>
+      </template>
     </q-table>
   </div>
 </template>
@@ -46,7 +91,9 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useVariedadAnimalStore } from 'stores/variedadAnimal'
+import { useQuasar } from 'quasar'
 
+const $q = useQuasar()
 const props = defineProps({
   modelValue: { type: Array, default: () => [] },
 })
@@ -66,9 +113,9 @@ onMounted(async () => {
 const rows = ref([])
 
 const cols = [
-  { name: 'variedad', label: 'Variedad', field: 'variedad_nombre' },
-  { name: 'total', label: 'Total', field: 'total', align: 'center' },
-  { name: 'actions', label: 'Acciones', align: 'center' },
+  { name: 'variedad', label: 'VARIEDAD', field: 'variedad_nombre', align: 'center' },
+  { name: 'total', label: 'TOTAL', field: 'total', align: 'center' },
+  { name: 'actions', label: 'ACCIONES', align: 'center' },
 ]
 
 const selectedVariedad = ref(null)
@@ -91,12 +138,32 @@ watch(
 
 /* AGREGAR */
 function addRow() {
-  if (!selectedVariedad.value || !cantidad.value) return
+  if (!selectedVariedad.value) {
+    $q.notify({
+      type: 'warning',
+      message: 'Selecciona una variedad.',
+    })
+    return
+  }
 
-  // evitar repetidos
-  if (rows.value.some((r) => Number(r.variedad_id) === Number(selectedVariedad.value))) {
-    cantidad.value = 0
+  if (!cantidad.value || cantidad.value <= 0) {
+    $q.notify({
+      type: 'warning',
+      message: 'Ingresa un total válido.',
+    })
+    return
+  }
+
+  //variedades duplicadas
+  const existe = rows.value.some((r) => Number(r.variedad_id) === Number(selectedVariedad.value))
+
+  if (existe) {
+    $q.notify({
+      type: 'negative',
+      message: 'Esta variedad ya fue agregada.',
+    })
     selectedVariedad.value = null
+    cantidad.value = 0
     return
   }
 

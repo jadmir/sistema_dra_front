@@ -14,34 +14,62 @@
             outlined
             emit-value
             map-options
+            color="green-7"
           />
         </div>
+
         <div class="col-12 col-md-3">
           <q-input
             v-model.number="reprodUnidad"
             type="number"
+            min="1"
             label="Saca (unidades)"
+            color="green-7"
             dense
             outlined
           />
         </div>
+
         <div class="col-12 col-md-2">
           <q-input
             v-model.number="reprodPrecio"
             type="number"
+            step="0.01"
+            min="0"
             label="Precio venta"
+            color="green-7"
             dense
             outlined
           />
         </div>
+
         <div class="col-12 col-md-auto">
-          <q-btn color="primary" label="Agregar" @click="addReprod" dense />
+          <q-btn color="green-7" label="Agregar" @click="addReprod" dense unelevated />
         </div>
       </div>
 
-      <q-table :rows="rowsReprod" :columns="colsReprod" row-key="uid" dense flat class="q-mt-sm">
-        <template #body-cell-actions="props"
-          ><q-td align="center"
+      <q-table
+        :rows="rowsReprod"
+        :columns="colsReprod"
+        row-key="uid"
+        dense
+        bordered
+        separator="horizontal"
+        flat
+        class="q-mt-sm"
+      >
+        <template #body-cell-precio="props">
+          <q-td align="center">
+            {{
+              props.row.precio_venta !== null
+                ? 'S/ ' + Number(props.row.precio_venta).toFixed(2)
+                : '—'
+            }}
+          </q-td>
+        </template>
+
+        <template #body-cell-actions="props">
+          <q-td align="center"
             ><q-btn
               dense
               flat
@@ -49,6 +77,33 @@
               color="negative"
               @click="removeReprod(props.row.uid)" /></q-td
         ></template>
+
+        <template #bottom="scope">
+          <div class="full-width q-pa-sm flex flex-center">
+            <div class="flex items-center q-gutter-sm">
+              <span class="text-weight-medium">Registros por página:</span>
+
+              <q-select
+                dense
+                borderless
+                v-model="scope.pagination.rowsPerPage"
+                :options="scope.pagination.rowsPerPageOptions"
+                style="width: 70px"
+                color="green-7"
+              />
+            </div>
+
+            <q-pagination
+              class="q-ml-xl"
+              v-model="scope.pagination.page"
+              :max="scope.pagesNumber"
+              boundary-links
+              direction-links
+              dense
+              color="green-7"
+            />
+          </div>
+        </template>
       </q-table>
     </div>
 
@@ -67,29 +122,73 @@
             outlined
             emit-value
             map-options
+            color="green-7"
           />
         </div>
+
         <div class="col-12 col-md-2">
           <q-input
             v-model.number="sacaUnidad"
             type="number"
+            min="1"
             label="Saca (unidades)"
             dense
             outlined
+            color="green-7"
           />
         </div>
+
         <div class="col-12 col-md-2">
-          <q-input v-model.number="sacaPeso" type="number" label="Peso vivo (Kg)" dense outlined />
+          <q-input
+            v-model.number="sacaPeso"
+            type="number"
+            min="1"
+            step="0.01"
+            label="Peso vivo (Kg)"
+            dense
+            outlined
+            color="green-7"
+          />
         </div>
+
         <div class="col-12 col-md-2">
-          <q-input v-model.number="sacaPrecio" type="number" label="Precio venta" dense outlined />
+          <q-input
+            v-model.number="sacaPrecio"
+            type="number"
+            step="0.01"
+            min="0"
+            label="Precio venta"
+            dense
+            outlined
+            color="green-7"
+          />
         </div>
+
         <div class="col-12 col-md-auto">
-          <q-btn color="primary" label="Agregar" @click="addSaca" dense />
+          <q-btn color="green-7" label="Agregar" @click="addSaca" dense unelevated />
         </div>
       </div>
 
-      <q-table :rows="rowsSaca" :columns="colsSaca" row-key="uid" dense flat class="q-mt-sm">
+      <q-table
+        :rows="rowsSaca"
+        :columns="colsSaca"
+        row-key="uid"
+        dense
+        bordered
+        separator="horizontal"
+        flat
+        class="q-mt-sm"
+      >
+        <template #body-cell-precio="props">
+          <q-td align="center">
+            {{
+              props.row.precio_venta !== null
+                ? 'S/ ' + Number(props.row.precio_venta).toFixed(2)
+                : '—'
+            }}
+          </q-td>
+        </template>
+
         <template #body-cell-actions="props"
           ><q-td align="center"
             ><q-btn
@@ -99,6 +198,33 @@
               color="negative"
               @click="removeSaca(props.row.uid)" /></q-td
         ></template>
+
+        <template #bottom="scope">
+          <div class="full-width q-pa-sm flex flex-center">
+            <div class="flex items-center q-gutter-sm">
+              <span class="text-weight-medium">Registros por página:</span>
+
+              <q-select
+                dense
+                borderless
+                v-model="scope.pagination.rowsPerPage"
+                :options="scope.pagination.rowsPerPageOptions"
+                style="width: 70px"
+                color="green-7"
+              />
+            </div>
+
+            <q-pagination
+              class="q-ml-xl"
+              v-model="scope.pagination.page"
+              :max="scope.pagesNumber"
+              boundary-links
+              direction-links
+              dense
+              color="green-7"
+            />
+          </div>
+        </template>
       </q-table>
     </div>
   </div>
@@ -148,17 +274,17 @@ const rowsSaca = ref(
 )
 
 const colsReprod = [
-  { name: 'variedad', label: 'Variedad', field: 'variedad_nombre' },
-  { name: 'saca', label: 'Saca', field: 'saca_unidad', align: 'center' },
-  { name: 'precio', label: 'Precio', field: 'precio_venta', align: 'center' },
-  { name: 'actions', label: 'Acciones' },
+  { name: 'variedad', label: 'VARIEDAD', field: 'variedad_nombre', align: 'center' },
+  { name: 'saca', label: 'SACA', field: 'saca_unidad', align: 'center' },
+  { name: 'precio', label: 'PRECIO', field: 'precio_venta', align: 'center' },
+  { name: 'actions', label: 'ACCIONES', align: 'center' },
 ]
 const colsSaca = [
-  { name: 'variedad', label: 'Variedad', field: 'variedad_nombre' },
-  { name: 'saca', label: 'Saca', field: 'saca_unidad', align: 'center' },
-  { name: 'peso', label: 'Peso (Kg)', field: 'peso_promedio_vivo', align: 'center' },
-  { name: 'precio', label: 'Precio', field: 'precio_venta', align: 'center' },
-  { name: 'actions', label: 'Acciones' },
+  { name: 'variedad', label: 'VARIEDAD', field: 'variedad_nombre', align: 'center' },
+  { name: 'saca', label: 'SACA', field: 'saca_unidad', align: 'center' },
+  { name: 'peso', label: 'PESO (Kg)', field: 'peso_promedio_vivo', align: 'center' },
+  { name: 'precio', label: 'PRECIO', field: 'precio_venta', align: 'center' },
+  { name: 'actions', label: 'ACCIONES', align: 'center' },
 ]
 
 const selReprodVar = ref(null)
