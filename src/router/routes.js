@@ -48,7 +48,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: 'saca-clases',
+        path: '/saca-clases',
         name: 'PecuarioSacaClases',
         component: () => import('pages/saca_clases/SacaClasesPage.vue'),
         meta: {
@@ -68,23 +68,104 @@ const routes = [
       {
         path: '/variedadAnimal',
         component: () => import('pages/variedadAnimal/VariedadPage.vue'),
-        meta: { requiresAuth: true, requiresPermission: PERMISSIONS.DATA_VIEW },
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
       },
       {
         path: '/destinos',
         component: () => import('pages/destinos/DestinoPage.vue'),
-        meta: { requiresAuth: true },
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
       },
       {
         path: '/natalidad-mortalidad',
         component: () => import('pages/natalidadMortalidad/NatalidadMortalidadPage.vue'),
-        meta: { requiresAuth: true },
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
       },
       {
         path: '/registro-pecuario',
         name: 'registro-pecuario',
         component: () => import('pages/registroPecuario/RegistroPecuarioPage.vue'),
-        meta: { requiresAuth: true },
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+    ],
+  },
+  {
+    path: '/agricola',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '/regiones',
+        name: 'AgricolaRegiones',
+        component: () => import('pages/agricola/regiones/RegionesPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: '/provincias',
+        name: 'AgricolaProvincias',
+        component: () => import('pages/agricola/provincias/ProvinciasPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: '/distritos',
+        name: 'AgricolaDistritos',
+        component: () => import('pages/agricola/distritos/DistritosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: '/cultivos',
+        name: 'AgricolaCultivos',
+        component: () => import('pages/agricola/cultivos/CultivoCatalogosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: '/unidades',
+        name: 'AgricolaUnidades',
+        component: () => import('pages/agricola/unidades/UnidadesPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: '/variable-catalogo',
+        name: 'AgricolaVariableCatalogo',
+        component: () => import('pages/agricola/variableCatalogo/VariablesCatalogoPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: '/registro-agricola',
+        name: 'RegistroAgricola',
+        component: () => import('pages/agricola/AgricolaPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
       },
     ],
   },

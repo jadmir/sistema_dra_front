@@ -328,7 +328,7 @@ const pecuarioGroup = {
       title: 'Saca Clases',
       caption: 'Gestión de saca clases',
       icon: 'category',
-      to: '/pecuario/saca-clases',
+      to: '/saca-clases',
       permission: PERMISSIONS.DATA_VIEW,
     },
     {
@@ -343,18 +343,21 @@ const pecuarioGroup = {
       caption: 'Gestión de Destinos',
       icon: 'place',
       to: '/destinos',
+      permission: PERMISSIONS.DATA_VIEW,
     },
     {
       title: 'Natalidad/Mortalidad',
       caption: 'Gestión de Natalidad y Mortalidad',
       icon: 'healing',
       to: '/natalidad-mortalidad',
+      permission: PERMISSIONS.DATA_VIEW,
     },
     {
       title: 'Registro Pecuario',
       caption: 'Gestión de registros pecuarios',
       icon: 'agriculture',
       to: '/registro-pecuario',
+      permission: PERMISSIONS.DATA_VIEW,
     },
   ],
 }
@@ -365,6 +368,61 @@ const agriculturaGroup = {
   icon: 'eco',
   permission: PERMISSIONS.DATA_VIEW,
   children: [
+    {
+      title: 'Registro Agrícola',
+      caption: 'Gestión de registros agrícolas',
+      icon: 'agriculture',
+      children: [
+        {
+          title: 'Regiones',
+          icon: 'map',
+          to: { name: 'AgricolaRegiones' },
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Provincias',
+          caption: 'Catálogo de provincias',
+          icon: 'location_city',
+          to: { name: 'AgricolaProvincias' },
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Distritos',
+          caption: 'Catálogo de distritos',
+          icon: 'location_city',
+          to: { name: 'AgricolaDistritos' },
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Cultivos',
+          caption: 'Catálogo de Cultivos Catalogo',
+          icon: 'spa',
+          to: { name: 'AgricolaCultivos' },
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Unidades',
+          caption: 'Catálogo de Unidades',
+          icon: 'straighten',
+          to: { name: 'AgricolaUnidades' },
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Variable Catalogo',
+          caption: 'Catálogo de Variable Catalogo',
+          icon: 'tune',
+          to: { name: 'AgricolaVariableCatalogo' },
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Registro Agrícola',
+          caption: 'Gestión de registros agrícolas',
+          icon: 'agriculture',
+          to: { name: 'RegistroAgricola' },
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+      ],
+    },
     {
       title: 'Agricultura',
       caption: 'Gestión de cultivos agrícolas',
