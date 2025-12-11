@@ -1,101 +1,124 @@
 <template>
-  <q-page padding>
-    <!-- BUSQUEDA Y NUEVO -->
-    <div class="row q-col-gutter-md items-center">
-      <div class="col-12 col-md-4">
-        <q-input
-          v-model="search"
-          filled
-          dense
-          placeholder="Buscar distrito..."
-          @keyup.enter="getData"
-          color="green"
-          clear-icon="close"
-          clearable
-        >
-          <template #append><q-icon name="search" /></template>
-        </q-input>
-      </div>
-      <div class="col-auto">
-        <q-btn label="Nuevo Distrito" color="green" unelevated icon="add" @click="openDialog()" />
-      </div>
-    </div>
-
-    <q-separator spaced />
-
-    <!-- TABLA -->
-    <q-table
-      :rows="distritos"
-      :columns="columns"
-      row-key="id"
-      flat
-      bordered
-      color="green"
-      no-data-label="No hay distritos registrados"
-    >
-      <template #body-cell-provincia_id="props">
-        <q-td>{{ props.row.provincia?.nombre || '' }}</q-td>
-      </template>
-
-      <template #body-cell-estado="props">
-        <q-td align="center">
-          <div class="row items-center no-wrap q-gutter-sm">
-            <q-toggle
-              v-model="props.row.estado"
-              color="green"
-              dense
-              @update:model-value="toggleEstado(props.row)"
-            />
-            <q-badge :color="props.row.estado ? 'green' : 'red'" class="badge-status">
-              {{ props.row.estado ? 'Activo' : 'Inactivo' }}
-            </q-badge>
+  <q-page padding class="bg-grey-1">
+    <div class="q-pa-md flex flex-center">
+      <q-card
+        class="q-pa-md q-mx-auto shadow-2 rounded-borders"
+        style="max-width: 1400px; width: 100%"
+      >
+        <div class="col">
+          <div class="text-h5 text-weight-medium text-grey-8">
+            <q-icon name="location_city" color="green-7" size="sm" class="q-mr-sm" />
+            Distritos
           </div>
-        </q-td>
-      </template>
+          <div class="text-caption text-grey-6">
+            Administra los distritos dentro de cada provincia
+          </div>
+        </div>
 
-      <template #body-cell-actions="props">
-        <q-td align="center">
-          <q-btn dense flat round icon="edit" color="green" @click="openDialog(props.row)" />
-        </q-td>
-      </template>
-    </q-table>
+        <!-- BUSQUEDA Y NUEVO -->
+        <div class="row q-col-gutter-md items-center">
+          <div class="col-12 col-md-4">
+            <q-input
+              v-model="search"
+              filled
+              dense
+              placeholder="Buscar distrito..."
+              @keyup.enter="getData"
+              color="green"
+              clear-icon="close"
+              clearable
+            >
+              <template #append><q-icon name="search" /></template>
+            </q-input>
+          </div>
+          <div class="col-auto">
+            <q-btn
+              label="Nuevo Distrito"
+              color="green"
+              unelevated
+              icon="add"
+              @click="openDialog()"
+            />
+          </div>
+        </div>
 
-    <div class="row justify-center q-mt-md">
-      <q-pagination
-        v-model="pagination.page"
-        :max="pagination.totalPages"
-        color="green"
-        boundary-links
-        @update:model-value="getData"
-      />
-    </div>
+        <q-separator spaced />
 
-    <q-dialog v-model="dialog">
-      <q-card style="width: 420px">
-        <q-card-section class="text-h6">
-          {{ form.id ? 'Editar Distrito' : 'Nuevo Distrito' }}
-        </q-card-section>
+        <!-- TABLA -->
+        <q-table
+          :rows="distritos"
+          :columns="columns"
+          row-key="id"
+          flat
+          bordered
+          color="green"
+          no-data-label="No hay distritos registrados"
+        >
+          <template #body-cell-provincia_id="props">
+            <q-td>{{ props.row.provincia?.nombre || '' }}</q-td>
+          </template>
 
-        <q-card-section>
-          <q-input v-model="form.nombre" label="Nombre" filled dense color="green" />
-          <q-select
-            v-model="form.provincia_id"
-            label="Provincia"
-            :options="provincias"
-            option-label="nombre"
-            option-value="id"
-            filled
-            dense
+          <template #body-cell-estado="props">
+            <q-td align="center">
+              <div class="row items-center no-wrap q-gutter-sm">
+                <q-toggle
+                  v-model="props.row.estado"
+                  color="green"
+                  dense
+                  @update:model-value="toggleEstado(props.row)"
+                />
+                <q-badge :color="props.row.estado ? 'green' : 'red'" class="badge-status">
+                  {{ props.row.estado ? 'Activo' : 'Inactivo' }}
+                </q-badge>
+              </div>
+            </q-td>
+          </template>
+
+          <template #body-cell-actions="props">
+            <q-td align="center">
+              <q-btn dense flat round icon="edit" color="green" @click="openDialog(props.row)" />
+            </q-td>
+          </template>
+        </q-table>
+
+        <div class="row justify-center q-mt-md">
+          <q-pagination
+            v-model="pagination.page"
+            :max="pagination.totalPages"
             color="green"
+            boundary-links
+            @update:model-value="getData"
           />
-        </q-card-section>
+        </div>
 
-        <q-card-actions align="right">
-          <q-btn flat label="Cancelar" color="red" v-close-popup />
-          <q-btn flat label="Guardar" color="green" @click="save" />
-        </q-card-actions>
+        <q-dialog v-model="dialog">
+          <q-card style="width: 420px">
+            <q-card-section class="text-h6">
+              {{ form.id ? 'Editar Distrito' : 'Nuevo Distrito' }}
+            </q-card-section>
+
+            <q-card-section>
+              <q-input v-model="form.nombre" label="Nombre" filled dense color="green" />
+              <q-select
+                v-model="form.provincia_id"
+                label="Provincia"
+                :options="provincias"
+                option-label="nombre"
+                option-value="id"
+                filled
+                dense
+                color="green"
+              />
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="Cancelar" color="red" v-close-popup />
+              <q-btn flat label="Guardar" color="green" @click="save" />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </q-card>
-    </q-dialog>
+    </div>
   </q-page>
 </template>
 

@@ -371,7 +371,7 @@ const agriculturaGroup = {
     {
       title: 'Registro Agrícola',
       caption: 'Gestión de registros agrícolas',
-      icon: 'agriculture',
+      icon: 'yard',
       children: [
         {
           title: 'Regiones',
@@ -417,7 +417,7 @@ const agriculturaGroup = {
         {
           title: 'Registro Agrícola',
           caption: 'Gestión de registros agrícolas',
-          icon: 'agriculture',
+          icon: 'eco',
           to: { name: 'RegistroAgricola' },
           permission: PERMISSIONS.DATA_VIEW,
         },

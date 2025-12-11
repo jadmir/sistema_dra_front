@@ -1,105 +1,128 @@
 <template>
-  <q-page padding>
-    <div class="row q-col-gutter-md items-center">
-      <div class="col-12 col-md-4">
-        <q-input
-          v-model="search"
-          filled
-          dense
-          placeholder="Buscar provincia..."
-          @keyup.enter="getData"
-          color="green"
-          clear-icon="close"
-          clearable
-        >
-          <template #append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-
-      <div class="col-auto">
-        <q-btn label="Nueva Provincia" color="green" unelevated icon="add" @click="openDialog()" />
-      </div>
-    </div>
-
-    <q-separator spaced />
-
-    <q-table
-      :rows="provincias"
-      :columns="columns"
-      row-key="id"
-      flat
-      bordered
-      color="green"
-      no-data-label="No hay provincias registradas"
-    >
-      <template #body-cell-estado="props">
-        <q-td align="center">
-          <div class="row items-center no-wrap q-gutter-sm">
-            <q-toggle
-              v-model="props.row.estado"
-              color="green"
-              dense
-              @update:model-value="toggleEstado(props.row)"
-            />
-            <q-badge :color="props.row.estado ? 'green' : 'red'" class="badge-status">
-              {{ props.row.estado ? 'Activo' : 'Inactivo' }}
-            </q-badge>
+  <q-page padding class="bg-grey-1">
+    <div class="q-pa-md flex flex-center">
+      <q-card
+        class="q-pa-md q-mx-auto shadow-2 rounded-borders"
+        style="max-width: 1400px; width: 100%"
+      >
+        <div class="col">
+          <div class="text-h5 text-weight-medium text-grey-8">
+            <q-icon name="map" color="green-7" size="sm" class="q-mr-sm" />
+            Provincias
           </div>
-        </q-td>
-      </template>
+          <div class="text-caption text-grey-6">
+            Gestiona las provincias asociadas a cada región
+          </div>
+        </div>
 
-      <template #body-cell-actions="props">
-        <q-td align="center">
-          <q-btn dense flat round icon="edit" color="green" @click="openDialog(props.row)" />
-        </q-td>
-      </template>
-    </q-table>
+        <div class="row q-col-gutter-md items-center">
+          <div class="col-12 col-md-4">
+            <q-input
+              v-model="search"
+              filled
+              dense
+              placeholder="Buscar provincia..."
+              @keyup.enter="getData"
+              color="green"
+              clear-icon="close"
+              clearable
+            >
+              <template #append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </div>
 
-    <div class="row justify-center q-mt-md">
-      <q-pagination
-        v-model="pagination.page"
-        :max="pagination.totalPages"
-        color="green"
-        boundary-links
-        @update:model-value="getData"
-      />
-    </div>
+          <div class="col-auto">
+            <q-btn
+              label="Nueva Provincia"
+              color="green"
+              unelevated
+              icon="add"
+              @click="openDialog()"
+            />
+          </div>
+        </div>
 
-    <q-dialog v-model="dialog">
-      <q-card style="width: 420px">
-        <q-card-section class="text-h6">
-          {{ form.id ? 'Editar Provincia' : 'Nueva Provincia' }}
-        </q-card-section>
+        <q-separator spaced />
 
-        <q-card-section>
-          <q-select
-            v-model="form.region_id"
-            label="Región"
-            :options="regiones"
-            option-label="nombre"
-            option-value="id"
-            filled
-            dense
+        <q-table
+          :rows="provincias"
+          :columns="columns"
+          row-key="id"
+          flat
+          bordered
+          color="green"
+          no-data-label="No hay provincias registradas"
+        >
+          <template #body-cell-estado="props">
+            <q-td align="center">
+              <div class="row items-center no-wrap q-gutter-sm">
+                <q-toggle
+                  v-model="props.row.estado"
+                  color="green"
+                  dense
+                  @update:model-value="toggleEstado(props.row)"
+                />
+                <q-badge :color="props.row.estado ? 'green' : 'red'" class="badge-status">
+                  {{ props.row.estado ? 'Activo' : 'Inactivo' }}
+                </q-badge>
+              </div>
+            </q-td>
+          </template>
+
+          <template #body-cell-actions="props">
+            <q-td align="center">
+              <q-btn dense flat round icon="edit" color="green" @click="openDialog(props.row)" />
+            </q-td>
+          </template>
+        </q-table>
+
+        <div class="row justify-center q-mt-md">
+          <q-pagination
+            v-model="pagination.page"
+            :max="pagination.totalPages"
             color="green"
+            boundary-links
+            @update:model-value="getData"
           />
-          <q-input
-            v-model="form.nombre"
-            label="Nombre"
-            filled
-            dense
-            color="green"
-            class="q-mt-sm"
-          />
-        </q-card-section>
+        </div>
 
-        <q-card-actions align="right">
-          <q-btn flat label="Cancelar" color="red" v-close-popup />
-          <q-btn flat label="Guardar" color="green" @click="save" />
-        </q-card-actions>
+        <q-dialog v-model="dialog">
+          <q-card style="width: 420px">
+            <q-card-section class="text-h6">
+              {{ form.id ? 'Editar Provincia' : 'Nueva Provincia' }}
+            </q-card-section>
+
+            <q-card-section>
+              <q-select
+                v-model="form.region_id"
+                label="Región"
+                :options="regiones"
+                option-label="nombre"
+                option-value="id"
+                filled
+                dense
+                color="green"
+              />
+              <q-input
+                v-model="form.nombre"
+                label="Nombre"
+                filled
+                dense
+                color="green"
+                class="q-mt-sm"
+              />
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="Cancelar" color="red" v-close-popup />
+              <q-btn flat label="Guardar" color="green" @click="save" />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </q-card>
-    </q-dialog>
+    </div>
   </q-page>
 </template>
 
@@ -129,9 +152,14 @@ const getData = async () => {
     const r = await api.get('/api/v1/agri-provincias', {
       params: { per_page: 10, page: pagination.value.page, search: search.value },
     })
-    provincias.value = r.data.data.data
-    pagination.value.totalPages = r.data.data.last_page
+
+    const resp = r.data
+
+    provincias.value = Array.isArray(resp.data.data) ? resp.data.data : []
+
+    pagination.value.totalPages = resp.data.last_page ?? 1
   } catch {
+    provincias.value = []
     Notify.create({ type: 'negative', message: 'Error cargando provincias' })
   }
 }
