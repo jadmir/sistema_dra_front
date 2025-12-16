@@ -188,6 +188,120 @@ const routes = [
     ],
   },
   {
+    path: '/siea',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'encuestas',
+        name: 'SieaEncuestas',
+        component: () => import('pages/siea/EncuestasPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'encuestas/validacion',
+        name: 'SieaEncuestasValidacion',
+        component: () => import('pages/siea/EncuestasValidacionPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW, // TODO: Cambiar a PERMISSIONS.ENCUESTAS_VALIDAR
+        },
+      },
+      {
+        path: 'encuestas/estadisticas',
+        name: 'SieaEncuestasEstadisticas',
+        component: () => import('pages/siea/EncuestasEstadisticasPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW, // TODO: Cambiar a PERMISSIONS.ENCUESTAS_ESTADISTICAS
+        },
+      },
+      {
+        path: 'encuestadores',
+        name: 'SieaEncuestadores',
+        component: () => import('pages/siea/EncuestadoresPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'supervisores',
+        name: 'SieaSupervisores',
+        component: () => import('pages/siea/SupervisoresPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'maquinaria',
+        name: 'SieaMaquinaria',
+        component: () => import('pages/siea/MaquinariaPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'fertilizantes',
+        name: 'SieaFertilizantes',
+        component: () => import('pages/siea/FertilizantesPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'agroquimicos',
+        name: 'SieaAgroquimicos',
+        component: () => import('pages/siea/AgroquimicosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'reportes-maquinaria',
+        name: 'SieaReportesMaquinaria',
+        component: () => import('pages/siea/ReportesMaquinariaPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'reportes-fertilizantes',
+        name: 'SieaReportesFertilizantes',
+        component: () => import('pages/siea/ReportesFertilizantesPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'reportes-agroquimicos',
+        name: 'SieaReportesAgroquimicos',
+        component: () => import('pages/siea/ReportesAgroquimicosPage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+      {
+        path: 'reportes-transporte',
+        name: 'SieaReportesTransporte',
+        component: () => import('pages/siea/ReportesTransportePage.vue'),
+        meta: {
+          requiresAuth: true,
+          requiresPermission: PERMISSIONS.DATA_VIEW,
+        },
+      },
+    ],
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },

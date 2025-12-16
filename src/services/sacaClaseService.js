@@ -1,6 +1,6 @@
 import { api } from 'boot/axios'
 
-const base = '/api/v1/saca_clases'
+const base = '/v1/saca_clases'
 
 export const sacaClaseService = {
   async getAll(page = 1, perPage = 10) {

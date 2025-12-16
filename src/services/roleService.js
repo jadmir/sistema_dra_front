@@ -1,6 +1,6 @@
 import { api } from 'boot/axios'
 
-const base = '/api/v1/roles'
+const base = '/v1/roles'
 
 function normalizeResponse(payload) {
   // Si es un array directo, devolverlo como data
@@ -84,7 +84,7 @@ export const roleService = {
     return res.data
   },
 
-  // (Opcional) si tienes GET /api/v1/roles/{id}/permisos
+  // (Opcional) si tienes GET /v1/roles/{id}/permisos
   async getPermissions(roleId) {
     const res = await api.get(`${base}/${roleId}/permisos`)
     // Para permisos solo necesitamos el array

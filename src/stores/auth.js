@@ -34,7 +34,7 @@ export const useAuthStore = defineStore('auth', {
         this.loading = true
         this.error = null
 
-        const res = await api.post('/api/login', { email, password })
+        const res = await api.post('/login', { email, password })
         const data = res.data
 
         this.access_token = data.access_token
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth', {
       if (!this.refresh_token) throw new Error('No hay refresh_token')
       try {
         // usa el api del boot (baseURL + interceptores)
-        const { data } = await api.post('/api/refresh', { refresh: this.refresh_token })
+        const { data } = await api.post('/refresh', { refresh: this.refresh_token })
         const newAccess = data?.access || data?.access_token
         if (!newAccess) throw new Error('Respuesta inválida al refrescar token')
 
@@ -76,7 +76,7 @@ export const useAuthStore = defineStore('auth', {
         // intento alterno si el backend usa 'refresh_token'
         if (e?.response?.status === 400 || e?.response?.status === 401) {
           try {
-            const { data } = await api.post('/api/refresh', { refresh_token: this.refresh_token })
+            const { data } = await api.post('/refresh', { refresh_token: this.refresh_token })
             const newAccess = data?.access || data?.access_token
             if (!newAccess) throw new Error('Respuesta inválida al refrescar token')
             this.access_token = newAccess

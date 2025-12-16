@@ -1,6 +1,6 @@
 import { api } from 'src/boot/axios'
 
-const BASE_URL = '/api/precios'
+const BASE_URL = '/precios'
 
 export const preciosService = {
   // ========== PRODUCTOS ==========
@@ -114,89 +114,158 @@ export const preciosService = {
   },
 
   // ========== MUESTRAS ==========
+  /**
+   * Listar muestras con filtros y paginación
+   * @param {Object} params - Filtros: page, per_page, search, producto_id, mercado_id, encuestador_id, fecha_desde, fecha_hasta, estado
+   */
   async getMuestras(params = {}) {
     const response = await api.get(`${BASE_URL}/muestras`, { params })
-    return response.data.data || response.data
+    return response.data
   },
 
+  /**
+   * Obtener detalle de una muestra
+   */
   async getMuestraById(id) {
     const response = await api.get(`${BASE_URL}/muestras/${id}`)
-    return response.data.data || response.data
+    return response.data
   },
 
+  /**
+   * Crear nueva muestra de precio
+   * @param {Object} data - producto_id, mercado_id, encuestador_id, fecha_registro, precio_minimo, precio_maximo, precio_frecuente, unidad_medida, cantidad_muestra, observaciones
+   */
   async createMuestra(data) {
-    console.log('🔵 [SERVICIO] createMuestra - Datos recibidos:', data)
-    console.log('🔵 [SERVICIO] URL completa:', `${BASE_URL}/muestras`)
-    console.log('🔵 [SERVICIO] Tipo de dato precio:', typeof data.precio, data.precio)
-
-    try {
-      const response = await api.post(`${BASE_URL}/muestras`, data)
-      console.log('🟢 [SERVICIO] Respuesta exitosa:', response)
-      return response.data
-    } catch (error) {
-      console.error('🔴 [SERVICIO] Error en createMuestra:', error)
-      console.error('🔴 [SERVICIO] Error response:', error.response)
-      throw error
-    }
+    const response = await api.post(`${BASE_URL}/muestras`, data)
+    return response.data
   },
 
+  /**
+   * Actualizar muestra (solo si está en estado pendiente)
+   */
   async updateMuestra(id, data) {
     const response = await api.put(`${BASE_URL}/muestras/${id}`, data)
     return response.data
   },
 
+  /**
+   * Eliminar muestra (solo si está en estado pendiente)
+   */
   async deleteMuestra(id) {
     const response = await api.delete(`${BASE_URL}/muestras/${id}`)
     return response.data
   },
 
-  async validarMuestra(id) {
-    const response = await api.post(`${BASE_URL}/muestras/${id}/validar`)
+  /**
+   * Validar muestra individual
+   * @param {number} id - ID de la muestra
+   * @param {string} observaciones_validacion - Observaciones opcionales
+   */
+  async validarMuestra(id, observaciones_validacion = null) {
+    const response = await api.post(`${BASE_URL}/muestras/${id}/validar`, {
+      observaciones_validacion,
+    })
     return response.data
   },
 
-  async validarMuestrasLote(ids) {
-    const response = await api.post(`${BASE_URL}/muestras/validar-lote`, { ids })
+  /**
+   * Validar múltiples muestras en lote
+   * @param {Array} muestra_ids - Array de IDs de muestras
+   * @param {string} observaciones_validacion - Observaciones opcionales
+   */
+  async validarMuestrasLote(muestra_ids, observaciones_validacion = null) {
+    const response = await api.post(`${BASE_URL}/muestras/validar-lote`, {
+      muestra_ids,
+      observaciones_validacion,
+    })
     return response.data
   },
 
+  /**
+   * Obtener muestras pendientes de validación
+   */
   async getMuestrasPendientes() {
-    const response = await api.get(`${BASE_URL}/muestras/pendientes`)
-    return response.data.data || response.data
+    const response = await api.get(`${BASE_URL}/muestras`, {
+      params: { estado: 'pendiente' },
+    })
+    return response.data
   },
 
   // ========== REPORTES ==========
+  /**
+   * Obtener reporte comparativo de precios
+   * @param {Object} params - producto_id (req), mercado_id, fecha_desde (req), fecha_hasta (req), agrupar_por (dia/semana/mes)
+   */
   async getReporteComparativo(params = {}) {
     const response = await api.get(`${BASE_URL}/reportes/comparativo`, { params })
-    return response.data.data || response.data
-  },
-
-  async generarReporteComparativo(data) {
-    const response = await api.post(`${BASE_URL}/reportes/generar-comparativo`, data)
     return response.data
   },
 
+  /**
+   * Generar y descargar reporte comparativo en PDF o Excel
+   * @param {Object} data - producto_ids[], fecha_desde, fecha_hasta, formato (pdf/excel), incluir_graficos, agrupar_por
+   * @returns {Blob} Archivo descargable
+   */
+  async generarReporteComparativo(data) {
+    const response = await api.post(`${BASE_URL}/reportes/generar-comparativo`, data, {
+      responseType: 'blob',
+    })
+    return response
+  },
+
+  /**
+   * Obtener resumen de muestras por periodo
+   * @param {Object} params - fecha_desde, fecha_hasta, encuestador_id, mercado_id
+   */
   async getResumenMuestras(params = {}) {
     const response = await api.get(`${BASE_URL}/reportes/resumen-muestras`, { params })
     return response.data
   },
 
+  /**
+   * Obtener histórico de precios de un producto
+   * @param {number} productoId - ID del producto
+   * @param {Object} params - fecha_desde, fecha_hasta, mercado_id, intervalo (dia/semana/mes)
+   */
   async getReporteHistorico(productoId, params = {}) {
     const response = await api.get(`${BASE_URL}/reportes/historico/${productoId}`, { params })
     return response.data
   },
 
-  async exportarReportePDF(reporteId) {
-    const response = await api.get(`${BASE_URL}/reportes/${reporteId}/pdf`, {
-      responseType: 'blob',
-    })
-    return response.data
-  },
+  /**
+   * Descargar reporte en formato específico
+   * @param {string} formato - 'pdf' o 'excel'
+   * @param {Object} filtros - Filtros del reporte
+   */
+  async descargarReporte(formato, filtros) {
+    const response = await api.post(
+      `${BASE_URL}/reportes/generar-comparativo`,
+      { ...filtros, formato },
+      { responseType: 'blob' },
+    )
 
-  async exportarReporteExcel(reporteId) {
-    const response = await api.get(`${BASE_URL}/reportes/${reporteId}/excel`, {
-      responseType: 'blob',
+    // Crear nombre de archivo
+    const fecha = new Date().toISOString().split('T')[0]
+    const extension = formato === 'excel' ? 'xlsx' : 'pdf'
+    const nombreArchivo = `reporte_comparativo_${fecha}.${extension}`
+
+    // Descargar archivo
+    const blob = new Blob([response.data], {
+      type:
+        formato === 'excel'
+          ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          : 'application/pdf',
     })
-    return response.data
+
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = nombreArchivo
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+
+    return nombreArchivo
   },
 }

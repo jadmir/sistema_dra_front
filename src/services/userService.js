@@ -1,6 +1,6 @@
 import { api } from 'src/boot/axios'
 
-const endpoint = '/api/v1/usuarios'
+const endpoint = '/v1/usuarios'
 
 export const userService = {
   //listado con paginacion y filtros opcionales

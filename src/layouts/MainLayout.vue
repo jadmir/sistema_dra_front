@@ -260,10 +260,10 @@ async function submitChangePassword() {
     // PUT y fallback a PATCH si el backend lo requiere
     let res
     try {
-      res = await api.put('/api/v1/perfil/password', payload)
+      res = await api.put('/v1/perfil/password', payload)
     } catch (e) {
       if (e?.response?.status === 405) {
-        res = await api.patch('/api/v1/perfil/password', payload)
+        res = await api.patch('/v1/perfil/password', payload)
       } else {
         throw e
       }
@@ -451,6 +451,108 @@ const preciosGroup = {
   ],
 }
 
+// NUEVO: Grupo "SIEA"
+const sieaGroup = {
+  title: 'SIEA',
+  icon: 'analytics',
+  caption: 'Sistema Estadística Agraria',
+  permission: PERMISSIONS.DATA_VIEW,
+  children: [
+    {
+      title: 'Encuestas',
+      caption: 'Formularios F-1, F-4, F-6, F-14',
+      icon: 'assignment',
+      to: '/siea/encuestas',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Validar Encuestas',
+      caption: 'Panel de supervisión',
+      icon: 'verified',
+      to: '/siea/encuestas/validacion',
+      permission: PERMISSIONS.DATA_VIEW, // TODO: Cambiar a PERMISSIONS.ENCUESTAS_VALIDAR
+    },
+    {
+      title: 'Estadísticas',
+      caption: 'Dashboard y métricas',
+      icon: 'query_stats',
+      to: '/siea/encuestas/estadisticas',
+      permission: PERMISSIONS.DATA_VIEW, // TODO: Cambiar a PERMISSIONS.ENCUESTAS_ESTADISTICAS
+    },
+    {
+      title: 'Encuestadores',
+      caption: 'Gestión de encuestadores',
+      icon: 'person',
+      to: '/siea/encuestadores',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Supervisores',
+      caption: 'Gestión de supervisores',
+      icon: 'supervisor_account',
+      to: '/siea/supervisores',
+      permission: PERMISSIONS.DATA_VIEW,
+    },
+    {
+      title: 'Catálogos',
+      caption: 'Insumos y equipos',
+      icon: 'inventory_2',
+      permission: PERMISSIONS.DATA_VIEW,
+      children: [
+        {
+          title: 'Maquinaria',
+          caption: 'Equipos agrícolas',
+          icon: 'precision_manufacturing',
+          to: '/siea/maquinaria',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Fertilizantes',
+          caption: 'Insumos agrícolas',
+          icon: 'science',
+          to: '/siea/fertilizantes',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Agroquímicos',
+          caption: 'Plaguicidas',
+          icon: 'warning',
+          to: '/siea/agroquimicos',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Reportes Maquinaria',
+          caption: 'Exportar F-1',
+          icon: 'assessment',
+          to: '/siea/reportes-maquinaria',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Reportes Fertilizantes',
+          caption: 'Exportar F-4',
+          icon: 'eco',
+          to: '/siea/reportes-fertilizantes',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Reportes Agroquímicos',
+          caption: 'Exportar F-6',
+          icon: 'pest_control',
+          to: '/siea/reportes-agroquimicos',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+        {
+          title: 'Reportes Transporte',
+          caption: 'Exportar F-14',
+          icon: 'local_shipping',
+          to: '/siea/reportes-transporte',
+          permission: PERMISSIONS.DATA_VIEW,
+        },
+      ],
+    },
+  ],
+}
+
 // Define tus otros enlaces aquí (o déjalo vacío si no los usas)
 const baseLinks = [
   // { title: 'Inicio', caption: 'Dashboard', icon: 'home', to: '/' },
@@ -458,7 +560,7 @@ const baseLinks = [
 
 // Lista final filtrada por permisos
 const linksList = computed(() => {
-  const list = [adminGroup, pecuarioGroup, agriculturaGroup, preciosGroup, ...baseLinks]
+  const list = [adminGroup, pecuarioGroup, agriculturaGroup, preciosGroup, sieaGroup, ...baseLinks]
 
   // Si es Administrador (rol_id = 1 O nombre = 'Administrador'), mostrar todo sin filtrar
   const isAdmin = auth.user?.rol?.nombre === 'Administrador' || auth.user?.rol_id === 1

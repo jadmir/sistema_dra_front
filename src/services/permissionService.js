@@ -1,6 +1,6 @@
 import { api } from 'boot/axios'
 
-const base = '/api/v1/permisos' // ← ajustado a español
+const base = '/v1/permisos' // ← ajustado a español
 
 function normalize(payload) {
   if (Array.isArray(payload)) return payload

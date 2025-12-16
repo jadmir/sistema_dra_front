@@ -1,6 +1,6 @@
 import { api } from 'src/boot/axios'
 
-const BASE_URL = '/api/precios/reportes/encuestadores'
+const BASE_URL = '/precios/reportes/encuestadores'
 
 export default {
   /**

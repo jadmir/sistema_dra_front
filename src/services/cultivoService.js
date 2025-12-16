@@ -2,7 +2,7 @@ import { api } from 'src/boot/axios'
 
 export const cultivoService = {
   async getAll() {
-    const response = await api.get('/api/v1/cultivos', {
+    const response = await api.get('/v1/cultivos', {
       params: { with: 'subgrupo.grupo.subsector' },
     })
     // Si viene paginado, retornar solo el array de data
@@ -14,33 +14,33 @@ export const cultivoService = {
     const params = isNumeric
       ? { id: query, with: 'subgrupo.grupo.subsector' }
       : { q: query, with: 'subgrupo.grupo.subsector' }
-    const response = await api.get('/api/v1/cultivos/search', { params })
+    const response = await api.get('/v1/cultivos/search', { params })
     return response.data.data || response.data
   },
 
   async getById(id) {
-    const response = await api.get(`/api/v1/cultivos/${id}`)
+    const response = await api.get(`/v1/cultivos/${id}`)
     return response.data.data || response.data
   },
 
   async create(data) {
-    const response = await api.post('/api/v1/cultivos', data)
+    const response = await api.post('/v1/cultivos', data)
     return response.data
   },
 
   async update(id, data) {
-    const response = await api.put(`/api/v1/cultivos/${id}`, data)
+    const response = await api.put(`/v1/cultivos/${id}`, data)
     return response.data
   },
 
   async delete(id) {
-    const response = await api.delete(`/api/v1/cultivos/${id}`)
+    const response = await api.delete(`/v1/cultivos/${id}`)
     return response.data
   },
 
   // Reportes
   async getPDF(filters = {}) {
-    const response = await api.get('/api/v1/reportes/cultivos/pdf', {
+    const response = await api.get('/v1/reportes/cultivos/pdf', {
       params: filters,
       responseType: 'blob',
     })
@@ -48,7 +48,7 @@ export const cultivoService = {
   },
 
   async getExcel(filters = {}) {
-    const response = await api.get('/api/v1/reportes/cultivos/excel', {
+    const response = await api.get('/v1/reportes/cultivos/excel', {
       params: filters,
       responseType: 'blob',
     })

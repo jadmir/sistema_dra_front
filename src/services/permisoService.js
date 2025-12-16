@@ -37,7 +37,7 @@ export default {
    * Obtiene la lista de permisos con paginación
    */
   async getAll(params = {}) {
-    const response = await api.get('/api/v1/permisos', { params })
+    const response = await api.get('/v1/permisos', { params })
     return normalizeResponse(response.data)
   },
 
@@ -50,7 +50,7 @@ export default {
     // Si el query está vacío, buscar todos
     if (!query || !String(query).trim()) {
       console.log('Búsqueda vacía, params:', searchParams)
-      const response = await api.get('/api/v1/permisos/search', { params: searchParams })
+      const response = await api.get('/v1/permisos/search', { params: searchParams })
       return normalizeResponse(response.data)
     }
 
@@ -67,7 +67,7 @@ export default {
       console.log('Búsqueda por texto:', searchParams)
     }
 
-    const response = await api.get('/api/v1/permisos/search', { params: searchParams })
+    const response = await api.get('/v1/permisos/search', { params: searchParams })
     console.log('Respuesta del backend:', response.data)
     return normalizeResponse(response.data)
   },
@@ -76,7 +76,7 @@ export default {
    * Obtiene un permiso por ID
    */
   async getById(id) {
-    const response = await api.get(`/api/v1/permisos/${id}`)
+    const response = await api.get(`/v1/permisos/${id}`)
     return response.data
   },
 
@@ -84,7 +84,7 @@ export default {
    * Crea un nuevo permiso
    */
   async create(data) {
-    const response = await api.post('/api/v1/permisos', data)
+    const response = await api.post('/v1/permisos', data)
     return response.data
   },
 
@@ -92,7 +92,7 @@ export default {
    * Actualiza un permiso existente
    */
   async update(id, data) {
-    const response = await api.put(`/api/v1/permisos/${id}`, data)
+    const response = await api.put(`/v1/permisos/${id}`, data)
     return response.data
   },
 
@@ -100,7 +100,7 @@ export default {
    * Elimina un permiso
    */
   async delete(id) {
-    const response = await api.delete(`/api/v1/permisos/${id}`)
+    const response = await api.delete(`/v1/permisos/${id}`)
     return response.data
   },
 }

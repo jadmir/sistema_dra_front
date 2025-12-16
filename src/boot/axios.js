@@ -9,7 +9,7 @@ import { Notify } from 'quasar'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000' })
+const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' })
 
 // Cargar token al iniciar
 const accessToken = localStorage.getItem('access_token')
@@ -20,6 +20,20 @@ if (accessToken) {
 // Variable para controlar si ya se mostró la notificación de sesión expirada
 let sessionExpiredNotified = false
 
+// Interceptor de peticiones para asegurar que siempre se envíe el token más reciente
+api.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem('access_token')
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
+
 // Interceptor de respuesta para manejar 401 y refrescar token
 api.interceptors.response.use(
   (response) => response,
@@ -29,7 +43,7 @@ api.interceptors.response.use(
 
     // No intentar refresh en login ni en el propio refresh
     const url = original.url || ''
-    if (url.includes('/api/login') || url.includes('/api/refresh')) {
+    if (url.includes('/login') || url.includes('/refresh')) {
       return Promise.reject(error)
     }
 

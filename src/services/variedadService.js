@@ -1,6 +1,6 @@
 import { api } from 'boot/axios'
 
-const base = '/api/v1/variedades'
+const base = '/v1/variedades'
 
 export const variedadService = {
   async getAll(page = 1, perPage = 10) {

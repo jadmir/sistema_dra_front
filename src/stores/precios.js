@@ -14,36 +14,7 @@ export const usePreciosStore = defineStore('precios', {
     // Encuestadores
     encuestadores: [],
 
-    // ========== REPORTES ==========
-    async fetchReporteComparativo(params = {}) {
-      this.loading = true
-      this.error = null
-      try {
-        console.log('🔍 [REPORTE] Consultando reporte con params:', params)
-        const response = await preciosService.getReporteComparativo(params)
-        console.log('📊 [REPORTE] Respuesta del backend:', response)
-        console.log('📊 [REPORTE] Tipo de response:', typeof response)
-        console.log('📊 [REPORTE] ¿Es array?:', Array.isArray(response))
-        console.log('📊 [REPORTE] Estructura:', {
-          tiene_fecha: !!response?.fecha,
-          tiene_total_productos: !!response?.total_productos,
-          tiene_reportes: !!response?.reportes,
-          longitud_reportes: response?.reportes?.length,
-        })
-
-        // El backend devuelve directamente el objeto con fecha, total_productos y reportes
-        this.reporteComparativo = response
-        return response
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Error al cargar reporte'
-        console.error('❌ [REPORTE] Error fetching reporte:', error)
-        console.error('❌ [REPORTE] Response data:', error.response?.data)
-        this.reporteComparativo = null
-        throw error
-      } finally {
-        this.loading = false
-      }
-    },
+    // Muestras
     muestras: [],
     muestrasPendientes: [],
 
@@ -270,7 +241,8 @@ export const usePreciosStore = defineStore('precios', {
       this.loading = true
       this.error = null
       try {
-        this.muestras = await preciosService.getMuestras(params)
+        const response = await preciosService.getMuestras(params)
+        this.muestras = response.data || response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar muestras'
         console.error('Error fetching muestras:', error)
@@ -281,7 +253,8 @@ export const usePreciosStore = defineStore('precios', {
 
     async fetchMuestrasPendientes() {
       try {
-        this.muestrasPendientes = await preciosService.getMuestrasPendientes()
+        const response = await preciosService.getMuestrasPendientes()
+        this.muestrasPendientes = response.data?.data || response.data || response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar muestras pendientes'
         console.error('Error fetching muestras pendientes:', error)
@@ -290,83 +263,84 @@ export const usePreciosStore = defineStore('precios', {
 
     async createMuestra(data) {
       try {
-        console.log('📤 [CREATE MUESTRA] Datos a enviar:', data)
-        console.log('📤 [CREATE MUESTRA] Endpoint: POST /api/precios/muestras')
-
         const response = await preciosService.createMuestra(data)
-
-        console.log('✅ [CREATE MUESTRA] Respuesta exitosa:', response)
-
         await this.fetchMuestras()
-        return true
+        return response
       } catch (error) {
-        console.error('❌ [CREATE MUESTRA] Error completo:', error)
-        console.error('❌ [CREATE MUESTRA] Response status:', error.response?.status)
-        console.error('❌ [CREATE MUESTRA] Response data:', error.response?.data)
-        console.error('❌ [CREATE MUESTRA] Request data:', error.config?.data)
-        console.error('❌ [CREATE MUESTRA] URL:', error.config?.url)
-
+        console.error('❌ [CREATE MUESTRA] Error:', error)
         this.error = error.response?.data?.message || 'Error al crear muestra'
-        return false
+        throw error
       }
     },
 
     async updateMuestra(id, data) {
       try {
-        await preciosService.updateMuestra(id, data)
+        const response = await preciosService.updateMuestra(id, data)
         await this.fetchMuestras()
-        return true
+        return response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al actualizar muestra'
-        return false
+        throw error
       }
     },
 
     async deleteMuestra(id) {
       try {
-        await preciosService.deleteMuestra(id)
+        const response = await preciosService.deleteMuestra(id)
         await this.fetchMuestras()
-        return true
+        return response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al eliminar muestra'
-        return false
+        throw error
       }
     },
 
-    async validarMuestra(id) {
+    /**
+     * Validar muestra individual con observaciones
+     * @param {number} id - ID de la muestra
+     * @param {string} observaciones - Observaciones de validación
+     */
+    async validarMuestra(id, observaciones = null) {
       try {
-        await preciosService.validarMuestra(id)
+        const response = await preciosService.validarMuestra(id, observaciones)
         await this.fetchMuestras()
         await this.fetchMuestrasPendientes()
-        return true
+        return response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al validar muestra'
-        return false
+        throw error
       }
     },
 
-    async validarMuestrasLote(ids) {
+    /**
+     * Validar múltiples muestras en lote
+     * @param {Array} muestra_ids - Array de IDs de muestras
+     * @param {string} observaciones - Observaciones de validación
+     */
+    async validarMuestrasLote(muestra_ids, observaciones = null) {
       try {
-        await preciosService.validarMuestrasLote(ids)
+        const response = await preciosService.validarMuestrasLote(muestra_ids, observaciones)
         await this.fetchMuestras()
         await this.fetchMuestrasPendientes()
-        return true
+        return response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al validar muestras'
-        return false
+        throw error
       }
     },
 
     // ========== REPORTES ==========
+    /**
+     * Obtener reporte comparativo de precios
+     * @param {Object} params - producto_id, mercado_id, fecha_desde, fecha_hasta, agrupar_por
+     */
     async fetchReporteComparativo(params = {}) {
       this.loading = true
       this.error = null
       try {
         const response = await preciosService.getReporteComparativo(params)
-        console.log('Reporte comparativo recibido:', response)
-        // El backend devuelve directamente el objeto con fecha, total_productos y reportes
-        this.reporteComparativo = response
-        return response
+        this.reporteComparativo = response.data || response
+        return this.reporteComparativo
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar reporte'
         console.error('Error fetching reporte:', error)
@@ -377,75 +351,19 @@ export const usePreciosStore = defineStore('precios', {
       }
     },
 
-    async generarReporteComparativo(data) {
-      this.loading = true
-      this.error = null
-      try {
-        const response = await preciosService.generarReporteComparativo(data)
-        console.log('Reporte generado:', response)
-
-        // Después de generar, consultar el reporte completo para obtener los datos
-        if (response.fecha) {
-          await this.fetchReporteComparativo({ fecha: response.fecha })
-        }
-
-        return {
-          success: true,
-          message: response.message,
-          productos_procesados: response.productos_procesados,
-          reportes_creados: response.reportes_creados,
-        }
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Error al generar reporte'
-        console.error('Error al generar reporte:', error)
-        return { success: false, message: this.error }
-      } finally {
-        this.loading = false
-      }
-    },
-
-    async downloadReportePDF(reporteId) {
-      try {
-        const blob = await preciosService.exportarReportePDF(reporteId)
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = `reporte_precios_${reporteId}_${new Date().getTime()}.pdf`
-        link.click()
-        window.URL.revokeObjectURL(url)
-        return true
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Error al descargar PDF'
-        return false
-      }
-    },
-
-    async downloadReporteExcel(reporteId) {
-      try {
-        const blob = await preciosService.exportarReporteExcel(reporteId)
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = `reporte_precios_${reporteId}_${new Date().getTime()}.xlsx`
-        link.click()
-        window.URL.revokeObjectURL(url)
-        return true
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Error al descargar Excel'
-        return false
-      }
-    },
-
+    /**
+     * Obtener resumen de muestras por periodo
+     * @param {Object} params - fecha_desde, fecha_hasta, encuestador_id, mercado_id
+     */
     async fetchResumenMuestras(params = {}) {
       this.loading = true
       this.error = null
       try {
         const response = await preciosService.getResumenMuestras(params)
-        console.log('Resumen de muestras recibido:', response)
-        this.resumenMuestras = response
-        return response
+        this.resumenMuestras = response.data || response
+        return this.resumenMuestras
       } catch (error) {
-        this.error = error.response?.data?.message || 'Error al cargar resumen de muestras'
+        this.error = error.response?.data?.message || 'Error al cargar resumen'
         console.error('Error fetching resumen:', error)
         this.resumenMuestras = null
         throw error
@@ -454,19 +372,42 @@ export const usePreciosStore = defineStore('precios', {
       }
     },
 
+    /**
+     * Obtener histórico de precios de un producto
+     * @param {number} productoId - ID del producto
+     * @param {Object} params - fecha_desde, fecha_hasta, mercado_id, intervalo
+     */
     async fetchReporteHistorico(productoId, params = {}) {
       this.loading = true
       this.error = null
       try {
         const response = await preciosService.getReporteHistorico(productoId, params)
-        console.log('Reporte histórico recibido:', response)
-        this.reporteHistorico = response
-        return response
+        this.reporteHistorico = response.data || response
+        return this.reporteHistorico
       } catch (error) {
-        this.error = error.response?.data?.message || 'Error al cargar reporte histórico'
+        this.error = error.response?.data?.message || 'Error al cargar histórico'
         console.error('Error fetching histórico:', error)
         this.reporteHistorico = null
         throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    /**
+     * Descargar reporte comparativo en formato específico
+     * @param {string} formato - 'pdf' o 'excel'
+     * @param {Object} filtros - Filtros del reporte
+     */
+    async descargarReporte(formato, filtros) {
+      this.loading = true
+      try {
+        const nombreArchivo = await preciosService.descargarReporte(formato, filtros)
+        return { success: true, nombreArchivo }
+      } catch (error) {
+        this.error = error.response?.data?.message || 'Error al descargar reporte'
+        console.error('Error al descargar:', error)
+        return { success: false, message: this.error }
       } finally {
         this.loading = false
       }
