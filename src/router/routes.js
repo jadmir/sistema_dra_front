@@ -27,7 +27,7 @@ const routes = [
       },
       {
         path: '/roles',
-        component: () => import('pages/roles/RolesPage.vue'),
+        component: () => import('pages/Roles/RolesPage.vue'),
         meta: {
           requiresAuth: true,
           requiresPermission: PERMISSIONS.ROLES_VIEW,

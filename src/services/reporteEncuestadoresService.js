@@ -13,7 +13,7 @@ export default {
       const response = await api.get(`${BASE_URL}/productividad`, { params })
       return response.data
     } catch (error) {
-      console.error('❌ Error al obtener productividad:', error)
+      // console.error('❌ Error al obtener productividad:', error)
       throw error
     }
   },
@@ -29,7 +29,7 @@ export default {
       const response = await api.get(`${BASE_URL}/por-dia`, { params })
       return response.data
     } catch (error) {
-      console.error('❌ Error al obtener reporte del día:', error)
+      // console.error('❌ Error al obtener reporte del día:', error)
       throw error
     }
   },
@@ -48,7 +48,7 @@ export default {
       const response = await api.get(`${BASE_URL}/por-mes`, { params })
       return response.data
     } catch (error) {
-      console.error('❌ Error al obtener reporte mensual:', error)
+      // console.error('❌ Error al obtener reporte mensual:', error)
       throw error
     }
   },
@@ -66,7 +66,7 @@ export default {
       })
       return response.data
     } catch (error) {
-      console.error('❌ Error al exportar reporte:', error)
+      // console.error('❌ Error al exportar reporte:', error)
       throw error
     }
   },

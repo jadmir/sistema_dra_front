@@ -49,7 +49,7 @@ export default {
 
     // Si el query está vacío, buscar todos
     if (!query || !String(query).trim()) {
-      console.log('Búsqueda vacía, params:', searchParams)
+      // console.log('Búsqueda vacía, params:', searchParams)
       const response = await api.get('/v1/permisos/search', { params: searchParams })
       return normalizeResponse(response.data)
     }
@@ -60,15 +60,15 @@ export default {
     if (isNumeric) {
       // Si es número, solo enviar parámetro 'id'
       searchParams.id = query
-      console.log('Búsqueda por ID:', searchParams)
+      // console.log('Búsqueda por ID:', searchParams)
     } else {
       // Si es texto, solo enviar parámetro 'q'
       searchParams.q = query
-      console.log('Búsqueda por texto:', searchParams)
+      // console.log('Búsqueda por texto:', searchParams)
     }
 
     const response = await api.get('/v1/permisos/search', { params: searchParams })
-    console.log('Respuesta del backend:', response.data)
+    // console.log('Respuesta del backend:', response.data)
     return normalizeResponse(response.data)
   },
 

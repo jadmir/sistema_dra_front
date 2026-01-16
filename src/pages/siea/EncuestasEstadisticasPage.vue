@@ -424,7 +424,7 @@ const exportarEstadisticas = async (formato) => {
 
     const url = `/agri/encuestas-estadisticas/exportar?${params.toString()}`
 
-    console.log('📥 Descargando desde:', url)
+    // console.log('📥 Descargando desde:', url)
 
     const response = await api.get(url, {
       responseType: 'blob',
@@ -468,7 +468,7 @@ const exportarEstadisticas = async (formato) => {
     })
   } catch (error) {
     Loading.hide()
-    console.error('❌ Error al exportar:', error)
+    // console.error('❌ Error al exportar:', error)
 
     Notify.create({
       type: 'negative',

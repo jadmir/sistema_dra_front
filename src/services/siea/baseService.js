@@ -33,7 +33,7 @@ class SieaBaseService {
       const response = await api.get(`${this.baseURL}/${this.endpoint}`, { params })
       return response.data
     } catch (error) {
-      console.error(`❌ Error al listar ${this.endpoint}:`, error)
+      // console.error(`❌ Error al listar ${this.endpoint}:`, error)
       throw this.handleError(error)
     }
   }
@@ -48,7 +48,7 @@ class SieaBaseService {
       const response = await api.get(`${this.baseURL}/${this.endpoint}/${id}`)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al obtener ${this.endpoint} #${id}:`, error)
+      // console.error(`❌ Error al obtener ${this.endpoint} #${id}:`, error)
       throw this.handleError(error)
     }
   }
@@ -63,7 +63,7 @@ class SieaBaseService {
       const response = await api.post(`${this.baseURL}/${this.endpoint}`, data)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al crear ${this.endpoint}:`, error)
+      // console.error(`❌ Error al crear ${this.endpoint}:`, error)
       throw this.handleError(error)
     }
   }
@@ -79,7 +79,7 @@ class SieaBaseService {
       const response = await api.put(`${this.baseURL}/${this.endpoint}/${id}`, data)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al actualizar ${this.endpoint} #${id}:`, error)
+      // console.error(`❌ Error al actualizar ${this.endpoint} #${id}:`, error)
       throw this.handleError(error)
     }
   }
@@ -94,7 +94,7 @@ class SieaBaseService {
       const response = await api.delete(`${this.baseURL}/${this.endpoint}/${id}`)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al eliminar ${this.endpoint} #${id}:`, error)
+      // console.error(`❌ Error al eliminar ${this.endpoint} #${id}:`, error)
       throw this.handleError(error)
     }
   }

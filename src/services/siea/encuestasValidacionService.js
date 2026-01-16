@@ -19,12 +19,12 @@ class EncuestasValidacionService extends SieaBaseService {
    */
   async validar(id, datos) {
     try {
-      console.log(`📤 [VALIDAR ENCUESTA] ID: ${id}`, datos)
+      // console.log(`📤 [VALIDAR ENCUESTA] ID: ${id}`, datos)
       const response = await this.api.post(`${this.baseURL}/${this.endpoint}/${id}/validar`, datos)
-      console.log('✅ [VALIDAR ENCUESTA] Success:', response.data)
+      // console.log('✅ [VALIDAR ENCUESTA] Success:', response.data)
       return response.data
     } catch (error) {
-      console.error('❌ [VALIDAR ENCUESTA] Error:', error.response?.data || error.message)
+      // console.error('❌ [VALIDAR ENCUESTA] Error:', error.response?.data || error.message)
       throw error
     }
   }
@@ -42,12 +42,12 @@ class EncuestasValidacionService extends SieaBaseService {
         throw new Error('Las observaciones son obligatorias al rechazar una encuesta')
       }
 
-      console.log(`📤 [RECHAZAR ENCUESTA] ID: ${id}`, datos)
+      // console.log(`📤 [RECHAZAR ENCUESTA] ID: ${id}`, datos)
       const response = await this.api.post(`${this.baseURL}/${this.endpoint}/${id}/rechazar`, datos)
-      console.log('✅ [RECHAZAR ENCUESTA] Success:', response.data)
+      // console.log('✅ [RECHAZAR ENCUESTA] Success:', response.data)
       return response.data
     } catch (error) {
-      console.error('❌ [RECHAZAR ENCUESTA] Error:', error.response?.data || error.message)
+      // console.error('❌ [RECHAZAR ENCUESTA] Error:', error.response?.data || error.message)
       throw error
     }
   }

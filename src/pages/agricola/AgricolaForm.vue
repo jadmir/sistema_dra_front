@@ -295,7 +295,7 @@ async function saveForm() {
     emit('saved')
     closeForm()
   } catch (error) {
-    console.log('ERROR LARAVEL:', error.response?.data)
+    // console.log('ERROR LARAVEL:', error.response?.data)
     $q.notify({ type: 'negative', message: 'Ocurrió un error, intente nuevamente' })
   } finally {
     $q.loading.hide()

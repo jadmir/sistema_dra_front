@@ -24,8 +24,8 @@ class MaquinariaService extends SieaBaseService {
    */
   async listarActivos() {
     try {
-      console.log('🔍 [MAQUINARIA] Consultando maquinaria activa...')
-      console.log('🔍 [MAQUINARIA] URL completa:', `${this.baseUrl}`)
+      // console.log('🔍 [MAQUINARIA] Consultando maquinaria activa...')
+      // console.log('🔍 [MAQUINARIA] URL completa:', `${this.baseUrl}`)
 
       // El endpoint no tiene /activos, usar el endpoint base sin paginación
       const response = await this.api.get(`${this.baseUrl}`, {
@@ -43,16 +43,16 @@ class MaquinariaService extends SieaBaseService {
         return m.activo === true || m.activo === 1
       })
 
-      console.log(
-        '✅ [MAQUINARIA] Maquinaria activa obtenida:',
-        activos.length,
-        'de',
-        maquinaria.length,
-        'registros',
-      )
+      // console.log(
+      //   '✅ [MAQUINARIA] Maquinaria activa obtenida:',
+      //   activos.length,
+      //   'de',
+      //   maquinaria.length,
+      //   'registros',
+      // )
       return { data: activos }
     } catch (error) {
-      console.error('❌ [MAQUINARIA] Error al obtener activos:', error)
+      // console.error('❌ [MAQUINARIA] Error al obtener activos:', error)
       throw this.handleError(error)
     }
   }
@@ -64,14 +64,14 @@ class MaquinariaService extends SieaBaseService {
    */
   async buscar(termino) {
     try {
-      console.log('🔍 [MAQUINARIA] Buscando:', termino)
+      // console.log('🔍 [MAQUINARIA] Buscando:', termino)
       const response = await this.api.get(`${this.baseUrl}/buscar`, {
         params: { q: termino },
       })
-      console.log('✅ [MAQUINARIA] Encontrados:', response.data.data?.length, 'registros')
+      // console.log('✅ [MAQUINARIA] Encontrados:', response.data.data?.length, 'registros')
       return response.data
     } catch (error) {
-      console.error('❌ [MAQUINARIA] Error en búsqueda:', error)
+      // console.error('❌ [MAQUINARIA] Error en búsqueda:', error)
       throw this.handleError(error)
     }
   }
@@ -82,12 +82,12 @@ class MaquinariaService extends SieaBaseService {
    */
   async listarTipos() {
     try {
-      console.log('🔍 [MAQUINARIA] Consultando tipos...')
+      // console.log('🔍 [MAQUINARIA] Consultando tipos...')
       const response = await this.api.get(`${this.baseUrl}/tipos`)
-      console.log('✅ [MAQUINARIA] Tipos obtenidos:', response.data.data?.length)
+      // console.log('✅ [MAQUINARIA] Tipos obtenidos:', response.data.data?.length)
       return response.data
     } catch (error) {
-      console.error('❌ [MAQUINARIA] Error al obtener tipos:', error)
+      // console.error('❌ [MAQUINARIA] Error al obtener tipos:', error)
       throw this.handleError(error)
     }
   }
@@ -99,14 +99,14 @@ class MaquinariaService extends SieaBaseService {
    */
   async listarPorTipo(tipo) {
     try {
-      console.log('🔍 [MAQUINARIA] Consultando por tipo:', tipo)
+      // console.log('🔍 [MAQUINARIA] Consultando por tipo:', tipo)
       const response = await this.api.get(`${this.baseUrl}`, {
         params: { tipo },
       })
-      console.log('✅ [MAQUINARIA] Maquinaria encontrada:', response.data.data?.length)
+      // console.log('✅ [MAQUINARIA] Maquinaria encontrada:', response.data.data?.length)
       return response.data
     } catch (error) {
-      console.error('❌ [MAQUINARIA] Error al filtrar por tipo:', error)
+      // console.error('❌ [MAQUINARIA] Error al filtrar por tipo:', error)
       throw this.handleError(error)
     }
   }

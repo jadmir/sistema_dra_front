@@ -21,7 +21,7 @@ export const useSubgrupoStore = defineStore('subgrupo', {
         }
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar subgrupos'
-        console.error('Error fetching subgrupos:', error)
+        // console.error('Error fetching subgrupos:', error)
       } finally {
         this.loading = false
       }

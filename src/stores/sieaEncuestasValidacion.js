@@ -22,7 +22,7 @@ export const useSieaEncuestasValidacionStore = defineStore('sieaEncuestasValidac
       this.loading = true
 
       try {
-        console.log('📤 [VALIDAR ENCUESTA] ID:', encuestaId, 'Datos:', datos)
+        // console.log('📤 [VALIDAR ENCUESTA] ID:', encuestaId, 'Datos:', datos)
 
         const response = await encuestasValidacionService.validar(encuestaId, datos)
 
@@ -35,13 +35,13 @@ export const useSieaEncuestasValidacionStore = defineStore('sieaEncuestasValidac
             timeout: 3000,
           })
 
-          console.log('✅ [VALIDAR ENCUESTA] Success:', response.data)
+          // console.log('✅ [VALIDAR ENCUESTA] Success:', response.data)
           return response.data
         } else {
           throw new Error(response.message || 'Error al validar encuesta')
         }
       } catch (error) {
-        console.error('❌ [VALIDAR ENCUESTA] Error:', error)
+        // console.error('❌ [VALIDAR ENCUESTA] Error:', error)
 
         const errorMessage = error.response?.data?.message || error.message || 'Error desconocido'
         const errorDetails = error.response?.data?.errors
@@ -77,7 +77,7 @@ export const useSieaEncuestasValidacionStore = defineStore('sieaEncuestasValidac
           throw new Error('Las observaciones son obligatorias al rechazar una encuesta')
         }
 
-        console.log('📤 [RECHAZAR ENCUESTA] ID:', encuestaId, 'Datos:', datos)
+        // console.log('📤 [RECHAZAR ENCUESTA] ID:', encuestaId, 'Datos:', datos)
 
         const response = await encuestasValidacionService.rechazar(encuestaId, datos)
 
@@ -90,13 +90,13 @@ export const useSieaEncuestasValidacionStore = defineStore('sieaEncuestasValidac
             timeout: 3000,
           })
 
-          console.log('✅ [RECHAZAR ENCUESTA] Success:', response.data)
+          // console.log('✅ [RECHAZAR ENCUESTA] Success:', response.data)
           return response.data
         } else {
           throw new Error(response.message || 'Error al rechazar encuesta')
         }
       } catch (error) {
-        console.error('❌ [RECHAZAR ENCUESTA] Error:', error)
+        // console.error('❌ [RECHAZAR ENCUESTA] Error:', error)
 
         const errorMessage = error.response?.data?.message || error.message || 'Error desconocido'
         const errorDetails = error.response?.data?.errors
@@ -123,7 +123,7 @@ export const useSieaEncuestasValidacionStore = defineStore('sieaEncuestasValidac
      */
     seleccionarEncuesta(encuesta) {
       this.encuestaSeleccionada = encuesta
-      console.log('📋 [SELECCIONAR ENCUESTA]', encuesta)
+      // console.log('📋 [SELECCIONAR ENCUESTA]', encuesta)
     },
 
     /**
@@ -131,7 +131,7 @@ export const useSieaEncuestasValidacionStore = defineStore('sieaEncuestasValidac
      */
     limpiarSeleccion() {
       this.encuestaSeleccionada = null
-      console.log('🧹 [LIMPIAR SELECCIÓN]')
+      // console.log('🧹 [LIMPIAR SELECCIÓN]')
     },
   },
 })

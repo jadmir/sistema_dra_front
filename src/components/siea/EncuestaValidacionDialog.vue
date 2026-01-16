@@ -532,7 +532,7 @@ const handleSubmit = async () => {
   if (formRef.value) {
     const isValid = await formRef.value.validate()
     if (!isValid) {
-      console.log('❌ Formulario inválido')
+      // console.log('❌ Formulario inválido')
       Notify.create({
         type: 'negative',
         message:
@@ -547,7 +547,7 @@ const handleSubmit = async () => {
 
   // Validación adicional para rechazo
   if (props.accion === 'rechazar' && !form.value.observaciones_supervisor?.trim()) {
-    console.log('❌ Observaciones vacías')
+    // console.log('❌ Observaciones vacías')
     Notify.create({
       type: 'negative',
       message: 'Debe especificar el motivo del rechazo',
@@ -556,11 +556,11 @@ const handleSubmit = async () => {
     return
   }
 
-  console.log('✅ Formulario válido, enviando...', {
-    accion: props.accion,
-    encuesta_id: props.encuesta.id,
-    observaciones: form.value.observaciones_supervisor,
-  })
+  // console.log('✅ Formulario válido, enviando...', {
+  //   accion: props.accion,
+  //   encuesta_id: props.encuesta.id,
+  //   observaciones: form.value.observaciones_supervisor,
+  // })
 
   const datos = {
     supervisor_id: props.supervisorId,
@@ -576,14 +576,14 @@ const handleSubmit = async () => {
     let resultado
 
     if (props.accion === 'validar') {
-      console.log('📤 Validando encuesta...')
+      // console.log('📤 Validando encuesta...')
       resultado = await validacionStore.validarEncuesta(props.encuesta.id, datos)
     } else {
-      console.log('📤 Rechazando encuesta...')
+      // console.log('📤 Rechazando encuesta...')
       resultado = await validacionStore.rechazarEncuesta(props.encuesta.id, datos)
     }
 
-    console.log('✅ Resultado:', resultado)
+    // console.log('✅ Resultado:', resultado)
 
     if (resultado) {
       // Limpiar formulario
@@ -599,7 +599,7 @@ const handleSubmit = async () => {
       emit('success', resultado)
     }
   } catch (error) {
-    console.error('❌ Error al procesar encuesta:', error)
+    // console.error('❌ Error al procesar encuesta:', error)
     Notify.create({
       type: 'negative',
       message: error.message || 'Error al procesar la encuesta',
@@ -616,7 +616,7 @@ const cargarFormularioCompleto = async () => {
 
   // Timeout de seguridad
   const timeoutId = setTimeout(() => {
-    console.error('⏱️ TIMEOUT: La carga del formulario está tardando más de 10 segundos')
+    // console.error('⏱️ TIMEOUT: La carga del formulario está tardando más de 10 segundos')
     loadingFormulario.value = false
     Notify.create({
       type: 'warning',
@@ -627,10 +627,10 @@ const cargarFormularioCompleto = async () => {
   }, 10000)
 
   try {
-    console.log(`🔍 Cargando formulario completo de encuesta #${props.encuesta.id}`)
+    // console.log(`🔍 Cargando formulario completo de encuesta #${props.encuesta.id}`)
     const response = await encuestasService.obtenerFormularioCompleto(props.encuesta.id)
 
-    console.log('📦 Response completo:', response)
+    // console.log('📦 Response completo:', response)
 
     // Detectar estructura del backend y asignar correctamente
     if (response.success && response.data) {
@@ -647,25 +647,25 @@ const cargarFormularioCompleto = async () => {
       formularioCompleto.value = response
     }
 
-    console.log('✅ Formulario completo cargado:', formularioCompleto.value)
-    console.log('📊 Estructura detectada:', {
-      tiene_encuesta: !!formularioCompleto.value.encuesta,
-      tiene_items: !!formularioCompleto.value.items,
-      items_length: formularioCompleto.value.items?.length || 0,
-      tipo_formulario: formularioCompleto.value.encuesta?.tipo_formulario || 'N/A',
-      tiene_formulario: !!formularioCompleto.value.formulario,
-      tiene_fertilizantes: !!formularioCompleto.value.fertilizantes,
-      tiene_agroquimicos: !!formularioCompleto.value.agroquimicos,
-      tiene_maquinaria: !!formularioCompleto.value.maquinaria,
-      tiene_transporte: !!formularioCompleto.value.transporte,
-      todas_las_propiedades: Object.keys(formularioCompleto.value),
-    })
+    // console.log('✅ Formulario completo cargado:', formularioCompleto.value)
+    // console.log('📊 Estructura detectada:', {
+    //   tiene_encuesta: !!formularioCompleto.value.encuesta,
+    //   tiene_items: !!formularioCompleto.value.items,
+    //   items_length: formularioCompleto.value.items?.length || 0,
+    //   tipo_formulario: formularioCompleto.value.encuesta?.tipo_formulario || 'N/A',
+    //   tiene_formulario: !!formularioCompleto.value.formulario,
+    //   tiene_fertilizantes: !!formularioCompleto.value.fertilizantes,
+    //   tiene_agroquimicos: !!formularioCompleto.value.agroquimicos,
+    //   tiene_maquinaria: !!formularioCompleto.value.maquinaria,
+    //   tiene_transporte: !!formularioCompleto.value.transporte,
+    //   todas_las_propiedades: Object.keys(formularioCompleto.value),
+    // })
 
     // Verificar computed
-    console.log('🎯 Items extraídos por computed:', itemsFormulario.value)
-    console.log('📏 Cantidad de items:', itemsFormulario.value.length)
+    // console.log('🎯 Items extraídos por computed:', itemsFormulario.value)
+    // console.log('📏 Cantidad de items:', itemsFormulario.value.length)
   } catch (error) {
-    console.error('❌ Error al cargar formulario completo:', error)
+    // console.error('❌ Error al cargar formulario completo:', error)
 
     // Determinar mensaje según tipo de error
     let mensaje = 'No se pudo cargar el formulario completo'
@@ -694,7 +694,7 @@ const cargarFormularioCompleto = async () => {
   } finally {
     clearTimeout(timeoutId) // Limpiar timeout
     loadingFormulario.value = false
-    console.log('🏁 Carga finalizada, loadingFormulario =', loadingFormulario.value)
+    // console.log('🏁 Carga finalizada, loadingFormulario =', loadingFormulario.value)
   }
 }
 

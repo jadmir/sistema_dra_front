@@ -157,7 +157,7 @@ const getProvincias = async () => {
     const r = await api.get('/api/v1/agri-provincias/all')
     provincias.value = r.data
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     Notify.create({ type: 'negative', message: 'Error cargando provincias' })
   }
 }
@@ -203,7 +203,7 @@ const save = async () => {
     dialog.value = false
     getData()
   } catch (error) {
-    console.log(error.response?.data)
+    // console.log(error.response?.data)
     if (error.response?.status === 422) {
       const errors = error.response.data.errors
       for (let key in errors) {
@@ -230,7 +230,7 @@ const toggleEstado = async (row) => {
     }
     getData()
   } catch (error) {
-    console.log(error.response?.data)
+    // console.log(error.response?.data)
     Notify.create({ type: 'negative', message: 'Error cambiando estado' })
     getData()
   }

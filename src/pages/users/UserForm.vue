@@ -287,7 +287,7 @@ onMounted(async () => {
     const list = response.data || response || []
     roles.value = list.map((r) => ({ label: r.nombre, value: r.id }))
   } catch (err) {
-    console.error('Error cargando roles', err?.response || err)
+    // console.error('Error cargando roles', err?.response || err)
     $q.notify({
       type: 'negative',
       message: err?.response?.data?.message || err?.message || 'No se pudieron cargar los roles',

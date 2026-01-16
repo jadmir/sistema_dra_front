@@ -83,18 +83,18 @@ export const useSieaEncuestasEstadisticasStore = defineStore('sieaEncuestasEstad
       this.loading = true
 
       try {
-        console.log('📊 [ESTADÍSTICAS] Obteniendo con filtros:', this.filtros)
+        // console.log('📊 [ESTADÍSTICAS] Obteniendo con filtros:', this.filtros)
 
         const response = await encuestasEstadisticasService.getEstadisticas(this.filtros)
 
         if (response.success) {
           this.estadisticas = response.data
-          console.log('✅ [ESTADÍSTICAS] Success:', response.data)
+          // console.log('✅ [ESTADÍSTICAS] Success:', response.data)
         } else {
           throw new Error(response.message || 'Error al obtener estadísticas')
         }
       } catch (error) {
-        console.error('❌ [ESTADÍSTICAS] Error:', error)
+        // console.error('❌ [ESTADÍSTICAS] Error:', error)
 
         Notify.create({
           type: 'negative',
@@ -143,7 +143,7 @@ export const useSieaEncuestasEstadisticasStore = defineStore('sieaEncuestasEstad
      * Refrescar estadísticas (útil después de validar/rechazar)
      */
     async refrescar() {
-      console.log('🔄 [ESTADÍSTICAS] Refrescando...')
+      // console.log('🔄 [ESTADÍSTICAS] Refrescando...')
       await this.fetchEstadisticas()
     },
   },

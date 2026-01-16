@@ -83,7 +83,7 @@ export const useSieaMaquinariaStore = defineStore('sieaMaquinaria', {
           this.lastPage = response.last_page || 1
         }
       } catch (error) {
-        console.error('Error al cargar maquinaria:', error)
+        // console.error('Error al cargar maquinaria:', error)
         throw error
       } finally {
         this.loading = false
@@ -101,7 +101,7 @@ export const useSieaMaquinariaStore = defineStore('sieaMaquinaria', {
           this.maquinaria = response.data
         }
       } catch (error) {
-        console.error('Error al cargar maquinaria activa:', error)
+        // console.error('Error al cargar maquinaria activa:', error)
         throw error
       } finally {
         this.loading = false
@@ -118,7 +118,7 @@ export const useSieaMaquinariaStore = defineStore('sieaMaquinaria', {
           this.tipos = response.data
         }
       } catch (error) {
-        console.error('Error al cargar tipos:', error)
+        // console.error('Error al cargar tipos:', error)
         throw error
       }
     },
@@ -135,7 +135,7 @@ export const useSieaMaquinariaStore = defineStore('sieaMaquinaria', {
         }
         return response
       } catch (error) {
-        console.error('Error al crear maquinaria:', error)
+        // console.error('Error al crear maquinaria:', error)
         throw error
       } finally {
         this.loading = false
@@ -154,7 +154,7 @@ export const useSieaMaquinariaStore = defineStore('sieaMaquinaria', {
         }
         return response
       } catch (error) {
-        console.error('Error al actualizar maquinaria:', error)
+        // console.error('Error al actualizar maquinaria:', error)
         throw error
       } finally {
         this.loading = false
@@ -173,7 +173,7 @@ export const useSieaMaquinariaStore = defineStore('sieaMaquinaria', {
         }
         return response
       } catch (error) {
-        console.error('Error al eliminar maquinaria:', error)
+        // console.error('Error al eliminar maquinaria:', error)
         throw error
       } finally {
         this.loading = false
@@ -191,7 +191,7 @@ export const useSieaMaquinariaStore = defineStore('sieaMaquinaria', {
           this.maquinaria = response.data
         }
       } catch (error) {
-        console.error('Error en búsqueda:', error)
+        // console.error('Error en búsqueda:', error)
         throw error
       } finally {
         this.loading = false

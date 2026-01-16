@@ -25,8 +25,8 @@ class AgroquimicosService extends SieaBaseService {
    */
   async listarActivos() {
     try {
-      console.log('🔍 [AGROQUÍMICOS] Consultando agroquímicos activos...')
-      console.log('🔍 [AGROQUÍMICOS] URL completa:', `${this.baseUrl}`)
+      // console.log('🔍 [AGROQUÍMICOS] Consultando agroquímicos activos...')
+      // console.log('🔍 [AGROQUÍMICOS] URL completa:', `${this.baseUrl}`)
 
       // Traer todos los agroquímicos (el backend ya filtra por activos)
       const response = await this.api.get(`${this.baseUrl}`, {
@@ -35,11 +35,11 @@ class AgroquimicosService extends SieaBaseService {
         },
       })
 
-      console.log('✅ [AGROQUÍMICOS] Respuesta:', {
-        success: response.data.success,
-        total: response.data.pagination?.total,
-        cantidad: response.data.data?.length,
-      })
+      // console.log('✅ [AGROQUÍMICOS] Respuesta:', {
+      //   success: response.data.success,
+      //   total: response.data.pagination?.total,
+      //   cantidad: response.data.data?.length,
+      // })
 
       // Extraer los datos
       const agroquimicos = response.data.data || []
@@ -47,22 +47,22 @@ class AgroquimicosService extends SieaBaseService {
       // Filtrar solo activos (por si acaso el backend retorna inactivos)
       const activos = agroquimicos.filter((a) => a.activo === true || a.activo === 1)
 
-      console.log(
-        '✅ [AGROQUÍMICOS] Cargados:',
-        activos.length,
-        'activos de',
-        agroquimicos.length,
-        'totales',
-      )
+      // console.log(
+      //   '✅ [AGROQUÍMICOS] Cargados:',
+      //   activos.length,
+      //   'activos de',
+      //   agroquimicos.length,
+      //   'totales',
+      // )
 
       // Mostrar tipos encontrados
       const tipos = [...new Set(activos.map((a) => a.tipo))].sort()
-      console.log('📋 [AGROQUÍMICOS] Tipos encontrados:', tipos)
+      // console.log('📋 [AGROQUÍMICOS] Tipos encontrados:', tipos)
 
       return { data: activos }
     } catch (error) {
-      console.error('❌ [AGROQUÍMICOS] Error:', error.message)
-      console.error('❌ [AGROQUÍMICOS] Status:', error.response?.status)
+      // console.error('❌ [AGROQUÍMICOS] Error:', error.message)
+      // console.error('❌ [AGROQUÍMICOS] Status:', error.response?.status)
       throw this.handleError(error)
     }
   } /**
@@ -72,14 +72,14 @@ class AgroquimicosService extends SieaBaseService {
    */
   async buscar(termino) {
     try {
-      console.log('🔍 [AGROQUÍMICOS] Buscando:', termino)
+      // console.log('🔍 [AGROQUÍMICOS] Buscando:', termino)
       const response = await this.api.get(`${this.baseUrl}/buscar`, {
         params: { q: termino },
       })
-      console.log('✅ [AGROQUÍMICOS] Encontrados:', response.data.data?.length, 'registros')
+      // console.log('✅ [AGROQUÍMICOS] Encontrados:', response.data.data?.length, 'registros')
       return response.data
     } catch (error) {
-      console.error('❌ [AGROQUÍMICOS] Error en búsqueda:', error)
+      // console.error('❌ [AGROQUÍMICOS] Error en búsqueda:', error)
       throw this.handleError(error)
     }
   }
@@ -90,12 +90,12 @@ class AgroquimicosService extends SieaBaseService {
    */
   async listarCategorias() {
     try {
-      console.log('🔍 [AGROQUÍMICOS] Consultando categorías...')
+      // console.log('🔍 [AGROQUÍMICOS] Consultando categorías...')
       const response = await this.api.get(`${this.baseUrl}/categorias`)
-      console.log('✅ [AGROQUÍMICOS] Categorías obtenidas:', response.data.data?.length)
+      // console.log('✅ [AGROQUÍMICOS] Categorías obtenidas:', response.data.data?.length)
       return response.data
     } catch (error) {
-      console.error('❌ [AGROQUÍMICOS] Error al obtener categorías:', error)
+      // console.error('❌ [AGROQUÍMICOS] Error al obtener categorías:', error)
       throw this.handleError(error)
     }
   }
@@ -106,15 +106,15 @@ class AgroquimicosService extends SieaBaseService {
    */
   async listarCategoriasToxico() {
     try {
-      console.log('🔍 [AGROQUÍMICOS] Consultando categorías toxicológicas...')
+      // console.log('🔍 [AGROQUÍMICOS] Consultando categorías toxicológicas...')
       const response = await this.api.get(`${this.baseUrl}/toxicologicas`)
-      console.log(
-        '✅ [AGROQUÍMICOS] Categorías toxicológicas obtenidas:',
-        response.data.data?.length,
-      )
+      // console.log(
+      //   '✅ [AGROQUÍMICOS] Categorías toxicológicas obtenidas:',
+      //   response.data.data?.length,
+      // )
       return response.data
     } catch (error) {
-      console.error('❌ [AGROQUÍMICOS] Error al obtener categorías toxicológicas:', error)
+      // console.error('❌ [AGROQUÍMICOS] Error al obtener categorías toxicológicas:', error)
       throw this.handleError(error)
     }
   }
@@ -126,14 +126,14 @@ class AgroquimicosService extends SieaBaseService {
    */
   async listarPorCategoria(categoria) {
     try {
-      console.log('🔍 [AGROQUÍMICOS] Consultando por categoría:', categoria)
+      // console.log('🔍 [AGROQUÍMICOS] Consultando por categoría:', categoria)
       const response = await this.api.get(`${this.baseUrl}`, {
         params: { categoria },
       })
-      console.log('✅ [AGROQUÍMICOS] Agroquímicos encontrados:', response.data.data?.length)
+      // console.log('✅ [AGROQUÍMICOS] Agroquímicos encontrados:', response.data.data?.length)
       return response.data
     } catch (error) {
-      console.error('❌ [AGROQUÍMICOS] Error al filtrar por categoría:', error)
+      // console.error('❌ [AGROQUÍMICOS] Error al filtrar por categoría:', error)
       throw this.handleError(error)
     }
   }
@@ -145,14 +145,14 @@ class AgroquimicosService extends SieaBaseService {
    */
   async listarPorCategoriaToxico(categoriaToxico) {
     try {
-      console.log('🔍 [AGROQUÍMICOS] Consultando por categoría toxicológica:', categoriaToxico)
+      // console.log('🔍 [AGROQUÍMICOS] Consultando por categoría toxicológica:', categoriaToxico)
       const response = await this.api.get(`${this.baseUrl}`, {
         params: { categoria_toxicologica: categoriaToxico },
       })
-      console.log('✅ [AGROQUÍMICOS] Agroquímicos encontrados:', response.data.data?.length)
+      // console.log('✅ [AGROQUÍMICOS] Agroquímicos encontrados:', response.data.data?.length)
       return response.data
     } catch (error) {
-      console.error('❌ [AGROQUÍMICOS] Error al filtrar por categoría toxicológica:', error)
+      // console.error('❌ [AGROQUÍMICOS] Error al filtrar por categoría toxicológica:', error)
       throw this.handleError(error)
     }
   }

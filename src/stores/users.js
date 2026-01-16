@@ -48,7 +48,7 @@ export const useUserStore = defineStore('users', {
         // roleService.getAll() ahora retorna { data: [...], total: ... }
         this.roles = response.data || response || []
       } catch (error) {
-        console.error('Error al cargar roles:', error)
+        // console.error('Error al cargar roles:', error)
         this.roles = []
       }
     },

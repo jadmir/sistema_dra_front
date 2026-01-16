@@ -59,7 +59,7 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
           ...this.filtros,
         }
 
-        console.log('🔍 [SIEA ENCUESTADORES] Consultando:', params)
+        // console.log('🔍 [SIEA ENCUESTADORES] Consultando:', params)
         const response = await encuestadoresService.list(params)
 
         if (response.success) {
@@ -80,12 +80,12 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
           this.total = pagination.total || 0
           this.lastPage = pagination.last_page || 1
 
-          console.log('✅ [SIEA ENCUESTADORES] Cargados:', this.encuestadores.length)
+          // console.log('✅ [SIEA ENCUESTADORES] Cargados:', this.encuestadores.length)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTADORES] Error:', error)
+        // console.error('❌ [SIEA ENCUESTADORES] Error:', error)
         throw error
       } finally {
         this.loading = false
@@ -102,12 +102,12 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
 
         if (response.success) {
           this.encuestadores = response.data || []
-          console.log('✅ [SIEA ENCUESTADORES] Activos cargados:', this.encuestadores.length)
+          // console.log('✅ [SIEA ENCUESTADORES] Activos cargados:', this.encuestadores.length)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTADORES] Error al cargar activos:', error)
+        // console.error('❌ [SIEA ENCUESTADORES] Error al cargar activos:', error)
         throw error
       } finally {
         this.loading = false
@@ -135,7 +135,7 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTADORES] Error:', error)
+        // console.error('❌ [SIEA ENCUESTADORES] Error:', error)
         throw error
       } finally {
         this.loading = false
@@ -156,10 +156,10 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
             : datos.especializacion,
         }
 
-        console.log('📤 [CREATE] Datos a enviar:', datosParaEnviar)
-        console.log('📤 [CREATE] Tipo de especializacion:', typeof datosParaEnviar.especializacion)
-        console.log('📤 [CREATE] Es array?:', Array.isArray(datosParaEnviar.especializacion))
-        console.log('📤 [CREATE] Valor:', datosParaEnviar.especializacion)
+        // console.log('📤 [CREATE] Datos a enviar:', datosParaEnviar)
+        // console.log('📤 [CREATE] Tipo de especializacion:', typeof datosParaEnviar.especializacion)
+        // console.log('📤 [CREATE] Es array?:', Array.isArray(datosParaEnviar.especializacion))
+        // console.log('📤 [CREATE] Valor:', datosParaEnviar.especializacion)
 
         const response = await encuestadoresService.create(datosParaEnviar)
 
@@ -169,7 +169,7 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTADORES] Error al crear:', error)
+        // console.error('❌ [SIEA ENCUESTADORES] Error al crear:', error)
         throw error
       } finally {
         this.loading = false
@@ -190,10 +190,10 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
             : datos.especializacion,
         }
 
-        console.log('📤 [UPDATE] Datos a enviar:', datosParaEnviar)
-        console.log('📤 [UPDATE] Tipo de especializacion:', typeof datosParaEnviar.especializacion)
-        console.log('📤 [UPDATE] Es array?:', Array.isArray(datosParaEnviar.especializacion))
-        console.log('📤 [UPDATE] Valor:', datosParaEnviar.especializacion)
+        // console.log('📤 [UPDATE] Datos a enviar:', datosParaEnviar)
+        // console.log('📤 [UPDATE] Tipo de especializacion:', typeof datosParaEnviar.especializacion)
+        // console.log('📤 [UPDATE] Es array?:', Array.isArray(datosParaEnviar.especializacion))
+        // console.log('📤 [UPDATE] Valor:', datosParaEnviar.especializacion)
 
         const response = await encuestadoresService.update(id, datosParaEnviar)
 
@@ -203,7 +203,7 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTADORES] Error al actualizar:', error)
+        // console.error('❌ [SIEA ENCUESTADORES] Error al actualizar:', error)
         throw error
       } finally {
         this.loading = false
@@ -224,7 +224,7 @@ export const useSieaEncuestadoresStore = defineStore('sieaEncuestadores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTADORES] Error al eliminar:', error)
+        // console.error('❌ [SIEA ENCUESTADORES] Error al eliminar:', error)
         throw error
       } finally {
         this.loading = false

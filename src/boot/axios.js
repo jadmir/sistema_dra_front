@@ -9,7 +9,10 @@ import { Notify } from 'quasar'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' })
+
+// Usar variable de entorno para URL del API
+const apiBaseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api'
+const api = axios.create({ baseURL: apiBaseURL })
 
 // Cargar token al iniciar
 const accessToken = localStorage.getItem('access_token')

@@ -73,16 +73,16 @@ export const useReporteEncuestadoresStore = defineStore('reporteEncuestadores', 
     async fetchProductividad(params = {}) {
       this.loadingProductividad = true
       try {
-        console.log('🔍 [PRODUCTIVIDAD] Consultando con params:', params)
+        // console.log('🔍 [PRODUCTIVIDAD] Consultando con params:', params)
         const data = await reporteEncuestadoresService.getProductividad(params)
-        console.log('✅ [PRODUCTIVIDAD] Datos recibidos:', data)
+        // console.log('✅ [PRODUCTIVIDAD] Datos recibidos:', data)
         this.productividad = data
         this.filtros.fecha_inicio = params.fecha_inicio || null
         this.filtros.fecha_fin = params.fecha_fin || null
         this.filtros.encuestador_id = params.encuestador_id || null
         return data
       } catch (error) {
-        console.error('❌ [PRODUCTIVIDAD] Error:', error)
+        // console.error('❌ [PRODUCTIVIDAD] Error:', error)
         throw error
       } finally {
         this.loadingProductividad = false
@@ -95,14 +95,14 @@ export const useReporteEncuestadoresStore = defineStore('reporteEncuestadores', 
     async fetchReporteDia(fecha = null) {
       this.loadingDia = true
       try {
-        console.log('🔍 [REPORTE DIA] Consultando fecha:', fecha || 'hoy')
+        // console.log('🔍 [REPORTE DIA] Consultando fecha:', fecha || 'hoy')
         const data = await reporteEncuestadoresService.getReporteDia(fecha)
-        console.log('✅ [REPORTE DIA] Datos recibidos:', data)
+        // console.log('✅ [REPORTE DIA] Datos recibidos:', data)
         this.reporteDia = data
         this.filtros.fecha = fecha
         return data
       } catch (error) {
-        console.error('❌ [REPORTE DIA] Error:', error)
+        // console.error('❌ [REPORTE DIA] Error:', error)
         throw error
       } finally {
         this.loadingDia = false
@@ -115,15 +115,15 @@ export const useReporteEncuestadoresStore = defineStore('reporteEncuestadores', 
     async fetchReporteMes(año = null, mes = null) {
       this.loadingMes = true
       try {
-        console.log('🔍 [REPORTE MES] Consultando:', año, mes)
+        // console.log('🔍 [REPORTE MES] Consultando:', año, mes)
         const data = await reporteEncuestadoresService.getReporteMes(año, mes)
-        console.log('✅ [REPORTE MES] Datos recibidos:', data)
+        // console.log('✅ [REPORTE MES] Datos recibidos:', data)
         this.reporteMes = data
         this.filtros.año = año
         this.filtros.mes = mes
         return data
       } catch (error) {
-        console.error('❌ [REPORTE MES] Error:', error)
+        // console.error('❌ [REPORTE MES] Error:', error)
         throw error
       } finally {
         this.loadingMes = false
@@ -163,7 +163,7 @@ export const useReporteEncuestadoresStore = defineStore('reporteEncuestadores', 
 
         return true
       } catch (error) {
-        console.error('❌ Error al exportar:', error)
+        // console.error('❌ Error al exportar:', error)
         throw error
       }
     },

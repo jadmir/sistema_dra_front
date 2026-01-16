@@ -50,7 +50,7 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
           ...this.filtros,
         }
 
-        console.log('🔍 [SIEA SUPERVISORES] Consultando:', params)
+        // console.log('🔍 [SIEA SUPERVISORES] Consultando:', params)
         const response = await supervisoresService.list(params)
 
         if (response.success) {
@@ -76,13 +76,13 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
           this.total = pagination.total || 0
           this.lastPage = pagination.last_page || 1
 
-          console.log('✅ [SIEA SUPERVISORES] Cargados:', this.supervisores.length)
-          console.log('📊 [SIEA SUPERVISORES] Primer supervisor:', this.supervisores[0])
+          // console.log('✅ [SIEA SUPERVISORES] Cargados:', this.supervisores.length)
+          // console.log('📊 [SIEA SUPERVISORES] Primer supervisor:', this.supervisores[0])
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA SUPERVISORES] Error:', error)
+        // console.error('❌ [SIEA SUPERVISORES] Error:', error)
         throw error
       } finally {
         this.loading = false
@@ -110,12 +110,12 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
                   ? sup.provincias_asignadas
                   : [],
           }))
-          console.log('✅ [SIEA SUPERVISORES] Activos cargados:', this.supervisores.length)
+          // console.log('✅ [SIEA SUPERVISORES] Activos cargados:', this.supervisores.length)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA SUPERVISORES] Error:', error)
+        // console.error('❌ [SIEA SUPERVISORES] Error:', error)
         throw error
       } finally {
         this.loading = false
@@ -149,7 +149,7 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA SUPERVISORES] Error:', error)
+        // console.error('❌ [SIEA SUPERVISORES] Error:', error)
         throw error
       } finally {
         this.loading = false
@@ -168,9 +168,9 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
           provincias_asignadas: (datos.provincias_asignadas || []).filter((p) => p && p.trim()),
         }
 
-        console.log('📤 [CREATE SUPERVISOR] Datos a enviar:', datosParaEnviar)
-        console.log('📊 [CREATE SUPERVISOR] Nivel supervisor:', datosParaEnviar.nivel_supervisor)
-        console.log('📊 [CREATE SUPERVISOR] Ámbito:', datosParaEnviar.ambito_supervision)
+        // console.log('📤 [CREATE SUPERVISOR] Datos a enviar:', datosParaEnviar)
+        // console.log('📊 [CREATE SUPERVISOR] Nivel supervisor:', datosParaEnviar.nivel_supervisor)
+        // console.log('📊 [CREATE SUPERVISOR] Ámbito:', datosParaEnviar.ambito_supervision)
 
         const response = await supervisoresService.create(datosParaEnviar)
 
@@ -180,7 +180,7 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA SUPERVISORES] Error al crear:', error)
+        // console.error('❌ [SIEA SUPERVISORES] Error al crear:', error)
         throw error
       } finally {
         this.loading = false
@@ -199,9 +199,9 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
           provincias_asignadas: (datos.provincias_asignadas || []).filter((p) => p && p.trim()),
         }
 
-        console.log('📤 [UPDATE SUPERVISOR] Datos a enviar:', datosParaEnviar)
-        console.log('📊 [UPDATE SUPERVISOR] Nivel supervisor:', datosParaEnviar.nivel_supervisor)
-        console.log('📊 [UPDATE SUPERVISOR] Ámbito:', datosParaEnviar.ambito_supervision)
+        // console.log('📤 [UPDATE SUPERVISOR] Datos a enviar:', datosParaEnviar)
+        // console.log('📊 [UPDATE SUPERVISOR] Nivel supervisor:', datosParaEnviar.nivel_supervisor)
+        // console.log('📊 [UPDATE SUPERVISOR] Ámbito:', datosParaEnviar.ambito_supervision)
 
         const response = await supervisoresService.update(id, datosParaEnviar)
 
@@ -211,7 +211,7 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA SUPERVISORES] Error al actualizar:', error)
+        // console.error('❌ [SIEA SUPERVISORES] Error al actualizar:', error)
         throw error
       } finally {
         this.loading = false
@@ -232,7 +232,7 @@ export const useSieaSupervisoresStore = defineStore('sieaSupervisores', {
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA SUPERVISORES] Error al eliminar:', error)
+        // console.error('❌ [SIEA SUPERVISORES] Error al eliminar:', error)
         throw error
       } finally {
         this.loading = false

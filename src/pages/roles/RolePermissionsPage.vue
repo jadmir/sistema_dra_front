@@ -95,7 +95,7 @@ async function loadData() {
     }
   } catch (error) {
     // <-- usar la variable para evitar no-unused-vars
-    console.error(error)
+    // console.error(error)
     $q.notify({ type: 'negative', message: 'Error al cargar permisos' })
   } finally {
     loading.value = false
@@ -111,7 +111,7 @@ const save = async () => {
     open.value = false
   } catch (error) {
     // <-- usar la variable
-    console.error(error)
+    // console.error(error)
     $q.notify({ type: 'negative', message: 'Error al asignar permisos' })
   } finally {
     saving.value = false

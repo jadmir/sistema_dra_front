@@ -84,11 +84,11 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
           ...this.filtros,
         }
 
-        console.log('🔍 [SIEA ENCUESTAS] Consultando página', page, 'con filtros:', params)
+        // console.log('🔍 [SIEA ENCUESTAS] Consultando página', page, 'con filtros:', params)
 
         const response = await encuestasService.listarConFiltros(params)
 
-        console.log('📊 [SIEA ENCUESTAS] Respuesta completa:', response)
+        // console.log('📊 [SIEA ENCUESTAS] Respuesta completa:', response)
 
         if (response.success) {
           // La respuesta ya viene como response.data desde el servicio
@@ -98,12 +98,12 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
           this.total = response.total || 0
           this.lastPage = response.last_page || 1
 
-          console.log('✅ [SIEA ENCUESTAS] Cargadas:', this.encuestas.length, 'de', this.total)
+          // console.log('✅ [SIEA ENCUESTAS] Cargadas:', this.encuestas.length, 'de', this.total)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al cargar:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al cargar:', error)
         throw error
       } finally {
         this.loading = false
@@ -116,17 +116,17 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
     async fetchEncuesta(id) {
       this.loading = true
       try {
-        console.log('🔍 [SIEA ENCUESTAS] Consultando encuesta #', id)
+        // console.log('🔍 [SIEA ENCUESTAS] Consultando encuesta #', id)
         const response = await encuestasService.get(id)
 
         if (response.success) {
           this.encuestaActual = response.data
-          console.log('✅ [SIEA ENCUESTAS] Encuesta cargada:', response.data)
+          // console.log('✅ [SIEA ENCUESTAS] Encuesta cargada:', response.data)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al cargar encuesta:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al cargar encuesta:', error)
         throw error
       } finally {
         this.loading = false
@@ -139,18 +139,18 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
     async createEncuesta(datos) {
       this.loading = true
       try {
-        console.log('📝 [SIEA ENCUESTAS] Creando encuesta:', datos)
+        // console.log('📝 [SIEA ENCUESTAS] Creando encuesta:', datos)
         const response = await encuestasService.create(datos)
 
         if (response.success) {
-          console.log('✅ [SIEA ENCUESTAS] Encuesta creada:', response.data)
+          // console.log('✅ [SIEA ENCUESTAS] Encuesta creada:', response.data)
           // Recargar lista
           await this.fetchEncuestas(this.currentPage)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al crear:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al crear:', error)
         throw error
       } finally {
         this.loading = false
@@ -163,18 +163,18 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
     async updateEncuesta(id, datos) {
       this.loading = true
       try {
-        console.log('📝 [SIEA ENCUESTAS] Actualizando encuesta #', id)
+        // console.log('📝 [SIEA ENCUESTAS] Actualizando encuesta #', id)
         const response = await encuestasService.update(id, datos)
 
         if (response.success) {
-          console.log('✅ [SIEA ENCUESTAS] Encuesta actualizada')
+          // console.log('✅ [SIEA ENCUESTAS] Encuesta actualizada')
           // Recargar lista
           await this.fetchEncuestas(this.currentPage)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al actualizar:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al actualizar:', error)
         throw error
       } finally {
         this.loading = false
@@ -187,18 +187,18 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
     async deleteEncuesta(id) {
       this.loading = true
       try {
-        console.log('🗑️ [SIEA ENCUESTAS] Eliminando encuesta #', id)
+        // console.log('🗑️ [SIEA ENCUESTAS] Eliminando encuesta #', id)
         const response = await encuestasService.delete(id)
 
         if (response.success) {
-          console.log('✅ [SIEA ENCUESTAS] Encuesta eliminada')
+          // console.log('✅ [SIEA ENCUESTAS] Encuesta eliminada')
           // Recargar lista
           await this.fetchEncuestas(this.currentPage)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al eliminar:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al eliminar:', error)
         throw error
       } finally {
         this.loading = false
@@ -211,18 +211,18 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
     async validarEncuesta(id, observaciones = '') {
       this.loading = true
       try {
-        console.log('✅ [SIEA ENCUESTAS] Validando encuesta #', id)
+        // console.log('✅ [SIEA ENCUESTAS] Validando encuesta #', id)
         const response = await encuestasService.validar(id, observaciones)
 
         if (response.success) {
-          console.log('✅ [SIEA ENCUESTAS] Encuesta validada')
+          // console.log('✅ [SIEA ENCUESTAS] Encuesta validada')
           // Recargar lista
           await this.fetchEncuestas(this.currentPage)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al validar:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al validar:', error)
         throw error
       } finally {
         this.loading = false
@@ -235,18 +235,18 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
     async rechazarEncuesta(id, observaciones) {
       this.loading = true
       try {
-        console.log('❌ [SIEA ENCUESTAS] Rechazando encuesta #', id)
+        // console.log('❌ [SIEA ENCUESTAS] Rechazando encuesta #', id)
         const response = await encuestasService.rechazar(id, observaciones)
 
         if (response.success) {
-          console.log('✅ [SIEA ENCUESTAS] Encuesta rechazada')
+          // console.log('✅ [SIEA ENCUESTAS] Encuesta rechazada')
           // Recargar lista
           await this.fetchEncuestas(this.currentPage)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al rechazar:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al rechazar:', error)
         throw error
       } finally {
         this.loading = false
@@ -259,17 +259,17 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
     async fetchEstadisticas() {
       this.loadingEstadisticas = true
       try {
-        console.log('📊 [SIEA ENCUESTAS] Consultando estadísticas')
+        // console.log('📊 [SIEA ENCUESTAS] Consultando estadísticas')
         const response = await encuestasService.getEstadisticas()
 
         if (response.success) {
           this.estadisticas = response.data
-          console.log('✅ [SIEA ENCUESTAS] Estadísticas cargadas:', this.estadisticas)
+          // console.log('✅ [SIEA ENCUESTAS] Estadísticas cargadas:', this.estadisticas)
         }
 
         return response
       } catch (error) {
-        console.error('❌ [SIEA ENCUESTAS] Error al cargar estadísticas:', error)
+        // console.error('❌ [SIEA ENCUESTAS] Error al cargar estadísticas:', error)
         throw error
       } finally {
         this.loadingEstadisticas = false
@@ -284,7 +284,7 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
         ...this.filtros,
         ...nuevosFiltros,
       }
-      console.log('🔧 [SIEA ENCUESTAS] Filtros actualizados:', this.filtros)
+      // console.log('🔧 [SIEA ENCUESTAS] Filtros actualizados:', this.filtros)
     },
 
     /**
@@ -302,7 +302,7 @@ export const useSieaEncuestasStore = defineStore('sieaEncuestas', {
         orden_campo: 'created_at',
         orden_direccion: 'desc',
       }
-      console.log('🧹 [SIEA ENCUESTAS] Filtros limpiados')
+      // console.log('🧹 [SIEA ENCUESTAS] Filtros limpiados')
     },
 
     /**

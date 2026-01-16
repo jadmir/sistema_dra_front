@@ -27,7 +27,7 @@ class EncuestadoresService extends SieaBaseService {
       search: termino,
       ...filtros,
     }
-    console.log('🔍 [ENCUESTADORES] Buscando:', termino)
+    // console.log('🔍 [ENCUESTADORES] Buscando:', termino)
     return this.list(params)
   }
 

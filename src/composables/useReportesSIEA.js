@@ -40,20 +40,20 @@ export function useReportesSIEA(formulario) {
    * @param {Boolean} incluirMesAno - Si true, incluye mes/ano además de las fechas (para exportaciones)
    */
   function buildParams(filtrosParam = null, convertirFechas = false, incluirMesAno = false) {
-    console.log(
-      `🔧 buildParams() llamado con convertirFechas=${convertirFechas}, incluirMesAno=${incluirMesAno}`,
-    )
+    // console.log(
+    //   `🔧 buildParams() llamado con convertirFechas=${convertirFechas}, incluirMesAno=${incluirMesAno}`,
+    // )
     const filtrosAUsar = filtrosParam || filtros.value
     const params = {}
 
-    console.log(`🔍 [DEBUG] filtrosAUsar completo:`, filtrosAUsar)
-    console.log(`🔍 [DEBUG] filtrosAUsar.mes:`, filtrosAUsar.mes, typeof filtrosAUsar.mes)
-    console.log(`🔍 [DEBUG] filtrosAUsar.ano:`, filtrosAUsar.ano, typeof filtrosAUsar.ano)
-    console.log(`🔍 [DEBUG] convertirFechas:`, convertirFechas)
+    // console.log(`🔍 [DEBUG] filtrosAUsar completo:`, filtrosAUsar)
+    // console.log(`🔍 [DEBUG] filtrosAUsar.mes:`, filtrosAUsar.mes, typeof filtrosAUsar.mes)
+    // console.log(`🔍 [DEBUG] filtrosAUsar.ano:`, filtrosAUsar.ano, typeof filtrosAUsar.ano)
+    // console.log(`🔍 [DEBUG] convertirFechas:`, convertirFechas)
 
     // Si se pide convertir a fechas y tenemos mes/ano
     if (convertirFechas && filtrosAUsar.mes && filtrosAUsar.ano) {
-      console.log(`📅 CONVIRTIENDO: mes=${filtrosAUsar.mes}, ano=${filtrosAUsar.ano}`)
+      // console.log(`📅 CONVIRTIENDO: mes=${filtrosAUsar.mes}, ano=${filtrosAUsar.ano}`)
       const mes = parseInt(filtrosAUsar.mes)
       const ano = parseInt(filtrosAUsar.ano)
 
@@ -67,17 +67,17 @@ export function useReportesSIEA(formulario) {
       const ultimoDia = new Date(ano, mes, 0).getDate()
       params.fecha_fin = `${ano}-${String(mes).padStart(2, '0')}-${String(ultimoDia).padStart(2, '0')}`
 
-      console.log(`📅 Convertido mes=${mes} año=${ano} a:`, {
-        fecha_inicio: params.fecha_inicio,
-        fecha_fin: params.fecha_fin,
-        ultimoDia: ultimoDia,
-      })
+      // console.log(`📅 Convertido mes=${mes} año=${ano} a:`, {
+      //   fecha_inicio: params.fecha_inicio,
+      //   fecha_fin: params.fecha_fin,
+      //   ultimoDia: ultimoDia,
+      // })
 
       // Si se pide incluir mes/ano (para exportaciones), los agregamos también
       if (incluirMesAno) {
         params.mes = mes
         params.ano = ano
-        console.log(`📅 INCLUYENDO mes/ano para exportación:`, { mes, ano })
+        // console.log(`📅 INCLUYENDO mes/ano para exportación:`, { mes, ano })
       }
     }
 
@@ -85,7 +85,7 @@ export function useReportesSIEA(formulario) {
     Object.keys(filtrosAUsar).forEach((key) => {
       // Si ya convertimos fechas Y no se pide incluir mes/ano, omitirlos
       if (convertirFechas && !incluirMesAno && (key === 'mes' || key === 'ano')) {
-        console.log(`📅 Omitiendo ${key} porque ya se convirtió a fechas (y no se pidió incluirlo)`)
+        // console.log(`📅 Omitiendo ${key} porque ya se convirtió a fechas (y no se pidió incluirlo)`)
         return
       }
 
@@ -94,7 +94,7 @@ export function useReportesSIEA(formulario) {
       }
     })
 
-    console.log(`📅 Params finales después de buildParams:`, params)
+    // console.log(`📅 Params finales después de buildParams:`, params)
     return params
   }
 
@@ -107,50 +107,50 @@ export function useReportesSIEA(formulario) {
     try {
       // IMPORTANTE: También convertir a fechas para la consulta
       const params = buildParams(filtrosParam, true)
-      console.log(`📊 [${codigosFormulario[formulario]}] Consultando con params:`, params)
+      // console.log(`📊 [${codigosFormulario[formulario]}] Consultando con params:`, params)
 
       // Construir URL para debugging
-      const urlParams = new URLSearchParams(params)
-      const fullUrl = `/agri/reportes/precios-${formulario}?${urlParams.toString()}`
-      console.log(`🌐 URL COMPLETA: ${fullUrl}`)
+      // const urlParams = new URLSearchParams(params)
+      // const fullUrl = `/agri/reportes/precios-${formulario}?${urlParams.toString()}`
+      // console.log(`🌐 URL COMPLETA: ${fullUrl}`)
 
       const response = await api.get(`/agri/reportes/precios-${formulario}`, { params })
 
       // ============================================================================
       // 📊 RESUMEN DE RESPUESTA DEL BACKEND
       // ============================================================================
-      console.log(`\n${'='.repeat(80)}`)
-      console.log(`� [${codigosFormulario[formulario]}] RESPUESTA DEL BACKEND RECIBIDA`)
-      console.log(`${'='.repeat(80)}`)
-      console.log(`📊 Status: ${response.status} ${response.statusText}`)
-      console.log(`📊 Keys disponibles:`, Object.keys(response.data))
-      console.log(`📊 Respuesta completa:`, JSON.stringify(response.data, null, 2))
+      // console.log(`\n${'='.repeat(80)}`)
+      // console.log(`� [${codigosFormulario[formulario]}] RESPUESTA DEL BACKEND RECIBIDA`)
+      // console.log(`${'='.repeat(80)}`)
+      // console.log(`📊 Status: ${response.status} ${response.statusText}`)
+      // console.log(`📊 Keys disponibles:`, Object.keys(response.data))
+      // console.log(`📊 Respuesta completa:`, JSON.stringify(response.data, null, 2))
 
       // Contar elementos en cada array posible
-      const conteos = {
-        precios_por_tipo: Array.isArray(response.data.precios_por_tipo)
-          ? response.data.precios_por_tipo.length
-          : 0,
-        precios_por_fertilizante: Array.isArray(response.data.precios_por_fertilizante)
-          ? response.data.precios_por_fertilizante.length
-          : 0,
-        precios_por_agroquimico: Array.isArray(response.data.precios_por_agroquimico)
-          ? response.data.precios_por_agroquimico.length
-          : 0,
-        precios_por_transporte: Array.isArray(response.data.precios_por_transporte)
-          ? response.data.precios_por_transporte.length
-          : 0,
-        precios_por_ruta: Array.isArray(response.data.precios_por_ruta)
-          ? response.data.precios_por_ruta.length
-          : 0,
-      }
+      // const conteos = {
+      //   precios_por_tipo: Array.isArray(response.data.precios_por_tipo)
+      //     ? response.data.precios_por_tipo.length
+      //     : 0,
+      //   precios_por_fertilizante: Array.isArray(response.data.precios_por_fertilizante)
+      //     ? response.data.precios_por_fertilizante.length
+      //     : 0,
+      //   precios_por_agroquimico: Array.isArray(response.data.precios_por_agroquimico)
+      //     ? response.data.precios_por_agroquimico.length
+      //     : 0,
+      //   precios_por_transporte: Array.isArray(response.data.precios_por_transporte)
+      //     ? response.data.precios_por_transporte.length
+      //     : 0,
+      //   precios_por_ruta: Array.isArray(response.data.precios_por_ruta)
+      //     ? response.data.precios_por_ruta.length
+      //     : 0,
+      // }
 
-      console.log(`\n📊 CONTEO DE ELEMENTOS POR ARRAY:`)
-      Object.entries(conteos).forEach(([key, count]) => {
-        const icon = count > 0 ? '✅' : '❌'
-        console.log(`   ${icon} ${key}: ${count} elementos`)
-      })
-      console.log(`${'='.repeat(80)}\n`)
+      // console.log(`\n📊 CONTEO DE ELEMENTOS POR ARRAY:`)
+      // Object.entries(conteos).forEach(([key, count]) => {
+      //   const icon = count > 0 ? '✅' : '❌'
+      //   console.log(`   ${icon} ${key}: ${count} elementos`)
+      // })
+      // console.log(`${'='.repeat(80)}\n`)
 
       // Detectar el array de precios según el formulario
       const preciosArray =
@@ -161,29 +161,29 @@ export function useReportesSIEA(formulario) {
         response.data.precios_por_ruta ||
         null
 
-      console.log(`\n🔍 DETECCIÓN DE ARRAY DE PRECIOS:`)
-      console.log(`   Buscando para formulario: "${formulario}"`)
-      console.log(`   Array detectado:`, preciosArray ? '✅ SÍ' : '❌ NO')
+      // console.log(`\n🔍 DETECCIÓN DE ARRAY DE PRECIOS:`)
+      // console.log(`   Buscando para formulario: "${formulario}"`)
+      // console.log(`   Array detectado:`, preciosArray ? '✅ SÍ' : '❌ NO')
       if (preciosArray) {
-        console.log(`   Es un array: ${Array.isArray(preciosArray) ? '✅ SÍ' : '❌ NO'}`)
-        console.log(`   Cantidad de elementos: ${preciosArray?.length || 0}`)
+        // console.log(`   Es un array: ${Array.isArray(preciosArray) ? '✅ SÍ' : '❌ NO'}`)
+        // console.log(`   Cantidad de elementos: ${preciosArray?.length || 0}`)
         if (preciosArray.length > 0) {
-          console.log(`   Primer elemento (muestra):`, preciosArray[0])
+          // console.log(`   Primer elemento (muestra):`, preciosArray[0])
         }
       } else {
-        console.log(`   ⚠️ NO SE ENCONTRÓ ningún array de precios en la respuesta`)
-        console.log(`   Estructura recibida:`, Object.keys(response.data))
+        // console.log(`   ⚠️ NO SE ENCONTRÓ ningún array de precios en la respuesta`)
+        // console.log(`   Estructura recibida:`, Object.keys(response.data))
       }
-      console.log(``)
+      // console.log(``)
 
       if (response.data && preciosArray) {
         // Estructura backend: { periodo, resumen, precios_por_*, comparativo_por_* }
-        console.log(`📊 [${codigosFormulario[formulario]}] Array de precios detectado`)
-        console.log(`📊 [${codigosFormulario[formulario]}] Datos recibidos:`, preciosArray)
+        // console.log(`📊 [${codigosFormulario[formulario]}] Array de precios detectado`)
+        // console.log(`📊 [${codigosFormulario[formulario]}] Datos recibidos:`, preciosArray)
 
         // Los datos vienen en el array de precios
-        datos.value = preciosArray.map((item, index) => {
-          console.log(`📊 [${codigosFormulario[formulario]}] Procesando item ${index}:`, item)
+        datos.value = preciosArray.map((item) => {
+          // console.log(`📊 [${codigosFormulario[formulario]}] Procesando item:`, item)
 
           // Detectar si los precios están en "estadisticas" o directamente en el item
           const precios = item.estadisticas || item
@@ -214,11 +214,11 @@ export function useReportesSIEA(formulario) {
             // Período (desde response.data.periodo o desde filtros)
             mes_nombre: (() => {
               const mesValue = response.data.periodo?.mes || filtros.value.mes
-              console.log(
-                `📅 Obteniendo mes_nombre: response.data.periodo?.mes=${response.data.periodo?.mes}, filtros.value.mes=${filtros.value.mes}, mesValue=${mesValue}`,
-              )
+              // console.log(
+              //   `📅 Obteniendo mes_nombre: response.data.periodo?.mes=${response.data.periodo?.mes}, filtros.value.mes=${filtros.value.mes}, mesValue=${mesValue}`,
+              // )
               const nombre = getMesNombre(mesValue)
-              console.log(`📅 getMesNombre(${mesValue}) = ${nombre}`)
+              // console.log(`📅 getMesNombre(${mesValue}) = ${nombre}`)
               return nombre || 'N/A'
             })(),
             ano: response.data.periodo?.ano || filtros.value.ano || new Date().getFullYear(),
@@ -239,10 +239,10 @@ export function useReportesSIEA(formulario) {
             tendencia_cambio: item.tendencia?.cambio_porcentual || 0,
           }
 
-          console.log(
-            `📊 [${codigosFormulario[formulario]}] Registro procesado ${index}:`,
-            registro,
-          )
+          // console.log(
+          //   `📊 [${codigosFormulario[formulario]}] Registro procesado ${index}:`,
+          //   registro,
+          // )
           return registro
         })
 
@@ -259,9 +259,9 @@ export function useReportesSIEA(formulario) {
             datos.value.length > 0 ? Math.max(...datos.value.map((d) => d.precio_maximo)) : 0,
         }
 
-        console.log(`📊 [${codigosFormulario[formulario]}] Total registros:`, datos.value.length)
-        console.log(`📊 [${codigosFormulario[formulario]}] Datos procesados:`, datos.value)
-        console.log(`📊 [${codigosFormulario[formulario]}] Meta:`, meta.value)
+        // console.log(`📊 [${codigosFormulario[formulario]}] Total registros:`, datos.value.length)
+        // console.log(`📊 [${codigosFormulario[formulario]}] Datos procesados:`, datos.value)
+        // console.log(`📊 [${codigosFormulario[formulario]}] Meta:`, meta.value)
 
         if (datos.value.length > 0) {
           $q.notify({
@@ -279,7 +279,7 @@ export function useReportesSIEA(formulario) {
           })
         }
       } else {
-        console.warn(`⚠️ [${codigosFormulario[formulario]}] Estructura desconocida:`, response.data)
+        // console.warn(`⚠️ [${codigosFormulario[formulario]}] Estructura desconocida:`, response.data)
         datos.value = []
         meta.value = null
         $q.notify({
@@ -290,9 +290,9 @@ export function useReportesSIEA(formulario) {
         })
       }
     } catch (error) {
-      console.error(`❌ [${codigosFormulario[formulario]}] Error:`, error)
-      console.error(`❌ [${codigosFormulario[formulario]}] Response data:`, error.response?.data)
-      console.error(`❌ [${codigosFormulario[formulario]}] Status:`, error.response?.status)
+      // console.error(`❌ [${codigosFormulario[formulario]}] Error:`, error)
+      // console.error(`❌ [${codigosFormulario[formulario]}] Response data:`, error.response?.data)
+      // console.error(`❌ [${codigosFormulario[formulario]}] Status:`, error.response?.status)
 
       // Si es 404 con mensaje de "sin datos", tratarlo como warning, no error
       if (error.response?.status === 404) {
@@ -361,16 +361,16 @@ export function useReportesSIEA(formulario) {
     try {
       // IMPORTANTE: Incluir mes/ano Y fechas para que el backend use lo que necesite
       const params = buildParams(filtrosParam, true, true)
-      console.log(`📥 [${codigosFormulario[formulario]}] Exportando Excel con params:`, params)
+      // console.log(`📥 [${codigosFormulario[formulario]}] Exportando Excel con params:`, params)
 
       // Usar la ruta correcta del backend: {formulario}-export
       const response = await api.get(`/agri/reportes/${formulario}-export`, {
         params,
         responseType: 'blob',
-        onDownloadProgress: (progressEvent) => {
-          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          console.log(`📥 Descargando Excel: ${percent}%`)
-        },
+        // onDownloadProgress: (progressEvent) => {
+        //   const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        //   console.log(`📥 Descargando Excel: ${percent}%`)
+        // },
       })
 
       if (!(response.data instanceof Blob)) {
@@ -381,13 +381,13 @@ export function useReportesSIEA(formulario) {
       if (response.data.type === 'application/json') {
         const text = await response.data.text()
         const error = JSON.parse(text)
-        console.error(`❌ [${codigosFormulario[formulario]}] Error del backend:`, error)
+        // console.error(`❌ [${codigosFormulario[formulario]}] Error del backend:`, error)
         throw new Error(error.message || 'Error al generar el archivo')
       }
 
       descargarArchivo(response.data, 'excel', formulario)
 
-      console.log(`✅ [${codigosFormulario[formulario]}] Excel exportado exitosamente`)
+      // console.log(`✅ [${codigosFormulario[formulario]}] Excel exportado exitosamente`)
 
       $q.notify({
         type: 'positive',
@@ -397,7 +397,7 @@ export function useReportesSIEA(formulario) {
         timeout: 3000,
       })
     } catch (error) {
-      console.error(`❌ [${codigosFormulario[formulario]}] Error al exportar Excel:`, error)
+      // console.error(`❌ [${codigosFormulario[formulario]}] Error al exportar Excel:`, error)
       await manejarErrorExportacion(error, 'Excel')
     } finally {
       exportandoExcel.value = false
@@ -413,16 +413,16 @@ export function useReportesSIEA(formulario) {
     try {
       // IMPORTANTE: Incluir mes/ano Y fechas para que el backend use lo que necesite
       const params = buildParams(filtrosParam, true, true)
-      console.log(`📄 [${codigosFormulario[formulario]}] Exportando PDF con params:`, params)
+      // console.log(`📄 [${codigosFormulario[formulario]}] Exportando PDF con params:`, params)
 
       // Usar la ruta correcta del backend: {formulario}-pdf
       const response = await api.get(`/agri/reportes/${formulario}-pdf`, {
         params,
         responseType: 'blob',
-        onDownloadProgress: (progressEvent) => {
-          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          console.log(`📄 Descargando PDF: ${percent}%`)
-        },
+        // onDownloadProgress: (progressEvent) => {
+        //   const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        //   console.log(`📄 Descargando PDF: ${percent}%`)
+        // },
       })
 
       if (!(response.data instanceof Blob)) {
@@ -433,13 +433,13 @@ export function useReportesSIEA(formulario) {
       if (response.data.type === 'application/json') {
         const text = await response.data.text()
         const error = JSON.parse(text)
-        console.error(`❌ [${codigosFormulario[formulario]}] Error del backend:`, error)
+        // console.error(`❌ [${codigosFormulario[formulario]}] Error del backend:`, error)
         throw new Error(error.message || 'Error al generar el archivo')
       }
 
       descargarArchivo(response.data, 'pdf', formulario)
 
-      console.log(`✅ [${codigosFormulario[formulario]}] PDF exportado exitosamente`)
+      // console.log(`✅ [${codigosFormulario[formulario]}] PDF exportado exitosamente`)
 
       $q.notify({
         type: 'positive',
@@ -449,7 +449,7 @@ export function useReportesSIEA(formulario) {
         timeout: 3000,
       })
     } catch (error) {
-      console.error(`❌ [${codigosFormulario[formulario]}] Error al exportar PDF:`, error)
+      // console.error(`❌ [${codigosFormulario[formulario]}] Error al exportar PDF:`, error)
       await manejarErrorExportacion(error, 'PDF')
     } finally {
       exportandoPDF.value = false
@@ -483,10 +483,10 @@ export function useReportesSIEA(formulario) {
     document.body.removeChild(link)
     window.URL.revokeObjectURL(url)
 
-    console.log(
-      `✅ [${codigosFormulario[nombre]}] ${tipo.toUpperCase()} descargado:`,
-      link.download,
-    )
+    // console.log(
+    //   `✅ [${codigosFormulario[nombre]}] ${tipo.toUpperCase()} descargado:`,
+    //   link.download,
+    // )
   }
 
   /**
@@ -555,7 +555,7 @@ export function useReportesSIEA(formulario) {
               const jsonError = JSON.parse(text)
               mensaje = jsonError.message || mensaje
             } catch {
-              console.error('No se pudo parsear error del blob')
+              // console.error('No se pudo parsear error del blob')
             }
           }
       }

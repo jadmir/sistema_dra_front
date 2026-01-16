@@ -21,7 +21,7 @@ export const useCultivoStore = defineStore('cultivo', {
         }
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar cultivos'
-        console.error('Error fetching cultivos:', error)
+        // console.error('Error fetching cultivos:', error)
       } finally {
         this.loading = false
       }

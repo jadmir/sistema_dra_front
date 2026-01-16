@@ -27,7 +27,7 @@ class SupervisoresService extends SieaBaseService {
       search: termino,
       ...filtros,
     }
-    console.log('🔍 [SUPERVISORES] Buscando:', termino)
+    // console.log('🔍 [SUPERVISORES] Buscando:', termino)
     return this.list(params)
   }
 

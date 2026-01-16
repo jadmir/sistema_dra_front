@@ -297,9 +297,9 @@ const loadPerfil = async () => {
   try {
     const response = await perfilService.getPerfil()
     perfilData.value = response.usuario
-    console.log('Perfil cargado desde backend:', perfilData.value)
+    // console.log('Perfil cargado desde backend:', perfilData.value)
   } catch (error) {
-    console.error('Error al cargar perfil:', error)
+    // console.error('Error al cargar perfil:', error)
     $q.notify({
       type: 'negative',
       message: 'Error al cargar el perfil',
@@ -353,7 +353,7 @@ const submitUpdate = async () => {
 
     closeEditDialog()
   } catch (error) {
-    console.error('Error al actualizar perfil:', error)
+    // console.error('Error al actualizar perfil:', error)
     const errorMsg =
       error?.response?.data?.message ||
       error?.response?.data?.error ||

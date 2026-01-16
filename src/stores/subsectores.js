@@ -21,7 +21,7 @@ export const useSubsectorStore = defineStore('subsector', {
         }
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar subsectores'
-        console.error('Error fetching subsectores:', error)
+        // console.error('Error fetching subsectores:', error)
       } finally {
         this.loading = false
       }

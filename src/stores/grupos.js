@@ -21,7 +21,7 @@ export const useGrupoStore = defineStore('grupo', {
         }
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar grupos'
-        console.error('Error fetching grupos:', error)
+        // console.error('Error fetching grupos:', error)
       } finally {
         this.loading = false
       }

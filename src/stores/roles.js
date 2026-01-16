@@ -49,7 +49,7 @@ export const useRoleStore = defineStore('roles', {
         this.pagination.page = response.current_page || page
         this.pagination.rowsPerPage = response.per_page || rowsPerPage
       } catch (err) {
-        console.error('Error en fetchRoles:', err)
+        // console.error('Error en fetchRoles:', err)
         this.error = err.response?.data?.message || err.message || 'Error al cargar roles'
         this.roles = []
         this.pagination.rowsNumber = 0

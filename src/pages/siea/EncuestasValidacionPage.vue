@@ -463,7 +463,7 @@ const abrirDialogRechazarDesdeDetalle = () => {
 }
 
 const handleValidacionSuccess = (encuestaActualizada) => {
-  console.log('✅ Encuesta procesada:', encuestaActualizada)
+  // console.log('✅ Encuesta procesada:', encuestaActualizada)
   // Refrescar lista
   refrescar()
 }

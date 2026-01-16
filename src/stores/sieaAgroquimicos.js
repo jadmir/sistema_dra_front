@@ -99,7 +99,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
           this.lastPage = response.last_page || 1
         }
       } catch (error) {
-        console.error('Error al cargar agroquímicos:', error)
+        // console.error('Error al cargar agroquímicos:', error)
         throw error
       } finally {
         this.loading = false
@@ -117,7 +117,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
           this.agroquimicos = response.data
         }
       } catch (error) {
-        console.error('Error al cargar agroquímicos activos:', error)
+        // console.error('Error al cargar agroquímicos activos:', error)
         throw error
       } finally {
         this.loading = false
@@ -141,7 +141,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
           'OTROS',
         ]
       } catch (error) {
-        console.error('Error al cargar categorías:', error)
+        // console.error('Error al cargar categorías:', error)
         throw error
       }
     },
@@ -160,7 +160,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
           'IV - Normalmente no ofrece peligro',
         ]
       } catch (error) {
-        console.error('Error al cargar categorías toxicológicas:', error)
+        // console.error('Error al cargar categorías toxicológicas:', error)
         throw error
       }
     },
@@ -177,7 +177,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
         }
         return response
       } catch (error) {
-        console.error('Error al crear agroquímico:', error)
+        // console.error('Error al crear agroquímico:', error)
         throw error
       } finally {
         this.loading = false
@@ -196,7 +196,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
         }
         return response
       } catch (error) {
-        console.error('Error al actualizar agroquímico:', error)
+        // console.error('Error al actualizar agroquímico:', error)
         throw error
       } finally {
         this.loading = false
@@ -215,7 +215,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
         }
         return response
       } catch (error) {
-        console.error('Error al eliminar agroquímico:', error)
+        // console.error('Error al eliminar agroquímico:', error)
         throw error
       } finally {
         this.loading = false
@@ -233,7 +233,7 @@ export const useSieaAgroquimicosStore = defineStore('sieaAgroquimicos', {
           this.agroquimicos = response.data
         }
       } catch (error) {
-        console.error('Error en búsqueda:', error)
+        // console.error('Error en búsqueda:', error)
         throw error
       } finally {
         this.loading = false

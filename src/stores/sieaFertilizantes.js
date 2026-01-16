@@ -84,7 +84,7 @@ export const useSieaFertilizantesStore = defineStore('sieaFertilizantes', {
           this.lastPage = response.last_page || 1
         }
       } catch (error) {
-        console.error('Error al cargar fertilizantes:', error)
+        // console.error('Error al cargar fertilizantes:', error)
         throw error
       } finally {
         this.loading = false
@@ -102,7 +102,7 @@ export const useSieaFertilizantesStore = defineStore('sieaFertilizantes', {
           this.fertilizantes = response.data
         }
       } catch (error) {
-        console.error('Error al cargar fertilizantes activos:', error)
+        // console.error('Error al cargar fertilizantes activos:', error)
         throw error
       } finally {
         this.loading = false
@@ -119,9 +119,9 @@ export const useSieaFertilizantesStore = defineStore('sieaFertilizantes', {
           ...new Set(this.fertilizantes.map((f) => f.tipo).filter(Boolean)),
         ].sort()
         this.tipos = tiposUnicos
-        console.log('📋 [STORE FERTILIZANTES] Tipos extraídos:', tiposUnicos)
+        // console.log('📋 [STORE FERTILIZANTES] Tipos extraídos:', tiposUnicos)
       } catch (error) {
-        console.error('Error al cargar tipos:', error)
+        // console.error('Error al cargar tipos:', error)
         // Fallback con tipos predefinidos
         this.tipos = ['nitrogenado', 'fosfatado', 'potasico', 'compuesto', 'organico']
       }
@@ -139,7 +139,7 @@ export const useSieaFertilizantesStore = defineStore('sieaFertilizantes', {
         }
         return response
       } catch (error) {
-        console.error('Error al crear fertilizante:', error)
+        // console.error('Error al crear fertilizante:', error)
         throw error
       } finally {
         this.loading = false
@@ -158,7 +158,7 @@ export const useSieaFertilizantesStore = defineStore('sieaFertilizantes', {
         }
         return response
       } catch (error) {
-        console.error('Error al actualizar fertilizante:', error)
+        // console.error('Error al actualizar fertilizante:', error)
         throw error
       } finally {
         this.loading = false
@@ -177,7 +177,7 @@ export const useSieaFertilizantesStore = defineStore('sieaFertilizantes', {
         }
         return response
       } catch (error) {
-        console.error('Error al eliminar fertilizante:', error)
+        // console.error('Error al eliminar fertilizante:', error)
         throw error
       } finally {
         this.loading = false
@@ -195,7 +195,7 @@ export const useSieaFertilizantesStore = defineStore('sieaFertilizantes', {
           this.fertilizantes = response.data
         }
       } catch (error) {
-        console.error('Error en búsqueda:', error)
+        // console.error('Error en búsqueda:', error)
         throw error
       } finally {
         this.loading = false

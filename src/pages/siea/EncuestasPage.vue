@@ -3768,7 +3768,7 @@ const datosJson = computed(() => {
       try {
         return JSON.parse(encuestaActual.value.datos_json)
       } catch (e) {
-        console.error('❌ Error al parsear datos_json:', e)
+        // console.error('❌ Error al parsear datos_json:', e)
         return null
       }
     }
@@ -3782,7 +3782,7 @@ const datosJson = computed(() => {
       try {
         return JSON.parse(encuestaActual.value.datos)
       } catch (e) {
-        console.error('❌ Error al parsear datos:', e)
+        // console.error('❌ Error al parsear datos:', e)
         return null
       }
     }
@@ -3883,14 +3883,14 @@ function onRequest(props) {
 
 function ver(encuesta) {
   encuestaActual.value = encuesta
-  console.log('📋 Datos de la encuesta:', encuesta)
-  console.log('📦 datos_json (raw):', encuesta.datos_json)
-  console.log('� datos (raw):', encuesta.datos)
-  console.log('�🔍 Todas las propiedades:', Object.keys(encuesta))
+  // console.log('📋 Datos de la encuesta:', encuesta)
+  // console.log('📦 datos_json (raw):', encuesta.datos_json)
+  // console.log('� datos (raw):', encuesta.datos)
+  // console.log('�🔍 Todas las propiedades:', Object.keys(encuesta))
 
   // Esperar a que el computed se actualice
   setTimeout(() => {
-    console.log('✅ datosJson (parseado):', datosJson.value)
+    // console.log('✅ datosJson (parseado):', datosJson.value)
   }, 100)
 
   dialogVer.value = true
@@ -4128,12 +4128,12 @@ function agroquimicosPorCategoria(categoria) {
     )
   })
 
-  console.log(`🔍 Filtrando ${categoria} (${tipo}):`, resultados.length, 'encontrados')
+  // console.log(`🔍 Filtrando ${categoria} (${tipo}):`, resultados.length, 'encontrados')
   if (resultados.length > 0) {
-    console.log(
-      '   Productos:',
-      resultados.map((r) => `${r.nombre_comercial} (${r.tipo})`),
-    )
+    // console.log(
+    //   '   Productos:',
+    //   resultados.map((r) => `${r.nombre_comercial} (${r.tipo})`),
+    // )
   }
   return resultados
 }
@@ -4339,26 +4339,26 @@ async function cargarCatalogos() {
     // Cargar fertilizantes activos
     const resFertilizantes = await fertilizantesService.listarActivos()
     fertilizantesDisponibles.value = resFertilizantes.data || []
-    console.log('✅ Fertilizantes cargados:', fertilizantesDisponibles.value.length)
-    console.log('📦 Fertilizantes:', fertilizantesDisponibles.value)
+    // console.log('✅ Fertilizantes cargados:', fertilizantesDisponibles.value.length)
+    // console.log('📦 Fertilizantes:', fertilizantesDisponibles.value)
 
     // Cargar agroquímicos activos
     const resAgroquimicos = await agroquimicosService.listarActivos()
     agroquimicosDisponibles.value = resAgroquimicos.data || []
-    console.log('✅ Agroquímicos cargados:', agroquimicosDisponibles.value.length)
-    console.log('📦 Agroquímicos completos:', agroquimicosDisponibles.value)
+    // console.log('✅ Agroquímicos cargados:', agroquimicosDisponibles.value.length)
+    // console.log('📦 Agroquímicos completos:', agroquimicosDisponibles.value)
 
     // Mostrar TODOS los tipos únicos encontrados
     const tiposUnicos = [...new Set(agroquimicosDisponibles.value.map((a) => a.tipo))].sort()
-    console.log('🏷️ Tipos únicos en BD:', tiposUnicos)
+    // console.log('🏷️ Tipos únicos en BD:', tiposUnicos)
 
     // Contar por cada tipo
     tiposUnicos.forEach((tipo) => {
       const count = agroquimicosDisponibles.value.filter((a) => a.tipo === tipo).length
-      console.log(`   ${tipo}: ${count} productos`)
+      // console.log(`   ${tipo}: ${count} productos`)
     })
   } catch (error) {
-    console.error('❌ Error cargando catálogos:', error)
+    // console.error('❌ Error cargando catálogos:', error)
     $q.notify({
       type: 'warning',
       message: 'No se pudieron cargar los catálogos de productos',

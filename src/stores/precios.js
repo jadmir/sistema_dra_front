@@ -35,11 +35,11 @@ export const usePreciosStore = defineStore('precios', {
       this.error = null
       try {
         const data = await preciosService.getProductos()
-        console.log('Productos recibidos:', data)
+        // console.log('Productos recibidos:', data)
         this.productos = Array.isArray(data) ? data : []
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar productos'
-        console.error('Error fetching productos:', error)
+        // console.error('Error fetching productos:', error)
         this.productos = []
       } finally {
         this.loading = false
@@ -49,11 +49,11 @@ export const usePreciosStore = defineStore('precios', {
     async fetchCategorias() {
       try {
         const data = await preciosService.getCategorias()
-        console.log('Categorías recibidas:', data)
+        // console.log('Categorías recibidas:', data)
         this.categorias = Array.isArray(data) ? data : []
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar categorías'
-        console.error('Error fetching categorias:', error)
+        // console.error('Error fetching categorias:', error)
         this.categorias = []
       }
     },
@@ -130,11 +130,11 @@ export const usePreciosStore = defineStore('precios', {
       this.error = null
       try {
         const data = await preciosService.getMercados()
-        console.log('Mercados recibidos:', data)
+        // console.log('Mercados recibidos:', data)
         this.mercados = Array.isArray(data) ? data : []
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar mercados'
-        console.error('Error fetching mercados:', error)
+        // console.error('Error fetching mercados:', error)
         this.mercados = []
       } finally {
         this.loading = false
@@ -144,11 +144,11 @@ export const usePreciosStore = defineStore('precios', {
     async fetchUbicaciones() {
       try {
         const data = await preciosService.getUbicaciones()
-        console.log('Ubicaciones recibidas:', data)
+        // console.log('Ubicaciones recibidas:', data)
         this.ubicaciones = Array.isArray(data) ? data : []
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar ubicaciones'
-        console.error('Error fetching ubicaciones:', error)
+        // console.error('Error fetching ubicaciones:', error)
         this.ubicaciones = []
       }
     },
@@ -192,11 +192,11 @@ export const usePreciosStore = defineStore('precios', {
       this.error = null
       try {
         const data = await preciosService.getEncuestadores()
-        console.log('Encuestadores recibidos:', data)
+        // console.log('Encuestadores recibidos:', data)
         this.encuestadores = Array.isArray(data) ? data : []
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar encuestadores'
-        console.error('Error fetching encuestadores:', error)
+        // console.error('Error fetching encuestadores:', error)
         this.encuestadores = []
       } finally {
         this.loading = false
@@ -245,7 +245,7 @@ export const usePreciosStore = defineStore('precios', {
         this.muestras = response.data || response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar muestras'
-        console.error('Error fetching muestras:', error)
+        // console.error('Error fetching muestras:', error)
       } finally {
         this.loading = false
       }
@@ -257,7 +257,7 @@ export const usePreciosStore = defineStore('precios', {
         this.muestrasPendientes = response.data?.data || response.data || response
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar muestras pendientes'
-        console.error('Error fetching muestras pendientes:', error)
+        // console.error('Error fetching muestras pendientes:', error)
       }
     },
 
@@ -267,7 +267,7 @@ export const usePreciosStore = defineStore('precios', {
         await this.fetchMuestras()
         return response
       } catch (error) {
-        console.error('❌ [CREATE MUESTRA] Error:', error)
+        // console.error('❌ [CREATE MUESTRA] Error:', error)
         this.error = error.response?.data?.message || 'Error al crear muestra'
         throw error
       }
@@ -343,7 +343,7 @@ export const usePreciosStore = defineStore('precios', {
         return this.reporteComparativo
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar reporte'
-        console.error('Error fetching reporte:', error)
+        // console.error('Error fetching reporte:', error)
         this.reporteComparativo = null
         throw error
       } finally {
@@ -364,7 +364,7 @@ export const usePreciosStore = defineStore('precios', {
         return this.resumenMuestras
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar resumen'
-        console.error('Error fetching resumen:', error)
+        // console.error('Error fetching resumen:', error)
         this.resumenMuestras = null
         throw error
       } finally {
@@ -386,7 +386,7 @@ export const usePreciosStore = defineStore('precios', {
         return this.reporteHistorico
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al cargar histórico'
-        console.error('Error fetching histórico:', error)
+        // console.error('Error fetching histórico:', error)
         this.reporteHistorico = null
         throw error
       } finally {
@@ -406,7 +406,7 @@ export const usePreciosStore = defineStore('precios', {
         return { success: true, nombreArchivo }
       } catch (error) {
         this.error = error.response?.data?.message || 'Error al descargar reporte'
-        console.error('Error al descargar:', error)
+        // console.error('Error al descargar:', error)
         return { success: false, message: this.error }
       } finally {
         this.loading = false

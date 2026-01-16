@@ -27,9 +27,9 @@ export const usePermisosStore = defineStore('permisos', {
 
         // Si hay búsqueda, usar endpoint de búsqueda
         if (this.search && this.search.trim()) {
-          console.log('Buscando permisos con:', this.search)
+          // console.log('Buscando permisos con:', this.search)
           response = await permisoService.search(this.search, params)
-          console.log('Respuesta de búsqueda:', response)
+          // console.log('Respuesta de búsqueda:', response)
         } else {
           response = await permisoService.getAll(params)
         }
@@ -39,11 +39,11 @@ export const usePermisosStore = defineStore('permisos', {
         this.pagination.page = response.current_page || 1
         this.pagination.rowsPerPage = response.per_page || 10
 
-        console.log('Permisos cargados:', this.permisos)
-        console.log('Total:', this.pagination.rowsNumber)
+        // console.log('Permisos cargados:', this.permisos)
+        // console.log('Total:', this.pagination.rowsNumber)
       } catch (error) {
         this.error = error?.response?.data?.message || 'Error al cargar permisos'
-        console.error('Error fetchPermisos:', error)
+        // console.error('Error fetchPermisos:', error)
         throw error
       } finally {
         this.loading = false

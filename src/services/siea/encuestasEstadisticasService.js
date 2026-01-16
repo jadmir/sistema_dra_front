@@ -32,13 +32,13 @@ class EncuestasEstadisticasService extends SieaBaseService {
         ? `${this.baseURL}/${this.endpoint}?${queryString}`
         : `${this.baseURL}/${this.endpoint}`
 
-      console.log(`📊 [ESTADÍSTICAS] Obteniendo con filtros:`, filtros)
-      console.log(`🔗 [ESTADÍSTICAS] URL:`, url)
+      // console.log(`📊 [ESTADÍSTICAS] Obteniendo con filtros:`, filtros)
+      // console.log(`🔗 [ESTADÍSTICAS] URL:`, url)
       const response = await this.api.get(url)
-      console.log('✅ [ESTADÍSTICAS] Success:', response.data)
+      // console.log('✅ [ESTADÍSTICAS] Success:', response.data)
       return response.data
     } catch (error) {
-      console.error('❌ [ESTADÍSTICAS] Error:', error.response?.data || error.message)
+      // console.error('❌ [ESTADÍSTICAS] Error:', error.response?.data || error.message)
       throw error
     }
   }

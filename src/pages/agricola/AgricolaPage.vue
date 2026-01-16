@@ -585,7 +585,7 @@ async function loadRegiones() {
     const r = await api.get('/api/v1/agri-regiones/all')
     regiones.value = r.data.map((item) => ({ id: item.id, nombre: item.nombre }))
   } catch (err) {
-    console.error('Error cargando regiones:', err)
+    // console.error('Error cargando regiones:', err)
     $q.notify({ type: 'negative', message: 'Error cargando regiones' })
   }
 }
@@ -603,7 +603,7 @@ async function loadProvincias(regionId = null) {
     const r = await api.get(`/api/v1/agri-provincias/${id}`)
     provincias.value = r.data.data.map((item) => ({ id: item.id, nombre: item.nombre }))
   } catch (err) {
-    console.error('Error cargando provincias:', err)
+    // console.error('Error cargando provincias:', err)
     $q.notify({ type: 'negative', message: 'Error cargando provincias' })
   }
 }
@@ -619,7 +619,7 @@ async function loadDistritos(provinciaId = null) {
     const r = await api.get(`/api/v1/agri-distritos/${id}`)
     distritos.value = r.data.data.map((item) => ({ id: item.id, nombre: item.nombre }))
   } catch (err) {
-    console.error('Error cargando distritos:', err)
+    // console.error('Error cargando distritos:', err)
     $q.notify({ type: 'negative', message: 'Error cargando distritos' })
   }
 }
@@ -629,7 +629,7 @@ async function loadCultivos() {
     const r = await api.get('/api/v1/agri-cultivo-catalogos/all')
     cultivos.value = r.data.map((item) => ({ id: item.id, nombre: item.nombre }))
   } catch (err) {
-    console.error('Error cargando cultivos:', err)
+    // console.error('Error cargando cultivos:', err)
     $q.notify({ type: 'negative', message: 'Error cargando cultivos' })
   }
 }
@@ -670,7 +670,7 @@ async function exportReporteHistorico() {
 
     showReporteModal.value = false
   } catch (err) {
-    console.error(err)
+    // console.error(err)
     $q.notify({
       type: 'negative',
       message: 'No se pudo generar el reporte',
@@ -713,7 +713,7 @@ async function exportCampania() {
     $q.notify({ type: 'positive', message: 'Reporte generado correctamente' })
     modalCampania.value = false
   } catch (err) {
-    console.error(err)
+    // console.error(err)
     $q.notify({ type: 'negative', message: 'No se pudo generar el reporte' })
   } finally {
     $q.loading.hide()
@@ -744,7 +744,7 @@ async function getRegistros() {
       rowsNumber: r.data.total,
     }
   } catch (err) {
-    console.error('Error al obtener registros:', err)
+    // console.error('Error al obtener registros:', err)
   } finally {
     loading.value = false
   }
@@ -753,7 +753,7 @@ async function getRegistros() {
 /*exportar excel detallado */
 async function exportExcel(row) {
   if (!row || !row.id) {
-    console.error('No se recibió ID del registro para exportar')
+    // console.error('No se recibió ID del registro para exportar')
     return
   }
 
@@ -777,7 +777,7 @@ async function exportExcel(row) {
 
     $q.notify({ type: 'positive', message: 'Excel generado correctamente' })
   } catch (err) {
-    console.error('Error exportando Excel:', err)
+    // console.error('Error exportando Excel:', err)
     $q.notify({
       type: 'negative',
       message: err.response?.data?.message || 'No se pudo exportar el Excel',

@@ -20,10 +20,10 @@ class EncuestasService extends SieaBaseService {
       const response = await api.post(`${this.baseURL}/${this.endpoint}/${id}/validar`, {
         observaciones,
       })
-      console.log(`✅ [ENCUESTAS] Encuesta #${id} validada`)
+      // console.log(`✅ [ENCUESTAS] Encuesta #${id} validada`)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al validar encuesta #${id}:`, error)
+      // console.error(`❌ Error al validar encuesta #${id}:`, error)
       throw this.handleError(error)
     }
   }
@@ -39,10 +39,10 @@ class EncuestasService extends SieaBaseService {
       const response = await api.post(`${this.baseURL}/${this.endpoint}/${id}/rechazar`, {
         observaciones,
       })
-      console.log(`⚠️ [ENCUESTAS] Encuesta #${id} rechazada`)
+      // console.log(`⚠️ [ENCUESTAS] Encuesta #${id} rechazada`)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al rechazar encuesta #${id}:`, error)
+      // console.error(`❌ Error al rechazar encuesta #${id}:`, error)
       throw this.handleError(error)
     }
   }
@@ -55,10 +55,10 @@ class EncuestasService extends SieaBaseService {
   async obtenerFormularioCompleto(id) {
     try {
       const response = await api.get(`${this.baseURL}/${this.endpoint}/${id}/formulario-completo`)
-      console.log(`📋 [ENCUESTAS] Formulario completo #${id} obtenido:`, response.data)
+      // console.log(`📋 [ENCUESTAS] Formulario completo #${id} obtenido:`, response.data)
       return response.data
     } catch (error) {
-      console.error(`❌ Error al obtener formulario completo #${id}:`, error)
+      // console.error(`❌ Error al obtener formulario completo #${id}:`, error)
       throw this.handleError(error)
     }
   }
@@ -70,10 +70,10 @@ class EncuestasService extends SieaBaseService {
   async getEstadisticas() {
     try {
       const response = await api.get(`${this.baseURL}/${this.endpoint}-estadisticas`)
-      console.log('📊 [ENCUESTAS] Estadísticas obtenidas:', response.data)
+      // console.log('📊 [ENCUESTAS] Estadísticas obtenidas:', response.data)
       return response.data
     } catch (error) {
-      console.warn('⚠️ [ENCUESTAS] Endpoint de estadísticas no disponible:', error.message)
+      // console.warn('⚠️ [ENCUESTAS] Endpoint de estadísticas no disponible:', error.message)
       // Devolver estructura vacía para no romper la aplicación
       return {
         success: false,
@@ -108,7 +108,7 @@ class EncuestasService extends SieaBaseService {
       ...(filtros.orden_direccion && { orden_direccion: filtros.orden_direccion }),
     }
 
-    console.log('🔍 [ENCUESTAS] Consultando con filtros:', params)
+    // console.log('🔍 [ENCUESTAS] Consultando con filtros:', params)
     return this.list(params)
   }
 }

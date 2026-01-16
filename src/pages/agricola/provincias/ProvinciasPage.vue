@@ -169,7 +169,7 @@ const getRegiones = async () => {
     const r = await api.get('/api/v1/agri-regiones/all')
     regiones.value = r.data
   } catch (error) {
-    console.error('Error cargando regiones:', error)
+    // console.error('Error cargando regiones:', error)
     Notify.create({ type: 'negative', message: 'Error cargando regiones' })
   }
 }
@@ -197,7 +197,7 @@ const save = async () => {
     dialog.value = false
     getData()
   } catch (error) {
-    console.log(error.response?.data)
+    // console.log(error.response?.data)
     if (error.response?.status === 422) {
       const errors = error.response.data.errors
       for (let key in errors) {
